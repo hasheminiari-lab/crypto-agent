@@ -1,0 +1,6 @@
+httpx
+pandas
+numpy
+jdatetime
+python-telegram-bot[job-queue]
+python-dotenv
