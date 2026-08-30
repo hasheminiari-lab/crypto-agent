@@ -6,6 +6,8 @@ import sqlite3
 import asyncio
 import signal
 import sys
+# import health check
+import health  # noqa: F401
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from html import escape
