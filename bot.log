@@ -1,0 +1,688 @@
+2026-09-02 21:42:58,574 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 21:42:58,714 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:42:58,715 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:42:58,715 - INFO - ✅ ربات آماده است.
+2026-09-02 21:43:22,220 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 21:43:22,310 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:43:22,310 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:43:22,310 - INFO - ✅ ربات آماده است.
+2026-09-02 21:51:28,322 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 21:51:28,477 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:51:28,478 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:51:28,478 - INFO - ✅ ربات آماده است.
+2026-09-02 21:51:28,510 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 21:51:28,514 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 21:51:28,515 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 21:51:28,515 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 21:51:28,516 - INFO - Scheduler started
+2026-09-02 21:51:28,516 - INFO - Application started
+2026-09-02 21:51:38,529 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:51:48,534 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:51:58,484 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 21:56:58 UTC)" (scheduled at 2026-09-02 21:51:58.477307+00:00)
+2026-09-02 21:51:58,485 - INFO - ⚡ اسکن سریع...
+2026-09-02 21:51:58,540 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:51:58,814 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 21:51:59,090 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:51:59,321 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:51:59,551 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:51:59,779 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:00,005 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:00,229 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:00,458 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:00,689 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:00,911 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:01,137 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:52:01,364 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:01,594 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:01,828 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:02,056 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:02,284 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:02,515 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:02,740 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:02,972 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:03,201 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:03,428 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:03,655 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:03,882 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:04,109 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:04,336 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:04,564 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:04,791 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:05,017 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:05,244 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:05,471 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:05,722 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=LTCUSDT&limit=1 "HTTP/1.1 200 "
+2026-09-02 21:52:05,954 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:52:06,006 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 21:52:06,007 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 21:56:58 UTC)" executed successfully
+2026-09-02 21:52:08,553 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:52:18,559 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:52:26,006 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:52:26,006 - INFO - Application is stopping. This might take a moment.
+2026-09-02 21:52:26,006 - INFO - Scheduler has been shut down
+2026-09-02 21:52:26,017 - INFO - Application.stop() complete
+2026-09-02 21:52:32,021 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 21:52:32,101 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:52:32,101 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 21:52:32,102 - INFO - ✅ ربات آماده است.
+2026-09-02 21:52:32,125 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 21:52:32,129 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 21:52:32,130 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 21:52:32,131 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 21:52:32,131 - INFO - Scheduler started
+2026-09-02 21:52:32,131 - INFO - Application started
+2026-09-02 21:52:42,146 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:52:52,155 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:02,112 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 21:58:02 UTC)" (scheduled at 2026-09-02 21:53:02.101333+00:00)
+2026-09-02 21:53:02,112 - INFO - ⚡ اسکن سریع...
+2026-09-02 21:53:02,160 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:02,639 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 21:53:03,557 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:03,784 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:04,010 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:04,234 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:04,462 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:04,684 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:04,910 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:05,133 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:05,355 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:05,582 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:53:05,810 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:06,039 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:06,268 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:06,492 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:06,721 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:06,949 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:07,180 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:07,411 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:07,635 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:07,863 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:08,094 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:08,320 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:08,544 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:08,771 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:08,998 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:09,225 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:09,451 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:09,678 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:09,903 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:10,153 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=LTCUSDT&limit=1 "HTTP/1.1 200 "
+2026-09-02 21:53:10,384 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:53:10,456 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 21:53:10,457 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 21:58:02 UTC)" executed successfully
+2026-09-02 21:53:12,170 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:22,178 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:32,113 - INFO - Running job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:23:32 UTC)" (scheduled at 2026-09-02 21:53:32.101850+00:00)
+2026-09-02 21:53:32,113 - INFO - 🔄 بررسی پوزیشن‌ها...
+2026-09-02 21:53:32,114 - INFO - Job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:23:32 UTC)" executed successfully
+2026-09-02 21:53:32,186 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:42,196 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:53:52,204 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:02,217 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:12,225 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:22,237 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:32,245 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:42,252 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:54:52,265 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:02,273 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:12,284 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:22,289 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:32,297 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:42,306 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:55:52,317 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:02,330 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:12,339 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:22,353 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:32,360 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:42,370 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:56:52,379 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:02,435 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:12,501 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:22,509 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:32,547 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:42,565 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:57:52,570 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:02,111 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:03:02 UTC)" (scheduled at 2026-09-02 21:58:02.101333+00:00)
+2026-09-02 21:58:02,111 - INFO - ⚡ اسکن سریع...
+2026-09-02 21:58:02,406 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 21:58:02,578 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:03,333 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:03,558 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:03,785 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:04,014 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:04,238 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:04,464 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:04,692 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:04,916 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:05,141 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:05,362 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 21:58:05,593 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:05,816 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:06,045 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:06,270 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:06,496 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:06,719 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:06,943 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:07,169 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:07,396 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:07,623 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:07,855 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:08,087 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:08,315 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:08,545 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:08,773 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:09,001 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:09,227 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:09,452 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:09,679 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:09,943 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=LTCUSDT&limit=1 "HTTP/1.1 200 "
+2026-09-02 21:58:10,174 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 21:58:10,297 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 21:58:10,298 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:03:02 UTC)" executed successfully
+2026-09-02 21:58:12,589 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:22,597 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:32,606 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:42,613 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:58:52,621 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:02,628 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:12,642 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:22,654 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:32,663 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:42,670 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 21:59:52,676 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:02,686 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:12,695 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:22,705 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:32,712 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:42,719 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:00:52,729 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:02,737 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:12,749 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:22,755 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:32,762 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:42,769 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:01:52,777 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:02,783 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:12,797 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:22,803 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:32,810 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:42,821 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:02:52,828 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:02,111 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:08:02 UTC)" (scheduled at 2026-09-02 22:03:02.101333+00:00)
+2026-09-02 22:03:02,112 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:03:02,836 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:03,397 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:03:03,876 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:04,101 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:04,322 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:04,551 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:04,776 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:05,001 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:05,222 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:05,444 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:05,670 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:05,897 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:03:06,119 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:06,348 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:06,571 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:06,801 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:07,031 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:07,259 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:07,487 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:07,718 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:07,946 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:08,170 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:08,395 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:08,619 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:08,847 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:09,074 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:09,305 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:09,537 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:09,765 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:09,992 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:10,220 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:10,446 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:03:10,448 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:08:02 UTC)" executed successfully
+2026-09-02 22:03:12,843 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:22,854 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:32,862 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:42,868 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:03:52,881 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:02,889 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:12,902 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:22,912 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:32,924 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:42,935 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:04:52,946 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:02,954 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:12,963 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:22,970 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:32,977 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:42,989 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:05:52,997 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:03,006 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:13,015 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:23,025 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:33,034 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:43,046 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:06:53,057 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:03,066 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:13,074 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:23,081 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:33,088 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:43,096 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:07:53,101 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:02,110 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:13:02 UTC)" (scheduled at 2026-09-02 22:08:02.101333+00:00)
+2026-09-02 22:08:02,111 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:08:02,634 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:08:03,107 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:03,558 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:03,784 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:04,007 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:04,230 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:04,457 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:04,682 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:04,910 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:05,137 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:05,359 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:05,580 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:08:05,809 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:06,038 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:06,267 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:06,493 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:06,722 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:06,951 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:07,173 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:07,397 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:07,623 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:07,851 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:08,081 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:08,313 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:08,541 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:08,772 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:09,003 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:09,231 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:09,464 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:09,691 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:09,916 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:10,144 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:08:10,146 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:13:02 UTC)" executed successfully
+2026-09-02 22:08:13,114 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:23,124 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:33,131 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:43,138 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:08:53,145 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:03,151 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:13,156 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:23,165 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:33,176 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:43,183 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:09:53,188 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:03,200 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:13,206 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:23,211 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:33,221 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:43,228 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:10:53,241 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:03,248 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:13,254 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:23,266 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:33,276 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:43,284 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:11:53,293 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:03,306 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:13,319 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:23,326 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:33,339 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:43,351 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:12:53,357 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:02,110 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:18:02 UTC)" (scheduled at 2026-09-02 22:13:02.101333+00:00)
+2026-09-02 22:13:02,111 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:13:02,421 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:13:03,326 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:03,364 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:03,552 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:03,776 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:03,999 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:04,224 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:04,446 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:04,672 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:04,900 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:05,125 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:05,350 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:13:05,576 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:05,801 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:06,029 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:06,256 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:06,485 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:06,714 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:06,941 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:07,166 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:07,390 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:07,617 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:07,845 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:08,072 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:08,296 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:08,522 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:08,749 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:08,977 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:09,204 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:09,430 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:09,656 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:09,881 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:13:09,883 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:18:02 UTC)" executed successfully
+2026-09-02 22:13:13,369 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:23,378 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:33,387 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:43,393 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:13:53,402 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:03,414 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:13,422 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:23,429 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:33,442 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:43,449 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:53,461 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:59,424 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:14:59,425 - INFO - Application is stopping. This might take a moment.
+2026-09-02 22:14:59,425 - INFO - Scheduler has been shut down
+2026-09-02 22:14:59,435 - INFO - Application.stop() complete
+2026-09-02 22:15:05,532 - INFO - ✅ Health check server started on port 10000
+2026-09-02 22:15:05,534 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 22:15:05,536 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.0.2.122:10000
+2026-09-02 22:15:05,536 - INFO - [33mPress CTRL+C to quit[0m
+2026-09-02 22:15:05,727 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:15:05,727 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:15:05,728 - INFO - ✅ ربات آماده است.
+2026-09-02 22:15:05,745 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 22:15:05,750 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 22:15:05,751 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 22:15:05,751 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 22:15:05,752 - INFO - Scheduler started
+2026-09-02 22:15:05,752 - INFO - Application started
+2026-09-02 22:15:15,764 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:15:18,785 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:15:18,786 - INFO - Application is stopping. This might take a moment.
+2026-09-02 22:15:18,786 - INFO - Scheduler has been shut down
+2026-09-02 22:15:18,796 - INFO - Application.stop() complete
+2026-09-02 22:15:42,795 - INFO - ✅ Health check server started on port 10000
+2026-09-02 22:15:42,795 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 22:15:42,799 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.0.2.122:10000
+2026-09-02 22:15:42,800 - INFO - [33mPress CTRL+C to quit[0m
+2026-09-02 22:15:42,889 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:15:42,890 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:15:42,890 - INFO - ✅ ربات آماده است.
+2026-09-02 22:15:42,906 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 22:15:42,911 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 22:15:42,912 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 22:15:42,912 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 22:15:42,912 - INFO - Scheduler started
+2026-09-02 22:15:42,912 - INFO - Application started
+2026-09-02 22:15:52,924 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:02,929 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:12,896 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:21:12 UTC)" (scheduled at 2026-09-02 22:16:12.889405+00:00)
+2026-09-02 22:16:12,896 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:16:12,939 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:13,272 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:16:13,608 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:13,862 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:14,114 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:14,366 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:14,619 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:14,871 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:15,125 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:15,376 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:15,629 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:15,883 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:16:16,137 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:16,392 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:16,647 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:16,903 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:17,162 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:17,418 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:17,672 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:17,928 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:18,182 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:18,438 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:18,692 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:18,947 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:19,202 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:19,457 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:19,712 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:19,966 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:20,219 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:20,474 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:20,729 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:20,995 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:16:20,997 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:21:12 UTC)" executed successfully
+2026-09-02 22:16:22,944 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:32,950 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:42,897 - INFO - Running job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:46:42 UTC)" (scheduled at 2026-09-02 22:16:42.890018+00:00)
+2026-09-02 22:16:42,898 - INFO - 🔄 بررسی پوزیشن‌ها...
+2026-09-02 22:16:42,899 - INFO - Job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:46:42 UTC)" executed successfully
+2026-09-02 22:16:42,956 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:16:52,962 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:02,966 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:12,972 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:22,978 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:32,984 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:36,078 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:36,079 - INFO - Application is stopping. This might take a moment.
+2026-09-02 22:17:36,080 - INFO - Scheduler has been shut down
+2026-09-02 22:17:36,090 - INFO - Application.stop() complete
+2026-09-02 22:17:37,002 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.0.2.122:10000
+2026-09-02 22:17:37,002 - INFO - ✅ Health check server started on port 10000
+2026-09-02 22:17:37,004 - INFO - [33mPress CTRL+C to quit[0m
+2026-09-02 22:17:37,004 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 22:17:37,269 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:17:37,270 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:17:37,270 - INFO - ✅ ربات آماده است.
+2026-09-02 22:17:37,321 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 22:17:37,366 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 22:17:37,368 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 22:17:37,368 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 22:17:37,368 - INFO - Scheduler started
+2026-09-02 22:17:37,368 - INFO - Application started
+2026-09-02 22:17:47,380 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:17:55,749 - INFO - ✅ Health check server started on port 10000
+2026-09-02 22:17:55,752 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 22:17:55,756 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.0.2.122:10000
+2026-09-02 22:17:55,756 - INFO - [33mPress CTRL+C to quit[0m
+2026-09-02 22:17:55,839 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:17:55,839 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:17:55,840 - INFO - ✅ ربات آماده است.
+2026-09-02 22:17:55,874 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 22:17:55,885 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 22:17:55,892 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 22:17:55,892 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 22:17:55,893 - INFO - Scheduler started
+2026-09-02 22:17:55,894 - INFO - Application started
+2026-09-02 22:18:05,928 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:18:15,933 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:18:25,841 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:23:25 UTC)" (scheduled at 2026-09-02 22:18:25.838881+00:00)
+2026-09-02 22:18:25,841 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:18:25,938 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:18:26,141 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:18:26,835 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:27,059 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:27,288 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:27,517 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:27,745 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:27,973 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:28,199 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:28,423 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:28,646 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:28,873 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:18:29,101 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:29,325 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:29,557 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:29,782 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:30,009 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:30,241 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:30,467 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:30,695 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:30,922 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:31,148 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:31,376 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:31,603 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:31,830 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:32,056 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:32,284 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:32,509 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:32,735 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:32,961 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:33,185 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:33,412 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:18:33,414 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:23:25 UTC)" executed successfully
+2026-09-02 22:18:35,944 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:18:45,949 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:18:55,842 - INFO - Running job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:48:55 UTC)" (scheduled at 2026-09-02 22:18:55.839780+00:00)
+2026-09-02 22:18:55,842 - INFO - 🔄 بررسی پوزیشن‌ها...
+2026-09-02 22:18:55,843 - INFO - Job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:48:55 UTC)" executed successfully
+2026-09-02 22:18:55,954 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:19:05,959 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:19:15,965 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:19:25,970 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:19:33,189 - INFO - ✅ Health check server started on port 10000
+2026-09-02 22:19:33,189 - INFO - 🚀 راه‌اندازی ربات v4.0...
+2026-09-02 22:19:33,191 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.0.2.122:10000
+2026-09-02 22:19:33,191 - INFO - [33mPress CTRL+C to quit[0m
+2026-09-02 22:19:33,278 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:19:33,278 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-02 22:19:33,279 - INFO - ✅ ربات آماده است.
+2026-09-02 22:19:33,306 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getMe "HTTP/1.1 200 OK"
+2026-09-02 22:19:33,310 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/deleteWebhook "HTTP/1.1 200 OK"
+2026-09-02 22:19:33,311 - INFO - Added job "scheduled_quick_scan" to job store "default"
+2026-09-02 22:19:33,311 - INFO - Added job "scheduled_full_check" to job store "default"
+2026-09-02 22:19:33,311 - INFO - Scheduler started
+2026-09-02 22:19:33,312 - INFO - Application started
+2026-09-02 22:19:43,325 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:19:53,333 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:03,288 - INFO - Running job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:25:03 UTC)" (scheduled at 2026-09-02 22:20:03.278188+00:00)
+2026-09-02 22:20:03,289 - INFO - ⚡ اسکن سریع...
+2026-09-02 22:20:03,340 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:03,599 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:20:03,869 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:04,099 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:04,329 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:04,554 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:04,780 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:05,005 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:05,234 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:05,896 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:06,120 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:06,346 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:06,571 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:06,802 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:07,027 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:07,258 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:07,487 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:07,714 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:07,943 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:08,172 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:08,400 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:08,627 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:08,858 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:09,084 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:09,312 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:09,543 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:09,771 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,001 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,229 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,454 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,685 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,910 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:10,911 - INFO - Job "scheduled_quick_scan (trigger: interval[0:05:00], next run at: 2026-09-02 22:25:03 UTC)" executed successfully
+2026-09-02 22:20:12,402 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:12,468 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:20:12,765 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr "HTTP/1.1 200 OK"
+2026-09-02 22:20:13,901 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USDCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:14,126 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:14,349 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:14,571 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SOLUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:14,798 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XRPUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:15,025 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=USD1USDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:15,253 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:15,479 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UNIUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:15,701 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=RLUSDUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:15,924 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BNBUSDT&interval=4h&limit=42 "HTTP/1.1 200 OK"
+2026-09-02 22:20:16,155 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=DOGEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:16,386 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SUIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:16,613 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=XAUTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:16,844 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=HEMIUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:17,071 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ARBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:17,297 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PAXGUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:17,526 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ENAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:17,754 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=UUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:17,982 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:18,211 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=AAVEUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:18,437 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LINKUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:18,667 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=TRXUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:18,897 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=NEARUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:19,125 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=SNDKBUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:19,358 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BMTUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:19,586 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=FILUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:19,811 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PUMPUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:20,039 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=ADAUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:20,263 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=PROMUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:20,496 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=LTCUSDT&interval=1h&limit=168 "HTTP/1.1 200 OK"
+2026-09-02 22:20:20,549 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:20:22,409 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:32,418 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:33,280 - INFO - Running job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:50:33 UTC)" (scheduled at 2026-09-02 22:20:33.278810+00:00)
+2026-09-02 22:20:33,280 - INFO - 🔄 بررسی پوزیشن‌ها...
+2026-09-02 22:20:33,281 - INFO - Job "scheduled_full_check (trigger: interval[0:30:00], next run at: 2026-09-02 22:50:33 UTC)" executed successfully
+2026-09-02 22:20:42,424 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,261 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,360 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,481 - INFO - HTTP Request: GET https://api.coingecko.com/api/v3/search?query=BTR "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,646 - INFO - HTTP Request: GET https://api.bybit.com/v5/market/tickers?category=spot&symbol=BTRUSDT "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,675 - INFO - HTTP Request: GET https://api.binance.com/api/v3/ticker/24hr?symbol=BTRUSDT "HTTP/1.1 400 Bad Request"
+2026-09-02 22:20:49,682 - INFO - HTTP Request: GET https://api.binance.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=16 "HTTP/1.1 400 Bad Request"
+2026-09-02 22:20:49,683 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/openInterest?symbol=BTRUSDT "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,687 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTRUSDT&limit=10 "HTTP/1.1 200 "
+2026-09-02 22:20:49,695 - INFO - response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=BTR%20crypto%20site%3Ax.com%20OR%20site%3Atwitter.com 200
+2026-09-02 22:20:49,698 - INFO - HTTP Request: GET https://api.alternative.me/fng/?limit=1 "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,711 - INFO - HTTP Request: GET https://www.okx.com/api/v5/market/ticker?instId=BTR-USDT "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,728 - INFO - HTTP Request: GET https://api.mexc.com/api/v3/ticker/24hr?symbol=BTRUSDT "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,742 - INFO - HTTP Request: GET https://api.coingecko.com/api/v3/coins/debtreliefbot?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false "HTTP/1.1 200 OK"
+2026-09-02 22:20:49,810 - INFO - response: https://grokipedia.com/api/typeahead?query=BTR+crypto+site%3Ax.com+OR+site%3Atwitter.com&limit=1 200
+2026-09-02 22:20:49,909 - INFO - HTTP Request: GET https://fapi.binance.com/fapi/v1/openInterestHist?symbol=BTRUSDT&period=1h&limit=24 "HTTP/1.1 404 Not Found"
+2026-09-02 22:20:50,371 - INFO - response: https://html.duckduckgo.com/html/ 200
+2026-09-02 22:20:50,382 - INFO - response: https://grokipedia.com/api/typeahead?query=BTR+crypto+site%3At.me&limit=1 200
+2026-09-02 22:20:50,585 - INFO - response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=BTR%20crypto%20site%3At.me 200
+2026-09-02 22:20:50,779 - INFO - response: https://search.yahoo.com/search;_ylt=3d0E_aYNtvesa_6sCMdRfOIG;_ylu=TrUTisG3mVOycc0ZyXxnP-Ui8eeuCxBPBKyBnsxzNA244so?p=BTR+crypto+site%3At.me 200
+2026-09-02 22:20:51,744 - INFO - response: https://search.brave.com/search?q=BTR+crypto+site%3At.me&source=web 200
+2026-09-02 22:20:51,822 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:20:59,270 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:09,275 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:19,282 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:29,293 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:39,301 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:49,106 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:21:49,146 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:21:54,114 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/sendMessage "HTTP/1.1 200 OK"
+2026-09-02 22:21:59,116 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:09,121 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:19,132 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:29,142 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:39,148 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:49,177 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:55,779 - INFO - HTTP Request: POST https://api.telegram.org/bot8574775908:AAEiBVZ7ASkzEOuwLkyQ5T4V6mNKYwPp9ow/getUpdates "HTTP/1.1 200 OK"
+2026-09-02 22:22:55,780 - INFO - Application is stopping. This might take a moment.
+2026-09-02 22:22:55,780 - INFO - Scheduler has been shut down
+2026-09-02 22:22:55,790 - INFO - Application.stop() complete

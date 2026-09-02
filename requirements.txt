@@ -6,3 +6,5 @@ python-telegram-bot[job-queue]
 python-dotenv
 flask
 ddgs
+zoneinfo
+requests
