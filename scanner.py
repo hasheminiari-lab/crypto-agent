@@ -1,4 +1,3 @@
-import health  # noqa: F401
 import os
 import re
 import sqlite3
@@ -20,7 +19,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from dotenv import load_dotenv
 
 load_dotenv()
-
+import health  # noqa: F401
 # ==========================================
 # ⚙️ تنظیمات اصلی
 # ==========================================
@@ -51,17 +50,17 @@ EXCHANGES = {
 COINGECKO_URL = 'https://api.coingecko.com/api/v3'
 
 # ==========================================
-# 🎯 سیستم Tier-Based هوشمند
+# 🎯 سیستم Tier-Based هوشمند (شل‌تر)
 # ==========================================
 def get_tier_threshold(market_cap: float) -> Dict:
     if market_cap > 10_000_000_000:
-        return {'tier_name': 'Mega', 'z_threshold': 1.3, 'vol_mult': 1.5, 'interval': '4h', 'limit': 42, 'min_vol': 100_000_000}
+        return {'tier_name': 'Mega', 'z_threshold': 1.0, 'vol_mult': 1.2, 'interval': '4h', 'limit': 42, 'min_vol': 50_000_000}
     elif market_cap > 1_000_000_000:
-        return {'tier_name': 'Large', 'z_threshold': 1.5, 'vol_mult': 2.0, 'interval': '4h', 'limit': 42, 'min_vol': 20_000_000}
+        return {'tier_name': 'Large', 'z_threshold': 1.2, 'vol_mult': 1.5, 'interval': '4h', 'limit': 42, 'min_vol': 10_000_000}
     elif market_cap > 100_000_000:
-        return {'tier_name': 'Mid', 'z_threshold': 2.0, 'vol_mult': 3.0, 'interval': '1h', 'limit': 168, 'min_vol': 5_000_000}
+        return {'tier_name': 'Mid', 'z_threshold': 1.5, 'vol_mult': 2.0, 'interval': '1h', 'limit': 168, 'min_vol': 2_000_000}
     else:
-        return {'tier_name': 'Small', 'z_threshold': 2.5, 'vol_mult': 5.0, 'interval': '1h', 'limit': 168, 'min_vol': 500_000}
+        return {'tier_name': 'Small', 'z_threshold': 2.0, 'vol_mult': 3.0, 'interval': '1h', 'limit': 168, 'min_vol': 200_000}
 
 def estimate_market_cap(quote_volume_24h: float) -> float:
     return quote_volume_24h * 20
@@ -105,7 +104,7 @@ def get_time_info() -> Dict[str, str]:
     }
 
 # ==========================================
-# ️ Rate Limiting
+# ⏱️ Rate Limiting
 # ==========================================
 _user_last_call: Dict[int, float] = defaultdict(float)
 def rate_limited(user_id: int, min_interval: int = 30) -> bool:
@@ -174,7 +173,7 @@ def update_position_status(coin: str, status: str):
     conn.close()
 
 # ==========================================
-#  جستجوی شبکه‌های اجتماعی
+# 🔍 جستجوی شبکه‌های اجتماعی
 # ==========================================
 def search_social_sentiment(coin_name: str) -> List[Dict]:
     influencers = []
@@ -266,7 +265,7 @@ async def get_atr_async(symbol: str, client: httpx.AsyncClient, period: int = 14
     except Exception: return None
 
 # ==========================================
-#  حس بازار (Fear & Greed)
+# 😱 حس بازار (Fear & Greed)
 # ==========================================
 async def get_market_sentiment_async(client: httpx.AsyncClient) -> Optional[Dict]:
     try:
@@ -276,7 +275,7 @@ async def get_market_sentiment_async(client: httpx.AsyncClient) -> Optional[Dict
         if not data or not data.get('data'): return None
         value = int(data['data'][0]['value'])
         if value <= 25: emoji, status = "😱", "ترس شدید"
-        elif value <= 45: emoji, status = "", "ترس"
+        elif value <= 45: emoji, status = "😨", "ترس"
         elif value <= 55: emoji, status = "😐", "خنثی"
         elif value <= 75: emoji, status = "😊", "طمع"
         else: emoji, status = "🤑", "طمع شدید"
@@ -298,7 +297,6 @@ async def get_funding_rate_async(symbol: str, client: httpx.AsyncClient) -> Opti
         return {'current': funding_rate, 'average': avg_funding, 'signal': 'bullish' if funding_rate < 0 else 'bearish' if funding_rate > 0.01 else 'neutral'}
     except Exception: return None
 
-# ✅ اصلاح باگ: اضافه کردن کلید 'signal' در تمام حالت‌های بازگشتی
 async def get_open_interest_async(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
     try:
         response = await client.get(f"{EXCHANGES['binance_futures']}/openInterest?symbol={symbol}USDT")
@@ -434,7 +432,7 @@ async def analyze_coin_full_async(symbol_raw: str) -> Tuple[str, Optional[Dict]]
         if holder_data['concentration_risk'] == 'low': score += 10
         elif holder_data['concentration_risk'] == 'medium': score += 5
 
-    if z_score >= z_threshold and -10 <= avg_change <= 30: status = " سیگنال قوی Pre-Pump"
+    if z_score >= z_threshold and -10 <= avg_change <= 30: status = "🟢 سیگنال قوی Pre-Pump"
     elif z_score >= z_threshold - 0.3: status = "🟡 سیگنال متوسط"
     elif avg_change > 50: status = "🔴 قبلاً پامپ کرده"
     else: status = "⚪ عادی"
@@ -449,15 +447,15 @@ async def analyze_coin_full_async(symbol_raw: str) -> Tuple[str, Optional[Dict]]
     
     report += f"📊 <b>داده‌های مشتقات (Binance Futures):</b>\n"
     if funding_data:
-        funding_emoji = "🟢" if funding_data['signal'] == 'bullish' else "" if funding_data['signal'] == 'bearish' else "⚪"
+        funding_emoji = "🟢" if funding_data['signal'] == 'bullish' else "🔴" if funding_data['signal'] == 'bearish' else "⚪"
         report += f"• {funding_emoji} Funding Rate: <b>{funding_data['current']*100:.4f}%</b> (میانگین: {funding_data['average']*100:.4f}%)\n"
         report += f"  <i>{'Short Squeeze Potential' if funding_data['signal'] == 'bullish' else 'Over-leveraged Longs' if funding_data['signal'] == 'bearish' else 'Neutral'}</i>\n"
-    else: report += f"•  Funding Rate: داده در دسترس نیست\n"
+    else: report += f"• ⚪ Funding Rate: داده در دسترس نیست\n"
     if oi_data:
         oi_emoji = "🟢" if oi_data['signal'] == 'bullish' else "🔴" if oi_data['signal'] == 'bearish' else "⚪"
         report += f"• {oi_emoji} Open Interest Change (24h): <b>{oi_data['change_24h']:+.2f}%</b>\n"
         report += f"  <i>{'Strong Inflow' if oi_data['signal'] == 'bullish' else 'Outflow' if oi_data['signal'] == 'bearish' else 'Stable'}</i>\n"
-    else: report += f"•  Open Interest: داده در دسترس نیست\n"
+    else: report += f"• ⚪ Open Interest: داده در دسترس نیست\n"
     report += "\n"
 
     report += f"💰 <b>توکنومیکس و عرضه:</b>\n"
@@ -502,51 +500,80 @@ async def analyze_coin_full_async(symbol_raw: str) -> Tuple[str, Optional[Dict]]
     return report, position_data
 
 # ==========================================
-# ⚡ اسکن سریع بازار (با داده‌های فاز 1)
+# ⚡ اسکن سریع بازار (با فیلترهای شل‌تر و Early Warning)
 # ==========================================
 async def quick_scan_async() -> Optional[str]:
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             response = await client.get(f"{EXCHANGES['binance']}/ticker/24hr")
             if response.status_code != 200: return None
+            
             df = pd.DataFrame(response.json())
             df['priceChangePercent'] = pd.to_numeric(df['priceChangePercent'])
             df['quoteVolume'] = pd.to_numeric(df['quoteVolume'])
-            df = df[df['quoteVolume'] > 1_000_000]
-            df = df[(df['priceChangePercent'] >= -15) & (df['priceChangePercent'] <= 40)]
+            
+            # ✅ فیلترهای بسیار شل‌تر
+            df = df[df['quoteVolume'] > 200_000]  # کاهش به 200K
+            df = df[(df['priceChangePercent'] >= -30) & (df['priceChangePercent'] <= 100)]  # بازه خیلی گسترده
             df = df[df['symbol'].str.endswith('USDT')]
+            
             if df.empty: return None
 
             final = []
-            for _, row in df.sort_values(by='quoteVolume', ascending=False).head(50).iterrows():
+            # ✅ بررسی 200 کوین برتر
+            for _, row in df.sort_values(by='quoteVolume', ascending=False).head(200).iterrows():
                 symbol = row['symbol'].replace('USDT', '')
                 estimated_mc = estimate_market_cap(row['quoteVolume'])
                 threshold = get_tier_threshold(estimated_mc)
+                
                 z, mult, interval_used, tier_name = await calculate_volume_z_score_smart(symbol, client, estimated_mc)
-                if z >= threshold['z_threshold'] and mult >= threshold['vol_mult']:
+                
+                # ✅ آستانه‌های خیلی شل‌تر (50% از مقادیر اصلی)
+                relaxed_z = threshold['z_threshold'] * 0.5
+                relaxed_mult = threshold['vol_mult'] * 0.5
+                
+                # ✅ Early Warning: حتی با سیگنال ضعیف هم اضافه کن
+                if z >= relaxed_z or mult >= relaxed_mult:
                     try:
                         funding_resp = await client.get(f"{EXCHANGES['binance_futures']}/fundingRate?symbol={symbol}USDT&limit=1")
                         funding_data = funding_resp.json()
                         funding_rate = float(funding_data[0]['fundingRate']) if funding_data else 0
-                    except: funding_rate = 0
+                    except: 
+                        funding_rate = 0
+                    
                     pump_pred = predict_pump_percentage(z, mult, 0.02, tier_name, funding_rate, 0)
-                    final.append({'symbol': symbol, 'change': row['priceChangePercent'], 'z': round(z, 2), 'mult': round(mult, 2), 'tier': tier_name, 'interval': interval_used, 'threshold': threshold['z_threshold'], 'expected_pump': f"{pump_pred['likely']}%", 'funding': funding_rate})
+                    final.append({
+                        'symbol': symbol, 
+                        'change': row['priceChangePercent'], 
+                        'z': round(z, 2), 
+                        'mult': round(mult, 2), 
+                        'tier': tier_name, 
+                        'interval': interval_used, 
+                        'threshold': relaxed_z,
+                        'expected_pump': f"{pump_pred['likely']}%", 
+                        'funding': funding_rate
+                    })
 
             if not final: return None
+            
+            # ✅ مرتب‌سازی بر اساس Z-Score
             final.sort(key=lambda x: x['z'], reverse=True)
-            top5 = final[:5]
-            report = f"⚡ <b>اسکن سریع (هر {SCAN_INTERVAL_MINUTES} دقیقه)</b>\n⏰ {get_time_info()['iran_time']}\n\n🏆 <b>کاندیداهای Pre-Pump:</b>\n"
-            for c in top5:
+            top10 = final[:10]  # نمایش 10 کوین
+            
+            report = f"⚡ <b>اسکن سریع (هر {SCAN_INTERVAL_MINUTES} دقیقه)</b>\n"
+            report += f"⏰ {get_time_info()['iran_time']}\n\n"
+            report += "🏆 <b>کاندیداهای Pre-Pump (Early Warning):</b>\n"
+            for c in top10:
                 funding_emoji = "🟢" if c['funding'] < 0 else "🔴" if c['funding'] > 0.01 else "⚪"
-                report += f"• <b>{c['symbol']}</b> [{c['tier']}] | Z: {c['z']:.2f} | Vol: {c['mult']:.1f}x | Pump: {c['expected_pump']} | Funding: {funding_emoji}{c['funding']*100:.3f}%\n"
-            report += f"\n<i>برای تحلیل کامل، نام کوین را بفرستید (مثلاً {top5[0]['symbol']})</i>"
+                report += f"• <b>{c['symbol']}</b> [{c['tier']}] | Z: {c['z']:.2f} | Vol: {c['mult']:.1f}x | Pump: {c['expected_pump']} | Funding: {funding_emoji}{c['funding']*100:.3f}% | Change: {c['change']:+.1f}%\n"
+            report += f"\n<i>برای تحلیل کامل، نام کوین را بفرستید (مثلاً {top10[0]['symbol']})</i>"
             return report
     except Exception as e:
         if DEBUG: print(f"❌ خطا در اسکن: {e}")
         return None
 
 # ==========================================
-#  بررسی خروج از پوزیشن
+# 🔄 بررسی خروج از پوزیشن
 # ==========================================
 async def check_position_exit_async(position: Dict) -> Tuple[Optional[str], str]:
     coin = position['coin']
@@ -563,7 +590,7 @@ async def check_position_exit_async(position: Dict) -> Tuple[Optional[str], str]
     if current_price >= tp3: reasons.append(f"🟢 قیمت (${current_price:,.4f}) به تارگت 3 (${tp3:,.4f}) رسید - سیو سود")
     estimated_mc = estimate_market_cap(total_vol)
     z_score, _, _, _ = await calculate_volume_z_score_smart(coin, client, estimated_mc)
-    if z_score < 1.0: reasons.append(f"️ Z-Score حجم ({z_score:.2f}) زیر 1.0 - ضعف حجم")
+    if z_score < 1.0: reasons.append(f"⚠️ Z-Score حجم ({z_score:.2f}) زیر 1.0 - ضعف حجم")
     avg_change = np.mean([ex['change'] for ex in exchange_data.values()])
     if avg_change < -20: reasons.append(f"🔴 ریزش شدید ({avg_change:+.2f}%)")
     if reasons:
@@ -576,7 +603,7 @@ async def check_position_exit_async(position: Dict) -> Tuple[Optional[str], str]
 # ==========================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     help_text = """
-🤖 <b>ربات شکارچی Pre-Pump کریپتو (نسخه 2.3 - فاز 1 کامل)</b>
+🤖 <b>ربات شکارچی Pre-Pump کریپتو (نسخه 2.4 - Early Warning)</b>
 
 <b>دستورات:</b>
 /scan - اسکن سریع بازار
@@ -587,13 +614,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 فقط نام کوین را بفرستید، مثلاً:
 BTC, ETH, SOL, BTR, RNDR, FET
 
-<b>ویژگی‌های نسخه 2.3 (فاز 1):</b>
-• فیلتر هوشمند Tier-Based
-• پیش‌بینی درصد پامپ
-• داده‌های مشتقات (Funding Rate + OI)
-• توزیع هولدرها (Etherscan)
-• داده‌های Supply (CoinGecko)
-• امتیازدهی جامع 100 امتیازی
+<b>ویژگی‌های نسخه 2.4:</b>
+• فیلترهای شل‌تر برای شکار بیشتر
+• Early Warning System
+• بررسی 200 کوین برتر
+• نمایش 10 کاندیدای برتر
 
 ⏰ اسکن خودکار هر 10 دقیقه فعال است.
 """
@@ -610,7 +635,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip().upper()
     if text.startswith('/'): return
     if len(text) >= 2 and len(text) <= 10 and text.isalpha():
-        await update.message.reply_text(f" در حال تحلیل <b>{escape(text)}</b> از چندین منبع... (10-15 ثانیه)", parse_mode='HTML')
+        await update.message.reply_text(f"⏳ در حال تحلیل <b>{escape(text)}</b> از چندین منبع... (10-15 ثانیه)", parse_mode='HTML')
         try:
             report, position_data = await analyze_coin_full_async(text)
             if position_data and position_data['score'] >= 70:
@@ -673,14 +698,14 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
 # ==========================================
 def main():
     init_db()
-    print("🚀 راه‌اندازی ربات چندمنبعی نسخه 2.3 (فاز 1 کامل)...")
+    print("🚀 راه‌اندازی ربات چندمنبعی نسخه 2.4 (Early Warning)...")
     print(f"⏰ اسکن سریع: هر {SCAN_INTERVAL_MINUTES} دقیقه")
-    print(f" بررسی خروج: هر {FULL_ANALYSIS_INTERVAL_MINUTES} دقیقه")
+    print(f"🔄 بررسی خروج: هر {FULL_ANALYSIS_INTERVAL_MINUTES} دقیقه")
     print(f"👥 کاربران مجاز: {len(ALLOWED_USERS)} نفر")
-    print(f"🎯 فیلتر هوشمند: Mega/Large/Mid/Small Tier")
+    print(f"🎯 فیلتر هوشمند: Mega/Large/Mid/Small Tier (شل‌تر)")
     print(f"🚀 پیش‌بینی درصد پامپ: فعال")
     print(f"📊 داده‌های مشتقات (Funding + OI): فعال")
-    print(f" Holder Distribution: فعال (با Etherscan API)")
+    print(f"👥 Holder Distribution: فعال (با Etherscan API)")
     print(f"💰 Supply Data: فعال (با CoinGecko)")
 
     application = Application.builder().token(TELEGRAM_TOKEN).build()
