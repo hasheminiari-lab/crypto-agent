@@ -1,3 +1,4 @@
+import health  # noqa: F401
 import os
 import re
 import sqlite3
