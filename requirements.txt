@@ -4,4 +4,5 @@ numpy
 jdatetime
 python-telegram-bot[job-queue]
 python-dotenv
-flask==3.0.0
+flask
+ddgs
