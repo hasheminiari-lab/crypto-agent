@@ -12,7 +12,6 @@ from pathlib import Path
 from html import escape
 from collections import defaultdict
 from typing import Optional, Dict, List, Tuple
-from zoneinfo import ZoneInfo
 
 import httpx
 import pandas as pd
@@ -23,78 +22,74 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from dotenv import load_dotenv
 
-# Import از فایل‌های دیگر
 try:
-    from risk_manager import RiskManager, PositionSizer
+    from zoneinfo import ZoneInfo
+    TEHRAN_TZ = ZoneInfo("Asia/Tehran")
+except ImportError:
+    TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))
+
+try:
+    from risk_manager import RiskManager
 except ImportError:
     class RiskManager:
-        def __init__(self, balance, risk_pct, max_pos):
-            self.balance = balance
-            self.risk_pct = risk_pct
-            self.max_pos = max_pos
-        
-        def calculate_position_size(self, entry, stop, z_score):
-            risk_amount = self.balance * (self.risk_pct / 100)
-            risk_per_unit = abs(entry - stop)
-            if risk_per_unit == 0:
-                return 0
-            return min(risk_amount / risk_per_unit * entry, self.balance * 0.1)
-        
+        def __init__(self, bal, risk, max_pos):
+            self.bal, self.risk, self.max_pos = bal, risk, max_pos
+        def calculate_position_size(self, entry, stop, z=0, liq=0):
+            ra = self.bal * (self.risk / 100)
+            ru = abs(entry - stop)
+            if ru == 0: return 0
+            s = ra / ru * entry
+            if liq > 0: s *= min(1.0, liq / 100000)
+            return min(s, self.bal * 0.15)
         def calculate_risk_reward(self, entry, stop, target):
-            risk = abs(entry - stop)
-            reward = abs(target - entry)
-            return reward / risk if risk > 0 else 0
+            r, w = abs(entry - stop), abs(target - entry)
+            return w / r if r > 0 else 0
 
 load_dotenv()
 
 # ==========================================
-# ⚙️ تنظیمات اصلی
+# ⚙️ تنظیمات
 # ==========================================
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "0"))
 ALLOWED_USERS = set(map(int, os.getenv("ALLOWED_USERS", "").split(","))) if os.getenv("ALLOWED_USERS") else {ADMIN_CHAT_ID}
-DEBUG = os.getenv("DEBUG", "false").lower() == "true"
-
-ETHERSCAN_API_KEY = os.getenv("ETHERSCAN_API_KEY", "")
-BSCSCAN_API_KEY = os.getenv("BSCSCAN_API_KEY", "")
-CRYPTOPANIC_API_KEY = os.getenv("CRYPTOPANIC_API_KEY", "")
-
 ACCOUNT_BALANCE = float(os.getenv("ACCOUNT_BALANCE", "10000"))
-RISK_PER_TRADE = float(os.getenv("RISK_PER_TRADE", "2.0"))
-MAX_POSITIONS = int(os.getenv("MAX_POSITIONS", "5"))
+RISK_PER_TRADE = float(os.getenv("RISK_PER_TRADE", "1.5"))
+MAX_POSITIONS = int(os.getenv("MAX_POSITIONS", "10"))
+SCAN_INTERVAL = 15
+CHECK_INTERVAL = 30
 
 if not TELEGRAM_TOKEN:
-    raise RuntimeError("❌ TELEGRAM_TOKEN در فایل .env تنظیم نشده!")
+    raise RuntimeError("❌ TELEGRAM_TOKEN تنظیم نشده!")
 
-SCAN_INTERVAL_MINUTES = 5
-FULL_ANALYSIS_INTERVAL_MINUTES = 30
 BASE_DIR = Path(__file__).parent
 DB_PATH = BASE_DIR / "bot.db"
 
-# ==========================================
-# 📝 تنظیمات لاگ
-# ==========================================
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        RotatingFileHandler('bot.log', maxBytes=10*1024*1024, backupCount=5),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("PumpHunter")
+logger.setLevel(logging.INFO)
+fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+sh = logging.StreamHandler(); sh.setFormatter(fmt); logger.addHandler(sh)
+fh = RotatingFileHandler('bot_audit.log', maxBytes=5*1024*1024, backupCount=3)
+fh.setFormatter(fmt); logger.addHandler(fh)
+
+TRADING_FEE = 0.001
+SLIPPAGE_DEFAULT = 0.003
+TOTAL_COST = TRADING_FEE + SLIPPAGE_DEFAULT
 
 EXCHANGES = {
     'binance': 'https://api.binance.com/api/v3',
     'binance_futures': 'https://fapi.binance.com/fapi/v1',
-    'okx': 'https://www.okx.com/api/v5',
-    'mexc': 'https://api.mexc.com/api/v3',
-    'bybit': 'https://api.bybit.com/v5'
+    'mexc': 'https://api.mexc.com/api/v3'
 }
+DEX_URL = 'https://api.dexscreener.com/latest/dex'
+CG_URL = 'https://api.coingecko.com/api/v3'
 
-COINGECKO_URL = 'https://api.coingecko.com/api/v3'
+HTTP_SEM = asyncio.Semaphore(20)
 
-COINGECKO_ID_MAP = {
+EXCLUDED = ['UP', 'DOWN', 'BULL', 'BEAR', 'LONG', 'SHORT', 'MOON']
+STABLES = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'FDUSD', 'EUR', 'GBP', 'AUD', 'BRL', 'TRY']
+
+CG_MAP = {
     'BTC': 'bitcoin', 'ETH': 'ethereum', 'BNB': 'binancecoin', 'SOL': 'solana',
     'XRP': 'ripple', 'ADA': 'cardano', 'DOGE': 'dogecoin', 'AVAX': 'avalanche-2',
     'DOT': 'polkadot', 'MATIC': 'matic-network', 'LINK': 'chainlink', 'UNI': 'uniswap',
@@ -102,565 +97,890 @@ COINGECKO_ID_MAP = {
     'ETC': 'ethereum-classic', 'NEAR': 'near', 'APT': 'aptos', 'ARB': 'arbitrum',
     'OP': 'optimism', 'SUI': 'sui', 'SEI': 'sei-network', 'TIA': 'celestia',
     'INJ': 'injective-protocol', 'FET': 'fetch-ai', 'RNDR': 'render-token',
-    'AAVE': 'aave', 'MKR': 'maker', 'SNX': 'havven', 'COMP': 'compound-governance-token',
-    'CRV': 'curve-dao-token', 'SUSHI': 'sushi', 'YFI': 'yearn-finance', 'PEPE': 'pepe',
-    'SHIB': 'shiba-inu', 'WIF': 'dogwifcoin', 'BONK': 'bonk', 'JUP': 'jupiter-exchange-solana',
-    'PYTH': 'pyth-network', 'STRK': 'starknet', 'ORDI': 'ordi', 'MANTA': 'manta-network',
-    'ACE': 'endurance', 'RONIN': 'ronin', 'GRT': 'the-graph', 'IMX': 'immutable-x'
+    'AAVE': 'aave', 'PEPE': 'pepe', 'SHIB': 'shiba-inu', 'TRX': 'tron',
+    'ICP': 'internet-computer', 'ALGO': 'algorand', 'XLM': 'stellar', 'VET': 'vechain'
 }
 
 # ==========================================
-# 🎯 سیستم Tier-Based
+# 🛡️ Rate Limiting
 # ==========================================
-def get_tier_threshold(market_cap: float) -> Dict:
-    if market_cap > 10_000_000_000:
-        return {'tier_name': 'Mega', 'z_threshold': 1.0, 'vol_mult': 1.2, 'interval': '4h', 'limit': 42, 'min_vol': 50_000_000, 'slippage': 0.001}
-    elif market_cap > 1_000_000_000:
-        return {'tier_name': 'Large', 'z_threshold': 1.2, 'vol_mult': 1.5, 'interval': '4h', 'limit': 42, 'min_vol': 10_000_000, 'slippage': 0.003}
-    elif market_cap > 100_000_000:
-        return {'tier_name': 'Mid', 'z_threshold': 1.5, 'vol_mult': 2.0, 'interval': '1h', 'limit': 168, 'min_vol': 2_000_000, 'slippage': 0.005}
-    else:
-        return {'tier_name': 'Small', 'z_threshold': 2.0, 'vol_mult': 3.0, 'interval': '1h', 'limit': 168, 'min_vol': 200_000, 'slippage': 0.01}
+_user_calls: Dict[int, float] = defaultdict(float)
 
-def estimate_market_cap(quote_volume_24h: float) -> float:
-    return quote_volume_24h * 20
+def user_rate_ok(uid: int, sec: int = 20) -> bool:
+    now = time.time()
+    if now - _user_calls[uid] < sec: return False
+    _user_calls[uid] = now
+    return True
+
+async def http_req(client: httpx.AsyncClient, method: str, url: str, **kw):
+    async with HTTP_SEM:
+        await asyncio.sleep(0.05)
+        try:
+            r = await client.request(method, url, **kw)
+            if r.status_code == 429:
+                wait = int(r.headers.get('Retry-After', 5))
+                logger.warning(f"⏳ Rate limit: {url} → wait {wait}s")
+                await asyncio.sleep(wait)
+                return await http_req(client, method, url, **kw)
+            return r
+        except httpx.TimeoutException:
+            logger.warning(f"⏳ Timeout: {url}")
+            return None
+        except Exception as e:
+            logger.error(f"❌ HTTP error {url}: {e}")
+            return None
 
 # ==========================================
-# 🕐 توابع کمکی زمان
+# 🕐 زمان
 # ==========================================
 def get_time_info() -> Dict[str, str]:
     now_utc = datetime.now(timezone.utc)
-    try:
-        iran_tz = ZoneInfo("Asia/Tehran")
-        now_iran = now_utc.astimezone(iran_tz)
-    except:
-        iran_tz = timezone(timedelta(hours=3, minutes=30))
-        now_iran = now_utc.astimezone(iran_tz)
+    now_iran = now_utc.astimezone(TEHRAN_TZ)
     now_hijri = jdatetime.datetime.fromgregorian(datetime=now_utc)
     return {
-        "iran_time": now_iran.strftime("%Y-%m-%d %H:%M"),
-        "hijri_time": now_hijri.strftime("%Y/%m/%d %H:%M"),
-        "utc_time": now_utc.strftime("%Y-%m-%d %H:%M UTC")
+        "iran": now_iran.strftime("%Y-%m-%d %H:%M"),
+        "hijri": now_hijri.strftime("%Y/%m/%d %H:%M"),
     }
 
 # ==========================================
-# ⏱️ Rate Limiting
+# 🗄️ دیتابیس
 # ==========================================
-_user_last_call: Dict[int, float] = defaultdict(float)
-def rate_limited(user_id: int, min_interval: int = 30) -> bool:
-    now = time.time()
-    if now - _user_last_call[user_id] < min_interval: return False
-    _user_last_call[user_id] = now
-    return True
-
-# ==========================================
-# 🗄️ دیتابیس SQLite
-# ==========================================
-def _init_db_sync():
+def _init_db():
     conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS positions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, coin TEXT UNIQUE, entry_price REAL, stop_loss REAL,
-        take_profit_1 REAL, take_profit_2 REAL, take_profit_3 REAL, z_score REAL, score INTEGER,
-        entry_time TEXT, status TEXT DEFAULT 'open', position_size REAL DEFAULT 0,
-        risk_reward REAL DEFAULT 0
+    c = conn.cursor()
+    c.execute("""CREATE TABLE IF NOT EXISTS positions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, coin TEXT UNIQUE, entry_price REAL,
+        stop_loss REAL, take_profit_1 REAL, take_profit_2 REAL, take_profit_3 REAL,
+        z_score REAL, score INTEGER, entry_time TEXT, status TEXT DEFAULT 'open',
+        position_size REAL DEFAULT 0, risk_reward REAL DEFAULT 0,
+        pump_type TEXT DEFAULT 'unknown', exchange TEXT DEFAULT 'unknown',
+        expected_pump TEXT DEFAULT 'N/A', tier TEXT DEFAULT 'N/A',
+        funding_rate REAL DEFAULT 0, oi_change REAL DEFAULT 0,
+        rsi REAL DEFAULT 0, macd_signal TEXT DEFAULT 'neutral'
     )""")
-    cursor.execute("PRAGMA table_info(positions)")
-    columns = [row[1] for row in cursor.fetchall()]
-    
-    migrations = {
-        'tier': "ALTER TABLE positions ADD COLUMN tier TEXT DEFAULT 'Unknown'",
+    c.execute("PRAGMA table_info(positions)")
+    cols = [r[1] for r in c.fetchall()]
+    for col, sql in {
+        'position_size': "ALTER TABLE positions ADD COLUMN position_size REAL DEFAULT 0",
+        'risk_reward': "ALTER TABLE positions ADD COLUMN risk_reward REAL DEFAULT 0",
+        'pump_type': "ALTER TABLE positions ADD COLUMN pump_type TEXT DEFAULT 'unknown'",
+        'exchange': "ALTER TABLE positions ADD COLUMN exchange TEXT DEFAULT 'unknown'",
         'expected_pump': "ALTER TABLE positions ADD COLUMN expected_pump TEXT DEFAULT 'N/A'",
+        'tier': "ALTER TABLE positions ADD COLUMN tier TEXT DEFAULT 'N/A'",
         'funding_rate': "ALTER TABLE positions ADD COLUMN funding_rate REAL DEFAULT 0",
         'oi_change': "ALTER TABLE positions ADD COLUMN oi_change REAL DEFAULT 0",
-        'supply_ratio': "ALTER TABLE positions ADD COLUMN supply_ratio REAL DEFAULT 0",
-        'top_holders_pct': "ALTER TABLE positions ADD COLUMN top_holders_pct REAL DEFAULT 0",
-        'news_sentiment': "ALTER TABLE positions ADD COLUMN news_sentiment TEXT DEFAULT 'neutral'",
-        'position_size': "ALTER TABLE positions ADD COLUMN position_size REAL DEFAULT 0",
-        'risk_reward': "ALTER TABLE positions ADD COLUMN risk_reward REAL DEFAULT 0"
-    }
-    for col, sql in migrations.items():
-        if col not in columns:
-            try:
-                cursor.execute(sql)
-                conn.commit()
-            except Exception as e:
-                logger.warning(f"Migration error for {col}: {e}")
+        'rsi': "ALTER TABLE positions ADD COLUMN rsi REAL DEFAULT 0",
+        'macd_signal': "ALTER TABLE positions ADD COLUMN macd_signal TEXT DEFAULT 'neutral'"
+    }.items():
+        if col not in cols:
+            try: c.execute(sql); conn.commit()
+            except: pass
     conn.close()
 
-def _save_position_sync(**kwargs):
+def _save_pos(**kw):
     conn = sqlite3.connect(DB_PATH)
-    columns = ', '.join(kwargs.keys())
-    placeholders = ', '.join(['?' for _ in kwargs])
-    values = tuple(kwargs.values())
-    conn.execute(f"INSERT OR REPLACE INTO positions ({columns}, status) VALUES ({placeholders}, 'open')", values)
-    conn.commit()
-    conn.close()
+    cols = ', '.join(kw.keys())
+    ph = ', '.join(['?'] * len(kw))
+    conn.execute(f"INSERT OR REPLACE INTO positions ({cols}, status) VALUES ({ph}, 'open')",
+                 tuple(kw.values()))
+    conn.commit(); conn.close()
 
-async def save_position(**kwargs):
-    await asyncio.to_thread(_save_position_sync, **kwargs)
+async def save_position(**kw):
+    await asyncio.to_thread(_save_pos, **kw)
 
-def _get_active_positions_sync() -> List[Dict]:
+def _get_positions():
+    conn = sqlite3.connect(DB_PATH); conn.row_factory = sqlite3.Row
+    p = [dict(r) for r in conn.execute("SELECT * FROM positions WHERE status='open'")]
+    conn.close(); return p
+
+async def get_active_positions():
+    return await asyncio.to_thread(_get_positions)
+
+def _upd_status(coin, status):
     conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    positions = [dict(row) for row in conn.execute("SELECT * FROM positions WHERE status = 'open'")]
-    conn.close()
-    return positions
+    conn.execute("UPDATE positions SET status=? WHERE coin=?", (status, coin))
+    conn.commit(); conn.close()
 
-async def get_active_positions() -> List[Dict]:
-    return await asyncio.to_thread(_get_active_positions_sync)
-
-def _update_position_status_sync(coin: str, status: str):
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute("UPDATE positions SET status = ? WHERE coin = ?", (status, coin))
-    conn.commit()
-    conn.close()
-
-async def update_position_status(coin: str, status: str):
-    await asyncio.to_thread(_update_position_status_sync, coin, status)
+async def update_position_status(c, s):
+    await asyncio.to_thread(_upd_status, c, s)
 
 # ==========================================
-# 🔍 جستجوی شبکه‌های اجتماعی
+# 📊 دریافت قیمت CEX
 # ==========================================
-def search_social_sentiment(coin_name: str) -> List[Dict]:
-    influencers = []
-    try:
-        from ddgs import DDGS
-        with DDGS() as ddgs:
-            for q in [f"{coin_name} crypto site:x.com OR site:twitter.com", f"{coin_name} crypto site:t.me"]:
-                try:
-                    for r in list(ddgs.text(q, max_results=5)):
-                        title, body, href = r.get('title', ''), r.get('body', ''), r.get('href', '')
-                        if coin_name.lower() in (title + body).lower():
-                            username = "ناشناس"
-                            if 'x.com/' in href or 'twitter.com/' in href:
-                                m = re.search(r'(?:x\.com|twitter\.com)/(\w+)', href)
-                                if m: username = m.group(1)
-                            elif 't.me/' in href:
-                                m = re.search(r't\.me/(\w+)', href)
-                                if m: username = m.group(1)
-                            if username not in [inf['username'] for inf in influencers]:
-                                platform = "توییتر" if 'x.com' in href or 'twitter.com' in href else "تلگرام"
-                                influencers.append({"username": username, "platform": platform, "comment": (body or title)[:100], "link": href})
-                except Exception as e:
-                    if DEBUG: logger.debug(f"Search error: {e}")
-    except Exception as e:
-        if DEBUG: logger.debug(f"DDGS error: {e}")
-    return influencers
+async def get_cex_price(symbol: str, client: httpx.AsyncClient) -> Dict:
+    s = symbol + 'USDT'; r = {}
+    for name, base in [('binance', EXCHANGES['binance']), ('mexc', EXCHANGES['mexc'])]:
+        try:
+            resp = await http_req(client, "GET", f"{base}/ticker/24hr?symbol={s}")
+            if not resp or resp.status_code != 200: continue
+            d = resp.json()
+            r[name] = {'price': float(d['lastPrice']),
+                       'change': float(d['priceChangePercent']),
+                       'volume': float(d['quoteVolume'])}
+        except: pass
+    return r
 
 # ==========================================
-# 📰 تحلیل اخبار
+# 🦄 DEX Coverage بهبودیافته
 # ==========================================
-async def get_news_sentiment(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
-    if not CRYPTOPANIC_API_KEY:
-        return None
+async def get_dex_hot_coins() -> List[Dict]:
+    """دریافت کوین‌های داغ از چندین منبع DEX"""
+    dex_coins = []
+    seen_symbols = set()
     
+    endpoints = [
+        ('search?q=pump', 'pump'),
+        ('search?q=trending', 'trending'),
+        ('search?q=new', 'new'),
+        ('search?q=gainer', 'gainer'),
+    ]
+    
+    for endpoint, source in endpoints:
+        try:
+            async with httpx.AsyncClient(timeout=30) as cl:
+                r = await http_req(cl, "GET", f"{DEX_URL}/{endpoint}")
+                if not r or r.status_code != 200: continue
+                
+                pairs = r.json().get('pairs', [])
+                for p in pairs[:100]:
+                    sym = p.get('baseToken', {}).get('symbol', '')
+                    if not sym or sym in seen_symbols: continue
+                    
+                    vol = float(p.get('volume', {}).get('h24', 0) or 0)
+                    chg = float(p.get('priceChange', {}).get('h24', 0) or 0)
+                    liq = float(p.get('liquidity', {}).get('usd', 0) or 0)
+                    mc = float(p.get('marketCap', 0) or 0)
+                    
+                    if vol < 1000: continue
+                    if liq < 1000: continue
+                    if any(sym.endswith(e) for e in EXCLUDED): continue
+                    if sym in STABLES: continue
+                    
+                    seen_symbols.add(sym)
+                    dex_coins.append({
+                        'symbol': sym,
+                        'volume': vol,
+                        'change': chg,
+                        'liquidity': liq,
+                        'market_cap': mc,
+                        'src': 'DEX',
+                        'dex': p.get('dexId', '?'),
+                        'chain': p.get('chainId', '?')
+                    })
+        except Exception as e:
+            logger.warning(f"DEX endpoint {source} error: {e}")
+            continue
+    
+    dex_coins.sort(key=lambda x: x['volume'], reverse=True)
+    return dex_coins[:500]
+
+async def get_dex_data(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
     try:
-        url = f"https://cryptopanic.com/api/v1/posts/?auth_token={CRYPTOPANIC_API_KEY}&currencies={symbol}&kind=news&filter=important"
-        response = await client.get(url, timeout=10)
-        if response.status_code != 200:
-            return None
-        
-        data = response.json()
-        results = data.get('results', [])
-        
-        if not results:
-            return {'sentiment': 'neutral', 'score': 0, 'news_count': 0}
-        
-        positive_votes = sum(r.get('votes', {}).get('positive', 0) for r in results[:10])
-        negative_votes = sum(r.get('votes', {}).get('negative', 0) for r in results[:10])
-        
-        total_votes = positive_votes + negative_votes
-        if total_votes == 0:
-            return {'sentiment': 'neutral', 'score': 0, 'news_count': len(results)}
-        
-        sentiment_score = (positive_votes - negative_votes) / total_votes
-        
-        if sentiment_score > 0.3:
-            sentiment = 'bullish'
-        elif sentiment_score < -0.3:
-            sentiment = 'bearish'
-        else:
-            sentiment = 'neutral'
-        
+        resp = await http_req(client, "GET", f"{DEX_URL}/search?q={symbol}")
+        if not resp or resp.status_code != 200: return None
+        pairs = resp.json().get('pairs', [])
+        su = symbol.upper()
+        fp = [p for p in pairs
+              if p.get('baseToken', {}).get('symbol', '').upper() == su
+              and p.get('quoteToken', {}).get('symbol', '').upper() in ['USDT','USDC','WETH','WBNB','SOL']]
+        if not fp: return None
+        fp.sort(key=lambda x: float(x.get('volume',{}).get('h24',0) or 0), reverse=True)
+        b = fp[0]
+        liq = float(b.get('liquidity',{}).get('usd',0) or 0)
+        if liq < 1000: return None
         return {
-            'sentiment': sentiment,
-            'score': round(sentiment_score, 2),
-            'news_count': len(results),
-            'positive_votes': positive_votes,
-            'negative_votes': negative_votes
+            'dex': b.get('dexId','?'),
+            'price': float(b.get('priceUsd',0) or 0),
+            'volume_24h': float(b.get('volume',{}).get('h24',0) or 0),
+            'liquidity': liq,
+            'change_24h': float(b.get('priceChange',{}).get('h24',0) or 0)
         }
     except Exception as e:
-        logger.error(f"News sentiment error: {e}")
+        logger.error(f"DEX error {symbol}: {e}")
         return None
 
 # ==========================================
-# 📊 دریافت قیمت از صرافی‌ها
+# 📈 دریافت کندل
 # ==========================================
-async def get_price_from_exchanges_async(symbol: str, client: httpx.AsyncClient) -> Dict:
-    symbol_usdt = symbol + 'USDT'
-    results = {}
-    tasks = [
-        ('binance', client.get(f"{EXCHANGES['binance']}/ticker/24hr?symbol={symbol_usdt}")),
-        ('okx', client.get(f"{EXCHANGES['okx']}/market/ticker?instId={symbol}-USDT")),
-        ('mexc', client.get(f"{EXCHANGES['mexc']}/ticker/24hr?symbol={symbol_usdt}")),
-        ('bybit', client.get(f"{EXCHANGES['bybit']}/market/tickers?category=spot&symbol={symbol_usdt}"))
-    ]
-    responses = await asyncio.gather(*[t[1] for t in tasks], return_exceptions=True)
+async def get_klines(symbol: str, client: httpx.AsyncClient,
+                     interval: str = '1h', limit: int = 168) -> Optional[List]:
+    try:
+        r = await http_req(client, "GET",
+            f"{EXCHANGES['binance']}/klines?symbol={symbol}USDT&interval={interval}&limit={limit}")
+        if r and r.status_code == 200:
+            data = r.json()
+            if len(data) >= 20:
+                return [{'close': float(k[4]), 'high': float(k[2]),
+                         'low': float(k[3]), 'vol': float(k[7])} for k in data]
+    except: pass
+    try:
+        r = await http_req(client, "GET",
+            f"{EXCHANGES['mexc']}/klines?symbol={symbol}USDT&interval={interval}&limit={limit}")
+        if r and r.status_code == 200:
+            data = r.json().get('data', [])
+            if len(data) >= 20:
+                return [{'close': float(k.get('close',0)), 'high': float(k.get('high',0)),
+                         'low': float(k.get('low',0)), 'vol': float(k.get('vol',0))} for k in data]
+    except: pass
+    return None
 
-    for (name, _), response in zip(tasks, responses):
-        try:
-            if isinstance(response, Exception) or response.status_code != 200: continue
-            data = response.json()
-            if name == 'binance':
-                results['binance'] = {'price': float(data['lastPrice']), 'change': float(data['priceChangePercent']), 'volume': float(data['quoteVolume'])}
-            elif name == 'okx' and data.get('data'):
-                d = data['data'][0]
-                last, open24h = float(d['last']), float(d['open24h'])
-                results['okx'] = {'price': last, 'change': ((last - open24h) / open24h) * 100 if open24h > 0 else 0, 'volume': float(d['volCcy24h']) * last}
-            elif name == 'mexc':
-                results['mexc'] = {'price': float(data['lastPrice']), 'change': float(data['priceChangePercent']), 'volume': float(data['quoteVolume'])}
-            elif name == 'bybit' and data.get('result', {}).get('list'):
-                d = data['result']['list'][0]
-                results['bybit'] = {'price': float(d['lastPrice']), 'change': float(d['price24hPcnt']) * 100, 'volume': float(d['turnover24h'])}
-        except Exception: continue
+# ==========================================
+# 📊 Z-Score
+# ==========================================
+async def calc_z_scores(symbol: str, client: httpx.AsyncClient) -> Dict[str, Tuple[float, float]]:
+    results = {}
+    for iv, lim in [('1h', 168), ('4h', 42), ('1d', 14)]:
+        klines = await get_klines(symbol, client, iv, lim)
+        if not klines or len(klines) < 20:
+            results[iv] = (0.0, 0.0); continue
+        vols = np.array([k['vol'] for k in klines[:-1]])
+        cur = klines[-1]['vol']
+        m, s = vols.mean(), vols.std(ddof=1)
+        if s == 0:
+            results[iv] = (0.0, 0.0); continue
+        results[iv] = (float((cur - m) / s), float(cur / m if m > 0 else 0))
     return results
 
 # ==========================================
-# 📈 محاسبه Z-Score هوشمند
+# 📉 اندیکاتورها
 # ==========================================
-async def calculate_volume_z_score_smart(symbol: str, client: httpx.AsyncClient, market_cap: float = 0) -> Tuple[float, float, str, str]:
-    threshold = get_tier_threshold(market_cap)
-    interval = threshold['interval']
-    limit = threshold['limit']
-    
-    try:
-        response = await client.get(f"{EXCHANGES['binance']}/klines?symbol={symbol}USDT&interval={interval}&limit={limit}")
-        if response.status_code == 200:
-            data = response.json()
-            min_candles = 20 if interval == '4h' else 24
-            if len(data) >= min_candles:
-                volumes = np.array([float(k[7]) for k in data[:-1]])
-                if len(volumes) >= min_candles:
-                    current = float(data[-1][7])
-                    mean, std = volumes.mean(), volumes.std(ddof=1)
-                    if std > 0:
-                        z = (current - mean) / std
-                        mult = current / mean if mean > 0 else 0.0
-                        return float(z), float(mult), interval, threshold['tier_name']
-    except:
-        pass
-    
-    try:
-        response = await client.get(f"{EXCHANGES['mexc']}/klines?symbol={symbol}USDT&interval={interval}&limit={limit}")
-        if response.status_code == 200:
-            data = response.json()
-            if data.get('data') and len(data['data']) >= 20:
-                volumes = np.array([float(k.get('vol', 0)) for k in data['data'][:-1]])
-                if len(volumes) >= 20:
-                    current = float(data['data'][-1].get('vol', 0))
-                    mean, std = volumes.mean(), volumes.std(ddof=1)
-                    if std > 0:
-                        z = (current - mean) / std
-                        mult = current / mean if mean > 0 else 0.0
-                        return float(z), float(mult), interval, threshold['tier_name']
-    except:
-        pass
-    
-    return 0.0, 0.0, interval, threshold['tier_name']
+def calc_rsi_array(prices: List[float], period: int = 14) -> List[float]:
+    if len(prices) < period + 1:
+        return [50.0] * len(prices)
+    deltas = np.diff(prices)
+    gains = np.where(deltas > 0, deltas, 0)
+    losses = np.where(deltas < 0, -deltas, 0)
+    rsi_vals = [50.0] * period
+    ag = np.mean(gains[:period])
+    al = np.mean(losses[:period])
+    for i in range(period, len(deltas)):
+        ag = (ag * (period - 1) + gains[i]) / period
+        al = (al * (period - 1) + losses[i]) / period
+        rs = ag / al if al != 0 else 100
+        rsi_vals.append(100 - (100 / (1 + rs)))
+    return rsi_vals
+
+def calc_rsi_val(prices: List[float], period: int = 14) -> float:
+    arr = calc_rsi_array(prices, period)
+    return arr[-1] if arr else 50.0
+
+def calc_macd(prices: List[float]) -> Dict:
+    if len(prices) < 35:
+        return {'macd': 0, 'signal': 0, 'hist': 0, 'cross': 'none'}
+    s = pd.Series(prices)
+    e12 = s.ewm(span=12, adjust=False).mean()
+    e26 = s.ewm(span=26, adjust=False).mean()
+    ml = e12 - e26
+    sl = ml.ewm(span=9, adjust=False).mean()
+    cross = 'none'
+    if ml.iloc[-1] > sl.iloc[-1] and ml.iloc[-2] <= sl.iloc[-2]: cross = 'bullish_cross'
+    elif ml.iloc[-1] < sl.iloc[-1] and ml.iloc[-2] >= sl.iloc[-2]: cross = 'bearish_cross'
+    elif ml.iloc[-1] > sl.iloc[-1]: cross = 'bullish'
+    else: cross = 'bearish'
+    return {'macd': ml.iloc[-1], 'signal': sl.iloc[-1],
+            'hist': ml.iloc[-1] - sl.iloc[-1], 'cross': cross}
+
+def calc_bollinger(prices: List[float], period=20, std_dev=2) -> Dict:
+    if len(prices) < period:
+        return {'upper': 0, 'middle': 0, 'lower': 0}
+    s = pd.Series(prices).tail(period)
+    m = s.mean(); sd = s.std()
+    return {'upper': m + sd * std_dev, 'middle': m, 'lower': m - sd * std_dev}
 
 # ==========================================
-# 📐 محاسبه ATR
+# 📐 ATR
 # ==========================================
-async def get_atr_async(symbol: str, client: httpx.AsyncClient, period: int = 14) -> Optional[float]:
-    try:
-        response = await client.get(f"{EXCHANGES['binance']}/klines?symbol={symbol}USDT&interval=1h&limit={period+2}")
-        if response.status_code != 200: return None
-        data = response.json()
-        if len(data) < period + 2: return None
-        data = data[:-1]
-        trs = [max(float(data[i][2]) - float(data[i][3]), abs(float(data[i][2]) - float(data[i-1][4])), abs(float(data[i][3]) - float(data[i-1][4]))) for i in range(1, len(data))]
-        return float(np.mean(trs)) if trs else None
-    except Exception: return None
+async def get_atr(symbol: str, client: httpx.AsyncClient, period: int = 14) -> Optional[float]:
+    klines = await get_klines(symbol, client, '1h', period + 2)
+    if not klines or len(klines) < period + 1: return None
+    data = klines[:-1]
+    trs = [max(d['high']-d['low'],
+               abs(d['high']-data[i-1]['close']),
+               abs(d['low']-data[i-1]['close']))
+           for i, d in enumerate(data[1:], 1)]
+    return float(np.mean(trs)) if trs else None
 
 # ==========================================
-# 😱 حس بازار
+# 🔍 تشخیص الگوها
 # ==========================================
-async def get_market_sentiment_async(client: httpx.AsyncClient) -> Optional[Dict]:
+def detect_accumulation(closes: List[float], atr: Optional[float], avg_price: float) -> bool:
+    if len(closes) < 10 or not atr or avg_price == 0: return False
+    recent = closes[-10:]
+    rng = (max(recent) - min(recent)) / avg_price
+    return rng < 0.02 and (atr / avg_price) < 0.015
+
+def detect_divergence(closes: List[float], rsi_arr: List[float]) -> str:
+    if len(closes) < 20 or len(rsi_arr) < 20: return 'none'
+    rp, rr = closes[-20:], rsi_arr[-20:]
+    peaks_p, peaks_r = [], []
+    for i in range(2, len(rp) - 2):
+        if rp[i] > rp[i-1] and rp[i] > rp[i-2] and rp[i] > rp[i+1] and rp[i] > rp[i+2]:
+            peaks_p.append(rp[i]); peaks_r.append(rr[i])
+    if len(peaks_p) >= 2:
+        if peaks_p[-1] > peaks_p[-2] and peaks_r[-1] < peaks_r[-2]:
+            return 'bearish'
+    return 'none'
+
+def detect_price_acceleration(closes: List[float]) -> bool:
+    if len(closes) < 4: return False
+    r1 = (closes[-1] / closes[-2] - 1) * 100 if closes[-2] > 0 else 0
+    r3 = (closes[-1] / closes[-4] - 1) * 100 if closes[-4] > 0 else 0
+    return r1 > 10 or r3 > 15
+
+def detect_whale_dist(vol_24h: float, change: float, tier: str) -> bool:
+    min_v = {'Mega': 100_000_000, 'Large': 20_000_000, 'Mid': 5_000_000, 'Small': 500_000}.get(tier, 1_000_000)
+    return vol_24h > min_v * 3 and -5 <= change <= 2
+
+def detect_stop_hunt(closes: List[float], cur_price: float) -> bool:
+    if len(closes) < 5: return False
+    low5 = min(closes[-5:])
+    return cur_price > low5 and closes[-2] <= low5
+
+def check_btc_corr(alt_chg: float, btc_chg: float) -> str:
+    if btc_chg < -2 and alt_chg > 5: return 'suspicious'
+    return 'normal'
+
+async def get_orderbook_imbalance(symbol: str, client: httpx.AsyncClient) -> Tuple[float, str]:
     try:
-        response = await client.get("https://api.alternative.me/fng/?limit=1")
-        if response.status_code != 200: return None
-        data = response.json()
-        if not data or not data.get('data'): return None
-        value = int(data['data'][0]['value'])
-        if value <= 25: emoji, status = "😱", "ترس شدید"
-        elif value <= 45: emoji, status = "😨", "ترس"
-        elif value <= 55: emoji, status = "😐", "خنثی"
-        elif value <= 75: emoji, status = "😊", "طمع"
-        else: emoji, status = "🤑", "طمع شدید"
-        return {'value': value, 'emoji': emoji, 'status': status, 'signal': 'risk_on' if value > 50 else 'risk_off'}
-    except Exception: return None
+        r = await http_req(client, "GET",
+            f"{EXCHANGES['binance']}/depth?symbol={symbol}USDT&limit=20")
+        if not r or r.status_code != 200: return 0.0, "⚪ نامشخص"
+        d = r.json()
+        bids = sum(float(b[1]) for b in d.get('bids', []))
+        asks = sum(float(a[1]) for a in d.get('asks', []))
+        if bids + asks == 0: return 0.0, "⚪ خالی"
+        imb = (bids - asks) / (bids + asks)
+        if imb > 0.3: st = "🟢 فشار خرید"
+        elif imb < -0.3: st = "🔴 فشار فروش"
+        else: st = "⚪ متعادل"
+        return imb, st
+    except:
+        return 0.0, "⚪ خطا"
 
 # ==========================================
 # 📊 داده‌های مشتقات
 # ==========================================
-async def get_funding_rate_async(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
+async def get_funding(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
     try:
-        response = await client.get(f"{EXCHANGES['binance_futures']}/fundingRate?symbol={symbol}USDT&limit=10")
-        if response.status_code != 200: return None
-        data = response.json()
-        if not data: return None
-        latest = data[-1]
-        funding_rate = float(latest['fundingRate'])
-        avg_funding = np.mean([float(d['fundingRate']) for d in data])
-        return {'current': funding_rate, 'average': avg_funding, 'signal': 'bullish' if funding_rate < 0 else 'bearish' if funding_rate > 0.01 else 'neutral'}
-    except Exception: return None
+        r = await http_req(client, "GET",
+            f"{EXCHANGES['binance_futures']}/fundingRate?symbol={symbol}USDT&limit=10")
+        if not r or r.status_code != 200: return None
+        d = r.json()
+        if not d: return None
+        cur = float(d[-1]['fundingRate'])
+        avg = float(np.mean([float(x['fundingRate']) for x in d]))
+        sig = 'bullish' if cur < 0 else ('bearish' if cur > 0.01 else 'neutral')
+        return {'current': cur, 'average': avg, 'signal': sig}
+    except: return None
 
-async def get_open_interest_async(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
+async def get_oi_change(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
     try:
-        response = await client.get(f"{EXCHANGES['binance_futures']}/openInterest?symbol={symbol}USDT")
-        if response.status_code != 200: return None
-        current_oi = float(response.json()['openInterest'])
-        oi_change = 0
-        response2 = await client.get(f"{EXCHANGES['binance_futures']}/openInterestHist?symbol={symbol}USDT&period=1h&limit=24")
-        if response2.status_code == 200:
-            hist_data = response2.json()
-            if len(hist_data) >= 2:
-                oi_24h_ago = float(hist_data[0]['sumOpenInterest'])
-                oi_change = ((current_oi - oi_24h_ago) / oi_24h_ago * 100) if oi_24h_ago > 0 else 0
-        signal = 'bullish' if oi_change > 10 else 'bearish' if oi_change < -10 else 'neutral'
-        return {'current': current_oi, 'change_24h': oi_change, 'signal': signal}
-    except Exception: return None
+        r1 = await http_req(client, "GET",
+            f"{EXCHANGES['binance_futures']}/openInterest?symbol={symbol}USDT")
+        if not r1 or r1.status_code != 200: return None
+        cur_oi = float(r1.json()['openInterest'])
+        r2 = await http_req(client, "GET",
+            f"{EXCHANGES['binance_futures']}/openInterestHist?symbol={symbol}USDT&period=1h&limit=24")
+        chg = 0
+        if r2 and r2.status_code == 200:
+            h = r2.json()
+            if len(h) >= 2:
+                old = float(h[0]['sumOpenInterest'])
+                chg = ((cur_oi - old) / old * 100) if old > 0 else 0
+        sig = 'bullish' if chg > 10 else ('bearish' if chg < -10 else 'neutral')
+        return {'change_24h': chg, 'signal': sig}
+    except: return None
 
 # ==========================================
-# 💰 Supply Data
+# 😱 حس بازار + CoinGecko
 # ==========================================
-async def get_supply_data_async(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
+async def get_market_sentiment(client: httpx.AsyncClient) -> Optional[Dict]:
     try:
-        coin_id = COINGECKO_ID_MAP.get(symbol, symbol.lower())
-        if coin_id == symbol.lower():
-            search_response = await client.get(f"{COINGECKO_URL}/search?query={symbol}")
-            if search_response.status_code == 200:
-                search_data = search_response.json()
-                coins = search_data.get('coins', [])
-                if coins:
-                    coin_id = coins[0]['id']
-        response = await client.get(f"{COINGECKO_URL}/coins/{coin_id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false")
-        if response.status_code != 200: return None
-        data = response.json()
-        market_data = data.get('market_data', {})
-        circulating = market_data.get('circulating_supply', 0)
-        total = market_data.get('total_supply', 0)
-        max_supply = market_data.get('max_supply', 0)
-        supply_ratio = (circulating / total) if (circulating > 0 and total > 0) else 1.0
-        return {'circulating': circulating, 'total': total, 'max': max_supply, 'ratio': supply_ratio, 'low_float': supply_ratio < 0.5}
-    except Exception: return None
+        r = await http_req(client, "GET", "https://api.alternative.me/fng/?limit=1")
+        if not r or r.status_code != 200: return None
+        d = r.json()
+        if not d or not d.get('data'): return None
+        v = int(d['data'][0]['value'])
+        if v <= 25: e, s = "😱", "ترس شدید"
+        elif v <= 45: e, s = "😨", "ترس"
+        elif v <= 55: e, s = "😐", "خنثی"
+        elif v <= 75: e, s = "😊", "طمع"
+        else: e, s = "🤑", "طمع شدید"
+        return {'value': v, 'emoji': e, 'status': s}
+    except: return None
+
+async def get_cg_id(symbol: str, client: httpx.AsyncClient) -> Optional[str]:
+    if symbol in CG_MAP: return CG_MAP[symbol]
+    try:
+        r = await http_req(client, "GET", f"{CG_URL}/search?query={symbol}")
+        if r and r.status_code == 200:
+            for c in r.json().get('coins', []):
+                if c.get('symbol','').upper() == symbol:
+                    return c.get('id')
+    except: pass
+    return None
+
+async def get_market_cap(symbol: str, client: httpx.AsyncClient) -> Optional[float]:
+    try:
+        cid = await get_cg_id(symbol, client)
+        if not cid: return None
+        r = await http_req(client, "GET",
+            f"{CG_URL}/coins/{cid}?localization=false&tickers=false&market_data=true")
+        if r and r.status_code == 200:
+            return r.json().get('market_data',{}).get('market_cap',{}).get('usd')
+    except: pass
+    return None
+
+async def get_supply(symbol: str, client: httpx.AsyncClient) -> Optional[Dict]:
+    try:
+        cid = await get_cg_id(symbol, client)
+        if not cid: return None
+        r = await http_req(client, "GET",
+            f"{CG_URL}/coins/{cid}?localization=false&tickers=false&market_data=true")
+        if not r or r.status_code != 200: return None
+        md = r.json().get('market_data', {})
+        circ = md.get('circulating_supply', 0) or 0
+        total = md.get('total_supply', 0) or 0
+        ratio = (circ / total) if (circ > 0 and total > 0) else 1.0
+        return {'circulating': circ, 'total': total,
+                'max': md.get('max_supply', 0) or 0,
+                'ratio': ratio, 'low_float': ratio < 0.5}
+    except: return None
 
 # ==========================================
-# 📊 پیش‌بینی درصد پامپ
+# 🔍 جستجوی اجتماعی
 # ==========================================
-def predict_pump_percentage(z_score: float, vol_mult: float, atr_ratio: float, tier_name: str, 
-                            funding_rate: float = 0, oi_change: float = 0, news_sentiment: str = 'neutral') -> Dict:
-    z_weight, mult_weight, atr_weight = 8, 5, 15
-    base_prediction = (z_score * z_weight) + (vol_mult * mult_weight) + (atr_ratio * 100 * atr_weight)
-    
-    tier_multiplier = {'Mega': 0.5, 'Large': 0.7, 'Mid': 1.0, 'Small': 1.5}.get(tier_name, 1.0)
-    adjusted_prediction = base_prediction * tier_multiplier
-    
-    if funding_rate < -0.01: adjusted_prediction *= 1.2
-    elif funding_rate > 0.05: adjusted_prediction *= 0.8
-    
-    if oi_change > 20: adjusted_prediction *= 1.15
-    if news_sentiment == 'bullish': adjusted_prediction *= 1.15
-    elif news_sentiment == 'bearish': adjusted_prediction *= 0.85
-    
-    min_pump = max(5, adjusted_prediction * 0.5)
-    likely_pump = adjusted_prediction
-    max_pump = min(300, adjusted_prediction * 2.0)
-    
-    confidence = "بالا" if (z_score >= 2.5 and vol_mult >= 3.0) else ("متوسط" if (z_score >= 1.5 and vol_mult >= 2.0) else "پایین")
-    
-    return {'min': round(min_pump, 1), 'likely': round(likely_pump, 1), 'max': round(max_pump, 1), 'confidence': confidence}
+def search_social(coin: str) -> List[Dict]:
+    res = []
+    try:
+        from ddgs import DDGS
+        with DDGS() as d:
+            for q in [f"{coin} crypto site:x.com", f"{coin} crypto site:t.me"]:
+                try:
+                    for r in list(d.text(q, max_results=5)):
+                        t, b, h = r.get('title',''), r.get('body',''), r.get('href','')
+                        if coin.lower() in (t+b).lower():
+                            u = "?"
+                            if 'x.com/' in h or 'twitter.com/' in h:
+                                m = re.search(r'(?:x\.com|twitter\.com)/(\w+)', h)
+                                if m: u = m.group(1)
+                            elif 't.me/' in h:
+                                m = re.search(r't\.me/(\w+)', h)
+                                if m: u = m.group(1)
+                            if u not in [x['username'] for x in res]:
+                                p = "توییتر" if 'x.com' in h or 'twitter.com' in h else "تلگرام"
+                                res.append({"username": u, "platform": p,
+                                           "comment": (b or t)[:100], "link": h})
+                except: pass
+    except: pass
+    return res
 
 # ==========================================
-# 🎯 تحلیل کامل یک کوین
+# 🎯 Tier + امتیازدهی
 # ==========================================
-async def analyze_coin_full_async(symbol_raw: str) -> Tuple[str, Optional[Dict]]:
-    symbol = symbol_raw.upper().strip()
-    if symbol.endswith('USDT'): symbol = symbol[:-4]
-    time_info = get_time_info()
-
-    async with httpx.AsyncClient(timeout=10) as client:
-        exchange_data, sentiment, atr, social_results, funding_data, oi_data, supply_data, news_data = await asyncio.gather(
-            get_price_from_exchanges_async(symbol, client),
-            get_market_sentiment_async(client),
-            get_atr_async(symbol, client),
-            asyncio.to_thread(search_social_sentiment, symbol),
-            get_funding_rate_async(symbol, client),
-            get_open_interest_async(symbol, client),
-            get_supply_data_async(symbol, client),
-            get_news_sentiment(symbol, client)
-        )
-    
-    if not exchange_data:
-        return f"❌ کوین {escape(symbol)} در هیچ صرافی یافت نشد", None
-
-    total_vol = sum(ex['volume'] for ex in exchange_data.values())
-    avg_price = sum(ex['price'] * ex['volume'] for ex in exchange_data.values()) / total_vol if total_vol > 0 else np.mean([ex['price'] for ex in exchange_data.values()])
-    avg_change = np.mean([ex['change'] for ex in exchange_data.values()])
-
-    estimated_mc = estimate_market_cap(total_vol)
-    z_score, vol_mult, interval_used, tier_name = await calculate_volume_z_score_smart(symbol, client, estimated_mc)
-    threshold = get_tier_threshold(estimated_mc)
-    atr_ratio = (atr / avg_price) if atr and avg_price > 0 else 0.02
-
-    funding_rate = funding_data['current'] if funding_data else 0
-    oi_change = oi_data['change_24h'] if oi_data else 0
-    supply_ratio = supply_data['ratio'] if supply_data else 1.0
-    news_sentiment = news_data['sentiment'] if news_data else 'neutral'
-
-    pump_prediction = predict_pump_percentage(z_score, vol_mult, atr_ratio, tier_name, funding_rate, oi_change, news_sentiment)
-    expected_pump_text = f"{pump_prediction['min']}% - {pump_prediction['likely']}% - {pump_prediction['max']}%"
-
-    slippage = threshold['slippage']
-    if atr and atr > 0:
-        stop_loss = avg_price - 2*atr
-        tp1 = avg_price + 1.5*atr
-        tp2 = avg_price + 3*atr
-        tp3 = avg_price + 5*atr
+def get_tier(mc: float) -> Dict:
+    if mc > 10e9:
+        return {'name': 'Mega', 'z': 1.0, 'mult': 1.2, 'iv': '4h', 'lim': 42,
+                'min_vol': 50e6, 'slip': 0.001}
+    elif mc > 1e9:
+        return {'name': 'Large', 'z': 1.2, 'mult': 1.5, 'iv': '4h', 'lim': 42,
+                'min_vol': 10e6, 'slip': 0.002}
+    elif mc > 100e6:
+        return {'name': 'Mid', 'z': 1.5, 'mult': 2.0, 'iv': '1h', 'lim': 168,
+                'min_vol': 2e6, 'slip': 0.005}
     else:
-        stop_loss = avg_price * (1 - 0.15 - slippage)
-        tp1 = avg_price * 1.20
-        tp2 = avg_price * 1.40
-        tp3 = avg_price * 1.60
+        return {'name': 'Small', 'z': 2.0, 'mult': 3.0, 'iv': '1h', 'lim': 168,
+                'min_vol': 200e3, 'slip': 0.01}
 
-    risk_manager = RiskManager(ACCOUNT_BALANCE, RISK_PER_TRADE, MAX_POSITIONS)
-    position_size = risk_manager.calculate_position_size(avg_price, stop_loss, z_score)
-    risk_reward = risk_manager.calculate_risk_reward(avg_price, stop_loss, tp3)
+def estimate_mc(vol: float) -> float:
+    return vol * 20
 
-    score = 0
-    z_threshold = threshold['z_threshold']
-    if z_score >= z_threshold + 0.5: score += 20
-    elif z_score >= z_threshold: score += 15
-    elif z_score >= z_threshold - 0.3: score += 10
-    if -10 <= avg_change <= 30: score += 10
-    if total_vol > threshold['min_vol']: score += 10
-    if sentiment and sentiment['value'] > 50: score += 5
-    
-    if funding_data:
-        if funding_data['current'] < -0.01: score += 10
-        elif funding_data['current'] < 0.01: score += 7
-        elif funding_data['current'] < 0.05: score += 3
-    if oi_data:
-        if oi_data['change_24h'] > 20: score += 10
-        elif oi_data['change_24h'] > 10: score += 7
-        elif oi_data['change_24h'] > 0: score += 3
-    if supply_data:
-        if supply_data['low_float']: score += 8
-        elif supply_ratio < 0.7: score += 5
-        elif supply_ratio < 0.9: score += 3
-    
-    if news_data:
-        if news_data['sentiment'] == 'bullish': score += 10
-        elif news_data['sentiment'] == 'bearish': score -= 5
+def score_coin(z_scores, change, vol, fr, oi, rsi, macd_cross, liq, tier_name,
+               accum, divg, stop_h, price_acc, whale_d, ob_imb, btc_corr):
+    s = 0
+    z4 = z_scores.get('4h', (0,0))[0]
+    z1 = z_scores.get('1h', (0,0))[0]
+    m4 = z_scores.get('4h', (0,0))[1]
 
-    if z_score >= z_threshold and -10 <= avg_change <= 30: status = "🟢 سیگنال قوی Pre-Pump"
-    elif z_score >= z_threshold - 0.3: status = "🟡 سیگنال متوسط"
-    elif avg_change > 50: status = "🔴 قبلاً پامپ کرده"
-    else: status = "⚪ عادی"
+    if z4 >= 3: s += 25
+    elif z4 >= 2: s += 20
+    elif z4 >= 1.5: s += 12
+    elif z1 >= 2: s += 8
 
-    report = f"🔍 <b>تحلیل کامل {escape(symbol)}</b>\n⏰ {time_info['iran_time']}\n\n"
-    report += f"💰 <b>قیمت:</b> ${avg_price:,.4f} ({avg_change:+.2f}%)\n"
-    report += f"📈 <b>Z-Score:</b> {z_score:.2f} | <b>Vol:</b> {vol_mult:.1f}x\n"
-    report += f"🎯 <b>وضعیت:</b> {status}\n\n"
-    
-    if news_data:
-        news_emoji = "🟢" if news_data['sentiment'] == 'bullish' else "🔴" if news_data['sentiment'] == 'bearish' else "⚪"
-        report += f"{news_emoji} <b>اخبار:</b> {news_data['sentiment']} (Score: {news_data['score']})\n"
-        report += f"   تعداد اخبار: {news_data['news_count']}\n\n"
-    
-    report += f"💵 <b>مدیریت ریسک:</b>\n"
-    report += f"• ورود: ${avg_price:,.4f}\n"
-    report += f"• استاپ: ${stop_loss:,.4f}\n"
-    report += f"• تارگت 1: ${tp1:,.4f}\n"
-    report += f"• تارگت 2: ${tp2:,.4f}\n"
-    report += f"• تارگت 3: ${tp3:,.4f}\n"
-    report += f"• <b>حجم پیشنهادی:</b> ${position_size:,.2f}\n"
-    report += f"• <b>R:R Ratio:</b> 1:{risk_reward:.2f}\n\n"
-    
-    report += f"🚀 <b>پیش‌بینی پامپ:</b> {expected_pump_text}\n"
-    report += f"🎯 <b>امتیاز:</b> {score}/100\n\n"
-    
-    if score >= 75: report += f"✅ <b>توصیه:</b> سیگنال قوی\n"
-    elif score >= 60: report += f"⚠️ <b>توصیه:</b> سیگنال متوسط\n"
-    else: report += f"❌ <b>توصیه:</b> سیگنال ضعیف\n"
+    if m4 >= 5: s += 15
+    elif m4 >= 3: s += 12
+    elif m4 >= 2: s += 8
 
-    position_data = {
-        'coin': symbol, 'entry_price': avg_price, 'stop_loss': stop_loss, 
-        'take_profit_1': tp1, 'take_profit_2': tp2, 'take_profit_3': tp3,
-        'z_score': z_score, 'score': score, 'tier': tier_name, 
-        'entry_time': time_info['iran_time'], 'expected_pump': expected_pump_text,
-        'funding_rate': funding_rate, 'oi_change': oi_change,
-        'supply_ratio': supply_ratio, 'top_holders_pct': 0,
-        'news_sentiment': news_sentiment, 'position_size': position_size,
-        'risk_reward': risk_reward
+    if -15 <= change <= 25: s += 10
+    elif -20 <= change <= 35: s += 5
+
+    if vol > 100_000: s += 5
+
+    if fr is not None:
+        if fr < -0.01: s += 10
+        elif fr < 0.01: s += 5
+
+    if oi is not None:
+        if oi > 20: s += 10
+        elif oi > 10: s += 5
+
+    if rsi and 40 <= rsi <= 60: s += 5
+    elif rsi and 30 <= rsi < 40: s += 3
+
+    if macd_cross == 'bullish_cross': s += 5
+    elif macd_cross == 'bullish': s += 3
+
+    if liq > 100_000: s += 5
+    elif liq > 50_000: s += 3
+
+    if accum: s += 10
+    if divg == 'bearish': s -= 10
+    if stop_h: s += 5
+    if price_acc: s += 5
+    if whale_d: s -= 15
+    if abs(ob_imb) > 0.5: s += 3
+    if btc_corr == 'suspicious': s -= 10
+
+    if s >= 75 and z4 >= 2 and -15 <= change <= 25 and accum:
+        pt = "BTR Classic"
+    elif s >= 65 and z4 >= 1.5:
+        pt = "BTR-like"
+    elif s >= 55 and (z1 >= 2 or m4 >= 2.5):
+        pt = "Volume Spike"
+    elif s >= 55 and accum:
+        pt = "Accumulation"
+    elif s >= 45 and liq > 1000:
+        pt = "DEX Gem"
+    else:
+        pt = "Monitor"
+
+    return s, pt
+
+def predict_pump(s, liq):
+    base = s * 2
+    if liq > 0: base *= min(1.5, liq / 50000)
+    return {
+        'min': round(max(5, base * 0.5), 1),
+        'likely': round(base, 1),
+        'max': round(min(500, base * 2.5), 1),
+        'conf': "بالا" if s >= 70 else ("متوسط" if s >= 50 else "پایین")
     }
-    return report, position_data
 
 # ==========================================
-# ⚡ اسکن سریع
+# 🎯 تحلیل کامل
 # ==========================================
-async def quick_scan_async() -> Optional[str]:
+async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
+    sym = raw.upper().strip().replace('USDT', '')
+    ti = get_time_info()
+
+    async with httpx.AsyncClient(timeout=30) as cl:
+        cex, dex, atr, sent, fr, oi, supply, mc, ob_imb, zs, btc_ticker = await asyncio.gather(
+            get_cex_price(sym, cl),
+            get_dex_data(sym, cl),
+            get_atr(sym, cl),
+            get_market_sentiment(cl),
+            get_funding(sym, cl),
+            get_oi_change(sym, cl),
+            get_supply(sym, cl),
+            get_market_cap(sym, cl),
+            get_orderbook_imbalance(sym, cl),
+            calc_z_scores(sym, cl),
+            http_req(cl, "GET", f"{EXCHANGES['binance']}/ticker/24hr?symbol=BTCUSDT")
+        )
+
+    ob_imb_val, ob_status = ob_imb
+
+    if not cex and dex:
+        cex = {'dex': {'price': dex['price'], 'change': dex['change_24h'],
+                       'volume': dex['volume_24h']}}
+    if not cex:
+        return f"❌ {escape(sym)} یافت نشد", None
+
+    tv = sum(x['volume'] for x in cex.values())
+    ap = sum(x['price']*x['volume'] for x in cex.values()) / tv if tv > 0 else np.mean([x['price'] for x in cex.values()])
+    ac = np.mean([x['change'] for x in cex.values()])
+
+    est_mc = mc if mc else estimate_mc(tv)
+    tier = get_tier(est_mc)
+    liq = dex['liquidity'] if dex else 0
+
+    klines = await get_klines(sym, cl, '1h', 50)
+    closes = []
+    rsi_val, macd_data, boll, rsi_arr = 50.0, None, None, []
+    accum, divg, stop_h, price_acc, whale_d = False, 'none', False, False, False
+
+    if klines and len(klines) >= 20:
+        closes = [k['close'] for k in klines[:-1]]
+        rsi_arr = calc_rsi_array(closes)
+        rsi_val = rsi_arr[-1] if rsi_arr else 50.0
+        macd_data = calc_macd(closes)
+        boll = calc_bollinger(closes)
+        accum = detect_accumulation(closes, atr, ap)
+        divg = detect_divergence(closes, rsi_arr)
+        stop_h = detect_stop_hunt(closes, ap)
+        price_acc = detect_price_acceleration(closes)
+        whale_d = detect_whale_dist(tv, ac, tier['name'])
+
+    btc_chg = 0
     try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            response = await client.get(f"{EXCHANGES['binance']}/ticker/24hr")
-            if response.status_code != 200: return None
-            
-            df = pd.DataFrame(response.json())
-            df['priceChangePercent'] = pd.to_numeric(df['priceChangePercent'])
-            df['quoteVolume'] = pd.to_numeric(df['quoteVolume'])
-            
-            df = df[df['quoteVolume'] > 200_000]
-            df = df[(df['priceChangePercent'] >= -30) & (df['priceChangePercent'] <= 100)]
-            df = df[df['symbol'].str.endswith('USDT')]
-            
-            if df.empty: return None
+        if btc_ticker and btc_ticker.status_code == 200:
+            btc_chg = float(btc_ticker.json()['priceChangePercent'])
+    except: pass
+    btc_corr = check_btc_corr(ac, btc_chg)
 
-            final = []
-            for _, row in df.sort_values(by='quoteVolume', ascending=False).head(30).iterrows():
-                symbol = row['symbol'].replace('USDT', '')
-                estimated_mc = estimate_market_cap(row['quoteVolume'])
-                threshold = get_tier_threshold(estimated_mc)
-                
-                z, mult, interval_used, tier_name = await calculate_volume_z_score_smart(symbol, client, estimated_mc)
-                
-                relaxed_z = threshold['z_threshold'] * 0.5
-                relaxed_mult = threshold['vol_mult'] * 0.5
-                
-                if z >= relaxed_z or mult >= relaxed_mult:
-                    try:
-                        funding_resp = await client.get(f"{EXCHANGES['binance_futures']}/fundingRate?symbol={symbol}USDT&limit=1")
-                        funding_data = funding_resp.json()
-                        funding_rate = float(funding_data[0]['fundingRate']) if funding_data else 0
-                    except: 
-                        funding_rate = 0
+    fr_val = fr['current'] if fr else None
+    oi_val = oi['change_24h'] if oi else None
+    macd_cross = macd_data['cross'] if macd_data else 'none'
+
+    score, ptype = score_coin(
+        zs, ac, tv, fr_val, oi_val, rsi_val, macd_cross, liq, tier['name'],
+        accum, divg, stop_h, price_acc, whale_d, ob_imb_val, btc_corr
+    )
+
+    pp = predict_pump(score, liq)
+
+    slip = tier['slip']
+    cost_f = 1 - (TRADING_FEE + slip)
+    if atr and atr > 0:
+        sl = (ap - 2*atr) * cost_f
+        t1 = (ap + 2*atr) * (1 - TRADING_FEE - slip)
+        t2 = (ap + 4*atr) * (1 - TRADING_FEE - slip)
+        t3 = (ap + 8*atr) * (1 - TRADING_FEE - slip)
+    else:
+        sl = ap * 0.80 * cost_f
+        t1 = ap * 1.30 * (1 - TRADING_FEE - slip)
+        t2 = ap * 1.60 * (1 - TRADING_FEE - slip)
+        t3 = ap * 2.20 * (1 - TRADING_FEE - slip)
+
+    rm = RiskManager(ACCOUNT_BALANCE, RISK_PER_TRADE, MAX_POSITIONS)
+    z4 = zs.get('4h', (0,0))[0]
+    ps = rm.calculate_position_size(ap, sl, z4, liq)
+    rr = rm.calculate_risk_reward(ap, sl, t3)
+
+    if score >= 70 and accum: st = "🟢 سیگنال قوی (انباشت + حجم)"
+    elif score >= 60: st = "🟢 سیگنال قوی"
+    elif score >= 50: st = "🟡 سیگنال متوسط"
+    elif whale_d: st = "⚫ هشدار توزیع نهنگ!"
+    else: st = "⚪ عادی"
+
+    ex_names = list(cex.keys())
+    if dex: ex_names.append(dex['dex'])
+    ex_str = " + ".join(ex_names)
+
+    r = f"🔍 <b>{escape(sym)}</b>\n⏰ {ti['iran']}\n🏪 {ex_str}\n\n"
+    r += f"💰 ${ap:,.6f} ({ac:+.2f}%)\n"
+    r += f"📈 Z: 1h:{zs.get('1h',(0,0))[0]:.2f} | 4h:{z4:.2f} | 1d:{zs.get('1d',(0,0))[0]:.2f}\n"
+    r += f"📊 Vol Mult: {zs.get('4h',(0,0))[1]:.1f}x\n"
+    r += f"📉 RSI: {rsi_val:.1f}\n"
+    if macd_data:
+        r += f"📊 MACD: {macd_data['cross']} (hist: {macd_data['hist']:.4f})\n"
+    if boll and boll['upper'] > 0:
+        pct_b = (ap - boll['lower']) / (boll['upper'] - boll['lower']) if (boll['upper']-boll['lower']) > 0 else 0
+        r += f"📊 Bollinger %B: {pct_b*100:.1f}%\n"
+    r += f"🎯 {st}\n\n"
+
+    r += f"🔎 <b>الگوها:</b>\n"
+    r += f"• انباشت: {'✅' if accum else '❌'}\n"
+    r += f"• واگرایی: {'⚠️ نزولی' if divg=='bearish' else '✅ ندارد'}\n"
+    r += f"• شتاب قیمت: {'✅' if price_acc else '❌'}\n"
+    r += f"• شکار استاپ: {'⚠️' if stop_h else '✅'}\n"
+    r += f"• توزیع نهنگ: {'⚠️ بله!' if whale_d else '✅ خیر'}\n"
+    r += f"• Order Book: {ob_status} ({ob_imb_val:+.2f})\n"
+    r += f"• همبستگی BTC: {'⚠️ مشکوک' if btc_corr=='suspicious' else '✅ عادی'} (BTC: {btc_chg:+.1f}%)\n\n"
+
+    r += f"📊 <b>مشتقات:</b>\n"
+    if fr:
+        fe = "🟢" if fr['signal']=='bullish' else ("🔴" if fr['signal']=='bearish' else "⚪")
+        r += f"• {fe} Funding: {fr['current']*100:.4f}%\n"
+    if oi:
+        oe = "🟢" if oi['signal']=='bullish' else ("🔴" if oi['signal']=='bearish' else "⚪")
+        r += f"• {oe} OI 24h: {oi['change_24h']:+.2f}%\n"
+    r += "\n"
+
+    if supply:
+        r += f"💰 <b>عرضه:</b> {supply['ratio']*100:.1f}% در گردش"
+        r += f" | Low Float: {'✅' if supply['low_float'] else '❌'}\n\n"
+
+    r += f"🚀 <b>پیش‌بینی پامپ:</b>\n"
+    r += f"• {pp['min']}% - <b>{pp['likely']}%</b> - {pp['max']}%\n"
+    r += f"• اطمینان: {pp['conf']}\n\n"
+
+    if sent:
+        r += f"{sent['emoji']} {sent['status']} ({sent['value']}/100)\n\n"
+
+    r += f"💵 <b>مدیریت ریسک ({tier['name']}, هزینه {(TRADING_FEE+slip)*100:.2f}%):</b>\n"
+    r += f"• ورود: ${ap:,.6f}\n"
+    r += f"• استاپ: ${sl:,.6f}\n"
+    r += f"• T1: ${t1:,.6f} | T2: ${t2:,.6f} | T3: ${t3:,.6f}\n"
+    r += f"• حجم: ${ps:,.2f} | R:R: 1:{rr:.2f}\n\n"
+
+    r += f"🎯 <b>امتیاز: {score}/100</b>\n"
+    if score >= 70: r += "✅ سیگنال قوی → ورود با ۲٪ ریسک\n"
+    elif score >= 55: r += "⚠️ متوسط → ورود با ۱٪ ریسک\n"
+    else: r += "❌ ضعیف → ورود توصیه نمی‌شود\n"
+
+    social = await asyncio.to_thread(search_social, sym)
+    if social:
+        r += f"\n💬 <b>شبکه‌های اجتماعی:</b>\n"
+        for i, s in enumerate(social[:3], 1):
+            e = "🐦" if s['platform']=='توییتر' else "✈️"
+            r += f"{i}. {e} {s['username']}: <i>{s['comment'][:60]}...</i>\n"
+
+    r += f"\n⚠️ <i>تحلیل کمی ≠ توصیه مالی</i>"
+
+    pd_ = {
+        'coin': sym, 'entry_price': ap, 'stop_loss': sl,
+        'take_profit_1': t1, 'take_profit_2': t2, 'take_profit_3': t3,
+        'z_score': z4, 'score': score, 'tier': tier['name'],
+        'entry_time': ti['iran'], 'expected_pump': f"{pp['likely']}%",
+        'funding_rate': fr_val or 0, 'oi_change': oi_val or 0,
+        'position_size': ps, 'risk_reward': rr,
+        'pump_type': ptype, 'exchange': ex_str,
+        'rsi': rsi_val, 'macd_signal': macd_cross
+    }
+    return r, pd_
+
+# ==========================================
+# ⚡ اسکن سریع - با DEX Coverage بهبودیافته
+# ==========================================
+async def quick_scan() -> Optional[str]:
+    try:
+        # ✅ DEX Coverage بهبودیافته
+        dex_coins = await get_dex_hot_coins()
+        logger.info(f"🦄 {len(dex_coins)} کوین DEX یافت شد")
+
+        # Binance
+        bn_coins = []
+        try:
+            async with httpx.AsyncClient(timeout=60) as cl:
+                br = await http_req(cl, "GET", f"{EXCHANGES['binance']}/ticker/24hr")
+                if br and br.status_code == 200:
+                    df = pd.DataFrame(br.json())
+                    df['priceChangePercent'] = pd.to_numeric(df['priceChangePercent'])
+                    df['quoteVolume'] = pd.to_numeric(df['quoteVolume'])
+                    df = df[df['symbol'].str.endswith('USDT')]
+                    df = df[df['quoteVolume'] > 50000]
+                    df = df[(df['priceChangePercent'] >= -60) & (df['priceChangePercent'] <= 500)]
+                    for _, row in df.iterrows():
+                        s = row['symbol'].replace('USDT','')
+                        if not any(s.endswith(e) for e in EXCLUDED) and s not in STABLES:
+                            bn_coins.append({'symbol':s,'volume':row['quoteVolume'],'change':row['priceChangePercent'],'src':'BN'})
+        except: pass
+
+        # MEXC
+        mx_coins = []
+        try:
+            async with httpx.AsyncClient(timeout=60) as cl:
+                mr = await http_req(cl, "GET", f"{EXCHANGES['mexc']}/ticker/24hr")
+                if mr and mr.status_code == 200:
+                    df = pd.DataFrame(mr.json())
+                    df['priceChangePercent'] = pd.to_numeric(df['priceChangePercent'])
+                    df['quoteVolume'] = pd.to_numeric(df['quoteVolume'])
+                    df = df[df['symbol'].str.endswith('USDT')]
+                    df = df[df['quoteVolume'] > 10000]
+                    df = df[(df['priceChangePercent'] >= -60) & (df['priceChangePercent'] <= 500)]
+                    for _, row in df.iterrows():
+                        s = row['symbol'].replace('USDT','')
+                        if not any(s.endswith(e) for e in EXCLUDED) and s not in STABLES:
+                            mx_coins.append({'symbol':s,'volume':row['quoteVolume'],'change':row['priceChangePercent'],'src':'MX'})
+        except: pass
+
+        # ترکیب
+        all_c = {}
+        for c in dex_coins + bn_coins + mx_coins:
+            if c['symbol'] not in all_c or c['volume'] > all_c[c['symbol']]['volume']:
+                all_c[c['symbol']] = c
+        all_c = dict(sorted(all_c.items(), key=lambda x: x[1]['volume'], reverse=True)[:1000])
+
+        logger.info(f"📊 {len(all_c)} کوین (BN:{len(bn_coins)} MX:{len(mx_coins)} DEX:{len(dex_coins)})")
+
+        final = []
+        checked = 0
+        
+        all_items = list(all_c.items())
+        batch_size = 100
+        
+        for batch_start in range(0, len(all_items), batch_size):
+            batch = all_items[batch_start:batch_start + batch_size]
+            
+            async with httpx.AsyncClient(timeout=300) as batch_cl:
+                for sym, cd in batch:
+                    checked += 1
                     
-                    pump_pred = predict_pump_percentage(z, mult, 0.02, tier_name, funding_rate, 0)
-                    final.append({
-                        'symbol': symbol, 'change': row['priceChangePercent'], 'z': round(z, 2), 
-                        'mult': round(mult, 2), 'tier': tier_name, 
-                        'expected_pump': f"{pump_pred['likely']}%", 'funding': funding_rate
-                    })
+                    try:
+                        zs = {'1h':(0,0),'4h':(0,0),'1d':(0,0)}
+                        if cd['src'] != 'DEX':
+                            zs = await calc_z_scores(sym, batch_cl)
 
-            if not final: return None
-            
-            final.sort(key=lambda x: x['z'], reverse=True)
-            top10 = final[:10]
-            
-            report = f"⚡ <b>اسکن سریع</b>\n⏰ {get_time_info()['iran_time']}\n\n🏆 <b>کاندیداها:</b>\n"
-            for c in top10:
-                report += f"• <b>{c['symbol']}</b> [{c['tier']}] | Z: {c['z']:.2f} | Pump: {c['expected_pump']}\n"
-            return report
+                        z4, m4 = zs.get('4h',(0,0))
+                        z1 = zs.get('1h',(0,0))[0]
+                        if z4 < 0.8 and z1 < 1.0 and m4 < 1.2: continue
+
+                        fr_v = oi_v = rsi_v = None
+                        macd_c = 'none'
+                        dex_d = None
+                        kl = None
+                        
+                        if cd['src'] != 'DEX':
+                            fr_d = await get_funding(sym, batch_cl)
+                            fr_v = fr_d['current'] if fr_d else None
+                            oi_d = await get_oi_change(sym, batch_cl)
+                            oi_v = oi_d['change_24h'] if oi_d else None
+                            
+                            kl = await get_klines(sym, batch_cl, '1h', 30)
+                            if kl and len(kl) >= 20:
+                                cls = [k['close'] for k in kl[:-1]]
+                                rsi_v = calc_rsi_val(cls)
+                                md = calc_macd(cls)
+                                macd_c = md['cross'] if md else 'none'
+                        else:
+                            dex_d = await get_dex_data(sym, batch_cl)
+
+                        liq = dex_d['liquidity'] if dex_d else cd.get('liquidity', 0)
+                        tier = get_tier(estimate_mc(cd['volume']))
+
+                        accum = False
+                        divg = 'none'
+                        stop_h = False
+                        price_acc = False
+                        whale_d = False
+                        
+                        if cd['src'] != 'DEX' and kl and len(kl) >= 20:
+                            cls = [k['close'] for k in kl[:-1]]
+                            atr_est = np.mean([kl[i]['high']-kl[i]['low'] for i in range(max(0,len(kl)-15), len(kl)-1)]) if len(kl) > 1 else 0
+                            accum = detect_accumulation(cls, atr_est, cls[-1] if cls else 0)
+                            price_acc = detect_price_acceleration(cls)
+
+                        sc, pt = score_coin(
+                            zs, cd['change'], cd['volume'], fr_v, oi_v, rsi_v, macd_c, liq, tier['name'],
+                            accum, divg, stop_h, price_acc, whale_d, 0, 'normal'
+                        )
+
+                        if sc >= 30:
+                            pp = predict_pump(sc, liq)
+                            final.append({
+                                'symbol': sym, 'change': cd['change'], 'z4': round(z4,2),
+                                'm4': round(m4,2), 'score': sc, 'pump': f"{pp['likely']}%",
+                                'pt': pt, 'src': cd['src'], 'fr': fr_v or 0
+                            })
+                    except Exception as e:
+                        logger.warning(f"⚠️ خطا در {sym}: {e}")
+                        continue
+
+            if checked % 100 == 0:
+                logger.info(f"📊 {checked}/{len(all_items)}")
+
+        if not final: return None
+        final.sort(key=lambda x: (x['score'], x['z4']), reverse=True)
+
+        ti = get_time_info()
+        r = f"⚡ <b>اسکن سریع</b>\n⏰ {ti['iran']}\n📊 {checked} کوین\n\n🏆 <b>کاندیداها:</b>\n"
+        for c in final[:20]:
+            e = "🔥" if c['score'] >= 60 else "⚡"
+            s = "🦄" if c['src']=='DEX' else ("🏦" if c['src']=='BN' else "🏪")
+            r += f"{e}{s} <b>{c['symbol']}</b> | {c['score']} | Z:{c['z4']:.2f} | {c['pt']} | {c['pump']} | {c['change']:+.1f}%\n"
+        r += "\n<i>🔥≥60 | 🦄DEX 🏦BN 🏪MX</i>"
+        return r
     except Exception as e:
         logger.error(f"Scan error: {e}")
         return None
@@ -668,141 +988,145 @@ async def quick_scan_async() -> Optional[str]:
 # ==========================================
 # 🔄 بررسی خروج
 # ==========================================
-async def check_position_exit_async(position: Dict) -> Tuple[Optional[str], str]:
-    coin = position['coin']
-    entry_price = position['entry_price']
-    stop_loss = position['stop_loss']
-    tp3 = position['take_profit_3']
-    async with httpx.AsyncClient(timeout=10) as client:
-        exchange_data = await get_price_from_exchanges_async(coin, client)
-    if not exchange_data: return None, "HOLD"
-    total_vol = sum(ex['volume'] for ex in exchange_data.values())
-    current_price = sum(ex['price'] * ex['volume'] for ex in exchange_data.values()) / total_vol if total_vol > 0 else np.mean([ex['price'] for ex in exchange_data.values()])
+async def check_exit(pos: Dict) -> Tuple[Optional[str], str]:
+    coin = pos['coin']
+    async with httpx.AsyncClient(timeout=10) as cl:
+        cex = await get_cex_price(coin, cl)
+        cp = None
+        if cex:
+            tv = sum(x['volume'] for x in cex.values())
+            cp = sum(x['price']*x['volume'] for x in cex.values()) / tv if tv else np.mean([x['price'] for x in cex.values()])
+        else:
+            dex = await get_dex_data(coin, cl)
+            if dex: cp = dex['price']
+        if cp is None: return None, "HOLD"
+
     reasons = []
-    if current_price <= stop_loss: reasons.append(f"🔴 استاپ لاس")
-    if current_price >= tp3: reasons.append(f"🟢 تارگت 3")
+    if cp <= pos['stop_loss']: reasons.append(f"🔴 استاپ (${pos['stop_loss']:,.4f})")
+    if cp >= pos['take_profit_3']: reasons.append(f"🟢 تارگت 3 (${pos['take_profit_3']:,.4f})")
+
     if reasons:
-        exit_msg = f"🚨 <b>خروج از {escape(coin)}</b>\n• ورود: ${entry_price:,.4f}\n• فعلی: ${current_price:,.4f}\n• سود: {((current_price - entry_price) / entry_price * 100):+.2f}%\n\n" + "\n".join(reasons)
-        return exit_msg, "EXIT"
+        pnl = ((cp - pos['entry_price']) / pos['entry_price'] * 100)
+        msg = f"🚨 <b>خروج {escape(coin)}</b>\n• ورود: ${pos['entry_price']:,.6f}\n• فعلی: ${cp:,.6f}\n• سود: {pnl:+.2f}%\n\n" + "\n".join(reasons)
+        return msg, "EXIT"
     return None, "HOLD"
 
 # ==========================================
 # 🤖 Handlers
 # ==========================================
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🤖 <b>ربات Pre-Pump v4.0</b>\n\n/scan - اسکن\n/positions - پوزیشن‌ها\n/backtest - اجرای بک‌تست\n\nنام کوین را بفرستید", parse_mode='HTML')
+async def cmd_start(u, c):
+    await u.message.reply_text(
+        "🔥 <b>شکارچی پامپ v10.2</b>\n\n"
+        "/scan - اسکن CEX+DEX\n"
+        "/positions - پوزیشن‌ها\n"
+        "/backtest - بک‌تست\n\n"
+        "نام کوین → تحلیل کامل\n\n"
+        "✅ DEX Coverage بهبودیافته\n"
+        "✅ Binance + MEXC + DEX\n"
+        "✅ توییتر + تلگرام",
+        parse_mode='HTML')
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    if user_id not in ALLOWED_USERS:
-        await update.message.reply_text("⛔ دسترسی غیرمجاز")
-        return
-    if not rate_limited(user_id, 30):
-        await update.message.reply_text("⏳ 30 ثانیه صبر کنید")
-        return
-    text = update.message.text.strip().upper()
-    if text.startswith('/'): return
-    if len(text) >= 2 and len(text) <= 10 and text.isalpha():
-        await update.message.reply_text(f"⏳ تحلیل <b>{escape(text)}</b>...", parse_mode='HTML')
-        try:
-            report, position_data = await analyze_coin_full_async(text)
-            if position_data and position_data['score'] >= 70:
-                await save_position(**position_data)
-                report += "\n\n✅ پوزیشن ذخیره شد."
-            for chunk in [report[i:i+4000] for i in range(0, len(report), 4000)]:
-                await update.message.reply_text(chunk, parse_mode='HTML', disable_web_page_preview=True)
-        except Exception as e:
-            await update.message.reply_text(f"❌ خطا: {str(e)}")
+async def cmd_scan(u, c):
+    if u.effective_user.id not in ALLOWED_USERS: return
+    await u.message.reply_text("⚡ اسکن... (3-4 دقیقه)")
+    r = await quick_scan()
+    await u.message.reply_text(r or "✅ سیگنالی نیست", parse_mode='HTML')
 
-async def scan_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id not in ALLOWED_USERS: return
-    await update.message.reply_text("⚡ اسکن...")
-    report = await quick_scan_async()
-    await update.message.reply_text(report or "✅ سیگنالی یافت نشد", parse_mode='HTML')
+async def cmd_pos(u, c):
+    if u.effective_user.id not in ALLOWED_USERS: return
+    ps = await get_active_positions()
+    if not ps:
+        await u.message.reply_text("📭 خالی"); return
+    r = "📊 <b>پوزیشن‌ها:</b>\n\n"
+    for p in ps:
+        r += f"<b>{escape(p['coin'])}</b> [{p.get('pump_type','?')}]\n"
+        r += f"• ${p['entry_price']:,.6f} → استاپ ${p['stop_loss']:,.6f}\n"
+        r += f"• پامپ: {p.get('expected_pump','?')} | R:R: 1:{p.get('risk_reward',0):.2f}\n\n"
+    await u.message.reply_text(r, parse_mode='HTML')
 
-async def positions_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id not in ALLOWED_USERS: return
-    positions = await get_active_positions()
-    if not positions:
-        await update.message.reply_text("📭 پوزیشنی ندارید")
-        return
-    report = "📊 <b>پوزیشن‌ها:</b>\n\n"
-    for p in positions:
-        report += f"<b>{escape(p['coin'])}</b>\n• ورود: ${p['entry_price']:,.4f}\n• استاپ: ${p['stop_loss']:,.4f}\n• حجم: ${p.get('position_size', 0):,.2f}\n\n"
-    await update.message.reply_text(report, parse_mode='HTML')
-
-async def backtest_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id not in ALLOWED_USERS: return
-    await update.message.reply_text("🧪 در حال اجرای بک‌تست... (2-3 دقیقه)")
+async def cmd_bt(u, c):
+    if u.effective_user.id not in ALLOWED_USERS: return
+    await u.message.reply_text("🧪 بک‌تست... (2-3 دقیقه)")
     try:
         from backtest import run_backtest
-        result = await asyncio.to_thread(run_backtest)
-        await update.message.reply_text(result, parse_mode='HTML')
+        r = await asyncio.to_thread(run_backtest)
+        await u.message.reply_text(r, parse_mode='HTML')
     except Exception as e:
-        await update.message.reply_text(f"❌ خطا در بک‌تست: {str(e)}")
+        await u.message.reply_text(f"❌ {e}")
 
-async def scheduled_quick_scan(context: ContextTypes.DEFAULT_TYPE):
-    logger.info("⚡ اسکن سریع...")
-    report = await quick_scan_async()
-    if report:
-        try:
-            await context.bot.send_message(chat_id=ADMIN_CHAT_ID, text=report, parse_mode='HTML')
-        except Exception as e: logger.error(f"Send error: {e}")
+async def handle_msg(u, c):
+    uid = u.effective_user.id
+    if uid not in ALLOWED_USERS:
+        await u.message.reply_text("⛔"); return
+    if not user_rate_ok(uid, 20):
+        await u.message.reply_text("⏳ 20s صبر کنید"); return
+    t = u.message.text.strip().upper()
+    if t.startswith('/'): return
+    if len(t) < 2 or len(t) > 10 or not t.isalpha(): return
+    await u.message.reply_text(f"⏳ <b>{escape(t)}</b>...", parse_mode='HTML')
+    try:
+        r, pd_ = await analyze_full(t)
+        if pd_ and pd_['score'] >= 60:
+            await save_position(**pd_)
+            r += "\n\n✅ ذخیره شد."
+        for i in range(0, len(r), 4000):
+            await u.message.reply_text(r[i:i+4000], parse_mode='HTML', disable_web_page_preview=True)
+    except Exception as e:
+        logger.error(f"Error {t}: {e}")
+        await u.message.reply_text(f"❌ {e}")
 
-async def scheduled_full_check(context: ContextTypes.DEFAULT_TYPE):
-    logger.info("🔄 بررسی پوزیشن‌ها...")
-    positions = await get_active_positions()
-    for pos in positions:
-        exit_msg, status = await check_position_exit_async(pos)
-        if status == "EXIT" and exit_msg:
-            try:
-                await context.bot.send_message(chat_id=ADMIN_CHAT_ID, text=exit_msg, parse_mode='HTML')
-            except Exception as e: logger.error(f"Exit send error: {e}")
-            await update_position_status(pos['coin'], 'closed')
+async def auto_scan(ctx):
+    logger.info("⚡ اسکن خودکار...")
+    r = await quick_scan()
+    if r:
+        try: await ctx.bot.send_message(ADMIN_CHAT_ID, r, parse_mode='HTML')
+        except Exception as e: logger.error(f"Send: {e}")
 
-async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
+async def auto_check(ctx):
+    logger.info("🔄 چک پوزیشن‌ها...")
+    for p in await get_active_positions():
+        msg, st = await check_exit(p)
+        if st == "EXIT" and msg:
+            try: await ctx.bot.send_message(ADMIN_CHAT_ID, msg, parse_mode='HTML')
+            except: pass
+            await update_position_status(p['coin'], 'closed')
+
+def err_handler(update, context):
     logger.error(f"Bot error: {context.error}")
 
 # ==========================================
-# 🚀 اجرای اصلی (اصلاح نهایی - بدون تداخل Event Loop)
+# 🚀 Main
 # ==========================================
 def main():
-    # اجرای init_db به صورت sync
-    _init_db_sync()
-    
-    # اجرای Flask Health Check در thread جداگانه (daemon=True برای جلوگیری از تداخل)
+    _init_db()
+
     try:
-        health_app = Flask(__name__)
-        
-        @health_app.route('/')
-        def health():
-            return "Bot is running! 🤖"
-        
-        def run_health():
-            health_app.run(host='0.0.0.0', port=10000, use_reloader=False)
-        
-        health_thread = threading.Thread(target=run_health, daemon=True)
-        health_thread.start()
-        logger.info("✅ Health check server started on port 10000")
+        app = Flask(__name__)
+        @app.route('/')
+        def h(): return "OK 🔥"
+        threading.Thread(target=lambda: app.run(host='0.0.0.0', port=10000, use_reloader=False),
+                        daemon=True).start()
+        logger.info("✅ Health OK")
     except Exception as e:
-        logger.warning(f"⚠️ Health check failed to start: {e}")
-    
-    logger.info("🚀 راه‌اندازی ربات v4.0...")
-    
-    application = Application.builder().token(TELEGRAM_TOKEN).build()
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("scan", scan_command))
-    application.add_handler(CommandHandler("positions", positions_command))
-    application.add_handler(CommandHandler("backtest", backtest_command))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    application.add_error_handler(error_handler)
-    
-    job_queue = application.job_queue
-    job_queue.run_repeating(scheduled_quick_scan, interval=SCAN_INTERVAL_MINUTES * 60, first=30)
-    job_queue.run_repeating(scheduled_full_check, interval=FULL_ANALYSIS_INTERVAL_MINUTES * 60, first=60)
-    
-    logger.info("✅ ربات آماده است.")
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+        logger.warning(f"Health: {e}")
+
+    logger.info("🔥 v10.2 شروع...")
+    logger.info(f"⏰ اسکن: {SCAN_INTERVAL} دقیقه | چک: {CHECK_INTERVAL} دقیقه")
+
+    bot = Application.builder().token(TELEGRAM_TOKEN).build()
+    bot.add_handler(CommandHandler("start", cmd_start))
+    bot.add_handler(CommandHandler("help", cmd_start))
+    bot.add_handler(CommandHandler("scan", cmd_scan))
+    bot.add_handler(CommandHandler("positions", cmd_pos))
+    bot.add_handler(CommandHandler("backtest", cmd_bt))
+    bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_msg))
+    bot.add_error_handler(err_handler)
+
+    bot.job_queue.run_repeating(auto_scan, SCAN_INTERVAL * 60, first=10)
+    bot.job_queue.run_repeating(auto_check, CHECK_INTERVAL * 60, first=30)
+
+    logger.info("✅ آماده")
+    bot.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
     main()

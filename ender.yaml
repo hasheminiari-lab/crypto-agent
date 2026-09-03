@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: crypto-agent
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scanner.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
