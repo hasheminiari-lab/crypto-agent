@@ -2,7 +2,8 @@ httpx
 pandas
 numpy
 jdatetime
-python-telegram-bot[job-queue]
+python-telegram-bot
 python-dotenv
 flask
-ddgs
+duckduckgo-search
+requests

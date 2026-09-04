@@ -224,53 +224,41 @@ async def get_cex_price(symbol: str, client: httpx.AsyncClient) -> Dict:
 # 🦄 DEX Coverage بهبودیافته
 # ==========================================
 async def get_dex_hot_coins() -> List[Dict]:
-    """دریافت کوین‌های داغ از چندین منبع DEX"""
     dex_coins = []
     seen_symbols = set()
-    
     endpoints = [
         ('search?q=pump', 'pump'),
         ('search?q=trending', 'trending'),
         ('search?q=new', 'new'),
         ('search?q=gainer', 'gainer'),
     ]
-    
     for endpoint, source in endpoints:
         try:
             async with httpx.AsyncClient(timeout=30) as cl:
                 r = await http_req(cl, "GET", f"{DEX_URL}/{endpoint}")
                 if not r or r.status_code != 200: continue
-                
                 pairs = r.json().get('pairs', [])
                 for p in pairs[:100]:
                     sym = p.get('baseToken', {}).get('symbol', '')
                     if not sym or sym in seen_symbols: continue
-                    
                     vol = float(p.get('volume', {}).get('h24', 0) or 0)
                     chg = float(p.get('priceChange', {}).get('h24', 0) or 0)
                     liq = float(p.get('liquidity', {}).get('usd', 0) or 0)
                     mc = float(p.get('marketCap', 0) or 0)
-                    
                     if vol < 1000: continue
                     if liq < 1000: continue
                     if any(sym.endswith(e) for e in EXCLUDED): continue
                     if sym in STABLES: continue
-                    
                     seen_symbols.add(sym)
                     dex_coins.append({
-                        'symbol': sym,
-                        'volume': vol,
-                        'change': chg,
-                        'liquidity': liq,
-                        'market_cap': mc,
-                        'src': 'DEX',
-                        'dex': p.get('dexId', '?'),
+                        'symbol': sym, 'volume': vol, 'change': chg,
+                        'liquidity': liq, 'market_cap': mc,
+                        'src': 'DEX', 'dex': p.get('dexId', '?'),
                         'chain': p.get('chainId', '?')
                     })
         except Exception as e:
             logger.warning(f"DEX endpoint {source} error: {e}")
             continue
-    
     dex_coins.sort(key=lambda x: x['volume'], reverse=True)
     return dex_coins[:500]
 
@@ -601,38 +589,28 @@ def score_coin(z_scores, change, vol, fr, oi, rsi, macd_cross, liq, tier_name,
     z4 = z_scores.get('4h', (0,0))[0]
     z1 = z_scores.get('1h', (0,0))[0]
     m4 = z_scores.get('4h', (0,0))[1]
-
     if z4 >= 3: s += 25
     elif z4 >= 2: s += 20
     elif z4 >= 1.5: s += 12
     elif z1 >= 2: s += 8
-
     if m4 >= 5: s += 15
     elif m4 >= 3: s += 12
     elif m4 >= 2: s += 8
-
     if -15 <= change <= 25: s += 10
     elif -20 <= change <= 35: s += 5
-
     if vol > 100_000: s += 5
-
     if fr is not None:
         if fr < -0.01: s += 10
         elif fr < 0.01: s += 5
-
     if oi is not None:
         if oi > 20: s += 10
         elif oi > 10: s += 5
-
     if rsi and 40 <= rsi <= 60: s += 5
     elif rsi and 30 <= rsi < 40: s += 3
-
     if macd_cross == 'bullish_cross': s += 5
     elif macd_cross == 'bullish': s += 3
-
     if liq > 100_000: s += 5
     elif liq > 50_000: s += 3
-
     if accum: s += 10
     if divg == 'bearish': s -= 10
     if stop_h: s += 5
@@ -640,20 +618,12 @@ def score_coin(z_scores, change, vol, fr, oi, rsi, macd_cross, liq, tier_name,
     if whale_d: s -= 15
     if abs(ob_imb) > 0.5: s += 3
     if btc_corr == 'suspicious': s -= 10
-
-    if s >= 75 and z4 >= 2 and -15 <= change <= 25 and accum:
-        pt = "BTR Classic"
-    elif s >= 65 and z4 >= 1.5:
-        pt = "BTR-like"
-    elif s >= 55 and (z1 >= 2 or m4 >= 2.5):
-        pt = "Volume Spike"
-    elif s >= 55 and accum:
-        pt = "Accumulation"
-    elif s >= 45 and liq > 1000:
-        pt = "DEX Gem"
-    else:
-        pt = "Monitor"
-
+    if s >= 75 and z4 >= 2 and -15 <= change <= 25 and accum: pt = "BTR Classic"
+    elif s >= 65 and z4 >= 1.5: pt = "BTR-like"
+    elif s >= 55 and (z1 >= 2 or m4 >= 2.5): pt = "Volume Spike"
+    elif s >= 55 and accum: pt = "Accumulation"
+    elif s >= 45 and liq > 1000: pt = "DEX Gem"
+    else: pt = "Monitor"
     return s, pt
 
 def predict_pump(s, liq):
@@ -672,43 +642,30 @@ def predict_pump(s, liq):
 async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
     sym = raw.upper().strip().replace('USDT', '')
     ti = get_time_info()
-
     async with httpx.AsyncClient(timeout=30) as cl:
         cex, dex, atr, sent, fr, oi, supply, mc, ob_imb, zs, btc_ticker = await asyncio.gather(
-            get_cex_price(sym, cl),
-            get_dex_data(sym, cl),
-            get_atr(sym, cl),
-            get_market_sentiment(cl),
-            get_funding(sym, cl),
-            get_oi_change(sym, cl),
-            get_supply(sym, cl),
-            get_market_cap(sym, cl),
-            get_orderbook_imbalance(sym, cl),
-            calc_z_scores(sym, cl),
+            get_cex_price(sym, cl), get_dex_data(sym, cl), get_atr(sym, cl),
+            get_market_sentiment(cl), get_funding(sym, cl), get_oi_change(sym, cl),
+            get_supply(sym, cl), get_market_cap(sym, cl),
+            get_orderbook_imbalance(sym, cl), calc_z_scores(sym, cl),
             http_req(cl, "GET", f"{EXCHANGES['binance']}/ticker/24hr?symbol=BTCUSDT")
         )
-
     ob_imb_val, ob_status = ob_imb
-
     if not cex and dex:
         cex = {'dex': {'price': dex['price'], 'change': dex['change_24h'],
                        'volume': dex['volume_24h']}}
     if not cex:
         return f"❌ {escape(sym)} یافت نشد", None
-
     tv = sum(x['volume'] for x in cex.values())
     ap = sum(x['price']*x['volume'] for x in cex.values()) / tv if tv > 0 else np.mean([x['price'] for x in cex.values()])
     ac = np.mean([x['change'] for x in cex.values()])
-
     est_mc = mc if mc else estimate_mc(tv)
     tier = get_tier(est_mc)
     liq = dex['liquidity'] if dex else 0
-
     klines = await get_klines(sym, cl, '1h', 50)
     closes = []
     rsi_val, macd_data, boll, rsi_arr = 50.0, None, None, []
     accum, divg, stop_h, price_acc, whale_d = False, 'none', False, False, False
-
     if klines and len(klines) >= 20:
         closes = [k['close'] for k in klines[:-1]]
         rsi_arr = calc_rsi_array(closes)
@@ -720,25 +677,20 @@ async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
         stop_h = detect_stop_hunt(closes, ap)
         price_acc = detect_price_acceleration(closes)
         whale_d = detect_whale_dist(tv, ac, tier['name'])
-
     btc_chg = 0
     try:
         if btc_ticker and btc_ticker.status_code == 200:
             btc_chg = float(btc_ticker.json()['priceChangePercent'])
     except: pass
     btc_corr = check_btc_corr(ac, btc_chg)
-
     fr_val = fr['current'] if fr else None
     oi_val = oi['change_24h'] if oi else None
     macd_cross = macd_data['cross'] if macd_data else 'none'
-
     score, ptype = score_coin(
         zs, ac, tv, fr_val, oi_val, rsi_val, macd_cross, liq, tier['name'],
         accum, divg, stop_h, price_acc, whale_d, ob_imb_val, btc_corr
     )
-
     pp = predict_pump(score, liq)
-
     slip = tier['slip']
     cost_f = 1 - (TRADING_FEE + slip)
     if atr and atr > 0:
@@ -751,34 +703,28 @@ async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
         t1 = ap * 1.30 * (1 - TRADING_FEE - slip)
         t2 = ap * 1.60 * (1 - TRADING_FEE - slip)
         t3 = ap * 2.20 * (1 - TRADING_FEE - slip)
-
     rm = RiskManager(ACCOUNT_BALANCE, RISK_PER_TRADE, MAX_POSITIONS)
     z4 = zs.get('4h', (0,0))[0]
     ps = rm.calculate_position_size(ap, sl, z4, liq)
     rr = rm.calculate_risk_reward(ap, sl, t3)
-
     if score >= 70 and accum: st = "🟢 سیگنال قوی (انباشت + حجم)"
     elif score >= 60: st = "🟢 سیگنال قوی"
     elif score >= 50: st = "🟡 سیگنال متوسط"
     elif whale_d: st = "⚫ هشدار توزیع نهنگ!"
     else: st = "⚪ عادی"
-
     ex_names = list(cex.keys())
     if dex: ex_names.append(dex['dex'])
     ex_str = " + ".join(ex_names)
-
     r = f"🔍 <b>{escape(sym)}</b>\n⏰ {ti['iran']}\n🏪 {ex_str}\n\n"
     r += f"💰 ${ap:,.6f} ({ac:+.2f}%)\n"
     r += f"📈 Z: 1h:{zs.get('1h',(0,0))[0]:.2f} | 4h:{z4:.2f} | 1d:{zs.get('1d',(0,0))[0]:.2f}\n"
     r += f"📊 Vol Mult: {zs.get('4h',(0,0))[1]:.1f}x\n"
     r += f"📉 RSI: {rsi_val:.1f}\n"
-    if macd_data:
-        r += f"📊 MACD: {macd_data['cross']} (hist: {macd_data['hist']:.4f})\n"
+    if macd_data: r += f"📊 MACD: {macd_data['cross']} (hist: {macd_data['hist']:.4f})\n"
     if boll and boll['upper'] > 0:
         pct_b = (ap - boll['lower']) / (boll['upper'] - boll['lower']) if (boll['upper']-boll['lower']) > 0 else 0
         r += f"📊 Bollinger %B: {pct_b*100:.1f}%\n"
     r += f"🎯 {st}\n\n"
-
     r += f"🔎 <b>الگوها:</b>\n"
     r += f"• انباشت: {'✅' if accum else '❌'}\n"
     r += f"• واگرایی: {'⚠️ نزولی' if divg=='bearish' else '✅ ندارد'}\n"
@@ -787,7 +733,6 @@ async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
     r += f"• توزیع نهنگ: {'⚠️ بله!' if whale_d else '✅ خیر'}\n"
     r += f"• Order Book: {ob_status} ({ob_imb_val:+.2f})\n"
     r += f"• همبستگی BTC: {'⚠️ مشکوک' if btc_corr=='suspicious' else '✅ عادی'} (BTC: {btc_chg:+.1f}%)\n\n"
-
     r += f"📊 <b>مشتقات:</b>\n"
     if fr:
         fe = "🟢" if fr['signal']=='bullish' else ("🔴" if fr['signal']=='bearish' else "⚪")
@@ -796,38 +741,28 @@ async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
         oe = "🟢" if oi['signal']=='bullish' else ("🔴" if oi['signal']=='bearish' else "⚪")
         r += f"• {oe} OI 24h: {oi['change_24h']:+.2f}%\n"
     r += "\n"
-
     if supply:
         r += f"💰 <b>عرضه:</b> {supply['ratio']*100:.1f}% در گردش"
         r += f" | Low Float: {'✅' if supply['low_float'] else '❌'}\n\n"
-
     r += f"🚀 <b>پیش‌بینی پامپ:</b>\n"
     r += f"• {pp['min']}% - <b>{pp['likely']}%</b> - {pp['max']}%\n"
     r += f"• اطمینان: {pp['conf']}\n\n"
-
-    if sent:
-        r += f"{sent['emoji']} {sent['status']} ({sent['value']}/100)\n\n"
-
+    if sent: r += f"{sent['emoji']} {sent['status']} ({sent['value']}/100)\n\n"
     r += f"💵 <b>مدیریت ریسک ({tier['name']}, هزینه {(TRADING_FEE+slip)*100:.2f}%):</b>\n"
-    r += f"• ورود: ${ap:,.6f}\n"
-    r += f"• استاپ: ${sl:,.6f}\n"
+    r += f"• ورود: ${ap:,.6f}\n• استاپ: ${sl:,.6f}\n"
     r += f"• T1: ${t1:,.6f} | T2: ${t2:,.6f} | T3: ${t3:,.6f}\n"
     r += f"• حجم: ${ps:,.2f} | R:R: 1:{rr:.2f}\n\n"
-
     r += f"🎯 <b>امتیاز: {score}/100</b>\n"
     if score >= 70: r += "✅ سیگنال قوی → ورود با ۲٪ ریسک\n"
     elif score >= 55: r += "⚠️ متوسط → ورود با ۱٪ ریسک\n"
     else: r += "❌ ضعیف → ورود توصیه نمی‌شود\n"
-
     social = await asyncio.to_thread(search_social, sym)
     if social:
         r += f"\n💬 <b>شبکه‌های اجتماعی:</b>\n"
         for i, s in enumerate(social[:3], 1):
             e = "🐦" if s['platform']=='توییتر' else "✈️"
             r += f"{i}. {e} {s['username']}: <i>{s['comment'][:60]}...</i>\n"
-
     r += f"\n⚠️ <i>تحلیل کمی ≠ توصیه مالی</i>"
-
     pd_ = {
         'coin': sym, 'entry_price': ap, 'stop_loss': sl,
         'take_profit_1': t1, 'take_profit_2': t2, 'take_profit_3': t3,
@@ -841,15 +776,12 @@ async def analyze_full(raw: str) -> Tuple[str, Optional[Dict]]:
     return r, pd_
 
 # ==========================================
-# ⚡ اسکن سریع - با DEX Coverage بهبودیافته
+# ⚡ اسکن سریع
 # ==========================================
 async def quick_scan() -> Optional[str]:
     try:
-        # ✅ DEX Coverage بهبودیافته
         dex_coins = await get_dex_hot_coins()
         logger.info(f"🦄 {len(dex_coins)} کوین DEX یافت شد")
-
-        # Binance
         bn_coins = []
         try:
             async with httpx.AsyncClient(timeout=60) as cl:
@@ -866,8 +798,6 @@ async def quick_scan() -> Optional[str]:
                         if not any(s.endswith(e) for e in EXCLUDED) and s not in STABLES:
                             bn_coins.append({'symbol':s,'volume':row['quoteVolume'],'change':row['priceChangePercent'],'src':'BN'})
         except: pass
-
-        # MEXC
         mx_coins = []
         try:
             async with httpx.AsyncClient(timeout=60) as cl:
@@ -884,49 +814,34 @@ async def quick_scan() -> Optional[str]:
                         if not any(s.endswith(e) for e in EXCLUDED) and s not in STABLES:
                             mx_coins.append({'symbol':s,'volume':row['quoteVolume'],'change':row['priceChangePercent'],'src':'MX'})
         except: pass
-
-        # ترکیب
         all_c = {}
         for c in dex_coins + bn_coins + mx_coins:
             if c['symbol'] not in all_c or c['volume'] > all_c[c['symbol']]['volume']:
                 all_c[c['symbol']] = c
         all_c = dict(sorted(all_c.items(), key=lambda x: x[1]['volume'], reverse=True)[:1000])
-
         logger.info(f"📊 {len(all_c)} کوین (BN:{len(bn_coins)} MX:{len(mx_coins)} DEX:{len(dex_coins)})")
-
-        final = []
-        checked = 0
-        
+        final = []; checked = 0
         all_items = list(all_c.items())
         batch_size = 100
-        
         for batch_start in range(0, len(all_items), batch_size):
             batch = all_items[batch_start:batch_start + batch_size]
-            
             async with httpx.AsyncClient(timeout=300) as batch_cl:
                 for sym, cd in batch:
                     checked += 1
-                    
                     try:
                         zs = {'1h':(0,0),'4h':(0,0),'1d':(0,0)}
                         if cd['src'] != 'DEX':
                             zs = await calc_z_scores(sym, batch_cl)
-
                         z4, m4 = zs.get('4h',(0,0))
                         z1 = zs.get('1h',(0,0))[0]
                         if z4 < 0.8 and z1 < 1.0 and m4 < 1.2: continue
-
                         fr_v = oi_v = rsi_v = None
-                        macd_c = 'none'
-                        dex_d = None
-                        kl = None
-                        
+                        macd_c = 'none'; dex_d = None; kl = None
                         if cd['src'] != 'DEX':
                             fr_d = await get_funding(sym, batch_cl)
                             fr_v = fr_d['current'] if fr_d else None
                             oi_d = await get_oi_change(sym, batch_cl)
                             oi_v = oi_d['change_24h'] if oi_d else None
-                            
                             kl = await get_klines(sym, batch_cl, '1h', 30)
                             if kl and len(kl) >= 20:
                                 cls = [k['close'] for k in kl[:-1]]
@@ -935,27 +850,18 @@ async def quick_scan() -> Optional[str]:
                                 macd_c = md['cross'] if md else 'none'
                         else:
                             dex_d = await get_dex_data(sym, batch_cl)
-
                         liq = dex_d['liquidity'] if dex_d else cd.get('liquidity', 0)
                         tier = get_tier(estimate_mc(cd['volume']))
-
-                        accum = False
-                        divg = 'none'
-                        stop_h = False
-                        price_acc = False
-                        whale_d = False
-                        
+                        accum = False; divg = 'none'; stop_h = False; price_acc = False; whale_d = False
                         if cd['src'] != 'DEX' and kl and len(kl) >= 20:
                             cls = [k['close'] for k in kl[:-1]]
                             atr_est = np.mean([kl[i]['high']-kl[i]['low'] for i in range(max(0,len(kl)-15), len(kl)-1)]) if len(kl) > 1 else 0
                             accum = detect_accumulation(cls, atr_est, cls[-1] if cls else 0)
                             price_acc = detect_price_acceleration(cls)
-
                         sc, pt = score_coin(
                             zs, cd['change'], cd['volume'], fr_v, oi_v, rsi_v, macd_c, liq, tier['name'],
                             accum, divg, stop_h, price_acc, whale_d, 0, 'normal'
                         )
-
                         if sc >= 30:
                             pp = predict_pump(sc, liq)
                             final.append({
@@ -966,13 +872,10 @@ async def quick_scan() -> Optional[str]:
                     except Exception as e:
                         logger.warning(f"⚠️ خطا در {sym}: {e}")
                         continue
-
             if checked % 100 == 0:
                 logger.info(f"📊 {checked}/{len(all_items)}")
-
         if not final: return None
         final.sort(key=lambda x: (x['score'], x['z4']), reverse=True)
-
         ti = get_time_info()
         r = f"⚡ <b>اسکن سریع</b>\n⏰ {ti['iran']}\n📊 {checked} کوین\n\n🏆 <b>کاندیداها:</b>\n"
         for c in final[:20]:
@@ -1000,11 +903,9 @@ async def check_exit(pos: Dict) -> Tuple[Optional[str], str]:
             dex = await get_dex_data(coin, cl)
             if dex: cp = dex['price']
         if cp is None: return None, "HOLD"
-
     reasons = []
     if cp <= pos['stop_loss']: reasons.append(f"🔴 استاپ (${pos['stop_loss']:,.4f})")
     if cp >= pos['take_profit_3']: reasons.append(f"🟢 تارگت 3 (${pos['take_profit_3']:,.4f})")
-
     if reasons:
         pnl = ((cp - pos['entry_price']) / pos['entry_price'] * 100)
         msg = f"🚨 <b>خروج {escape(coin)}</b>\n• ورود: ${pos['entry_price']:,.6f}\n• فعلی: ${cp:,.6f}\n• سود: {pnl:+.2f}%\n\n" + "\n".join(reasons)
@@ -1016,7 +917,7 @@ async def check_exit(pos: Dict) -> Tuple[Optional[str], str]:
 # ==========================================
 async def cmd_start(u, c):
     await u.message.reply_text(
-        "🔥 <b>شکارچی پامپ v10.2</b>\n\n"
+        "🔥 <b>شکارچی پامپ v10.3</b>\n\n"
         "/scan - اسکن CEX+DEX\n"
         "/positions - پوزیشن‌ها\n"
         "/backtest - بک‌تست\n\n"
@@ -1091,7 +992,8 @@ async def auto_check(ctx):
             except: pass
             await update_position_status(p['coin'], 'closed')
 
-def err_handler(update, context):
+# ✅ اصلاح: err_handler باید async باشد
+async def err_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     logger.error(f"Bot error: {context.error}")
 
 # ==========================================
@@ -1099,7 +1001,6 @@ def err_handler(update, context):
 # ==========================================
 def main():
     _init_db()
-
     try:
         app = Flask(__name__)
         @app.route('/')
@@ -1109,10 +1010,8 @@ def main():
         logger.info("✅ Health OK")
     except Exception as e:
         logger.warning(f"Health: {e}")
-
-    logger.info("🔥 v10.2 شروع...")
+    logger.info("🔥 v10.3 شروع...")
     logger.info(f"⏰ اسکن: {SCAN_INTERVAL} دقیقه | چک: {CHECK_INTERVAL} دقیقه")
-
     bot = Application.builder().token(TELEGRAM_TOKEN).build()
     bot.add_handler(CommandHandler("start", cmd_start))
     bot.add_handler(CommandHandler("help", cmd_start))
@@ -1121,10 +1020,8 @@ def main():
     bot.add_handler(CommandHandler("backtest", cmd_bt))
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_msg))
     bot.add_error_handler(err_handler)
-
     bot.job_queue.run_repeating(auto_scan, SCAN_INTERVAL * 60, first=10)
     bot.job_queue.run_repeating(auto_check, CHECK_INTERVAL * 60, first=30)
-
     logger.info("✅ آماده")
     bot.run_polling(allowed_updates=Update.ALL_TYPES)
 
