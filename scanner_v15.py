@@ -54,7 +54,7 @@ STABLES = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'FDUSD', 'USDD', 'USD1']
 
 HTTP_SEM = asyncio.Semaphore(20)
 
-# ✅ Watchlist: کوین‌های مهم که همیشه باید چک شوند
+# ✅ Watchlist
 WATCHLIST = [
     'VTHO', 'DEBIT', 'ACA', 'NOVA', 'REVS', 'NES',
     'BTC', 'ETH', 'SOL', 'BNB', 'XRP', 'ADA', 'DOGE',
@@ -71,7 +71,7 @@ PROD_RULES = {
     'min_change': -30.0,
     'max_change': 500.0,
     'dex_boost': 15,
-    'max_cex_coins': 200,  # ✅ افزایش از 50 به 200
+    'max_cex_coins': 200,
 }
 
 # ==========================================
@@ -312,11 +312,11 @@ async def get_dex_coins():
             
             await asyncio.sleep(0.1)
     
-    logger.info(f" Collected {len(coins)} DEX coins")
+    logger.info(f"🦄 Collected {len(coins)} DEX coins")
     return coins
 
 # ==========================================
-#  CEX Collector (با Watchlist)
+# 🏦 CEX Collector (رفع باگ Overwrite)
 # ==========================================
 async def get_cex_tickers():
     tickers = {}
@@ -353,11 +353,20 @@ async def get_cex_tickers():
                         if price <= 0 or volume <= 0:
                             continue
                         
-                        tickers[coin] = {
-                            'price': price,
-                            'change': change,
-                            'volume': volume,
-                        }
+                        # ✅ رفع باگ: اگر کوین قبلاً وجود داشت، فقط اگر حجم این صرافی بیشتر بود جایگزین کن
+                        if coin in tickers:
+                            if volume > tickers[coin]['volume']:
+                                tickers[coin] = {
+                                    'price': price,
+                                    'change': change,
+                                    'volume': volume,
+                                }
+                        else:
+                            tickers[coin] = {
+                                'price': price,
+                                'change': change,
+                                'volume': volume,
+                            }
                     except (ValueError, TypeError):
                         continue
                         
@@ -368,7 +377,7 @@ async def get_cex_tickers():
     return tickers
 
 # ==========================================
-#  Rule-Based Scoring
+# 🎯 Rule-Based Scoring
 # ==========================================
 def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     score = 0
@@ -435,7 +444,7 @@ def calc_prod_score(z4, m4, pattern, change=0, rsi=50, social_score=50, is_dex=F
     return round(score, 1), True
 
 # ==========================================
-# 🔍 Production Scan (با Watchlist)
+# 🔍 Production Scan
 # ==========================================
 async def scan_production():
     start = time.time()
@@ -487,11 +496,11 @@ async def scan_production():
                 except Exception as e:
                     logger.debug(f"Watchlist error {sym}: {e}")
         
-        # سپس Top 200 را پردازش کن (اگر در Watchlist نیستند)
+        # سپس Top 200 را پردازش کن
         for sym, data in list(cex_tickers.items())[:PROD_RULES['max_cex_coins']]:
             if not is_valid_symbol(sym):
                 continue
-            if sym in all_coins:  # ✅ اگر در Watchlist بود، رد کن
+            if sym in all_coins:
                 continue
             
             try:
@@ -570,7 +579,7 @@ async def scan_production():
     messages = []
     ti = datetime.now().strftime("%Y-%m-%d %H:%M")
     
-    msg1 = f"⚡ Crypto-Agent v15 | {ti}\n"
+    msg1 = f" Crypto-Agent v15 | {ti}\n"
     msg1 += f"📊 {len(all_coins)} coins | {len(final)} signals\n"
     msg1 += f"🌍 F&G: {fng_value} | DEX: {dex_count}\n\n"
     
@@ -638,7 +647,7 @@ async def cmd_stats(u, c):
         "✅ Profit Factor: 3.24\n"
         "✅ Sharpe: 6.88\n\n"
         f"🌍 Fear & Greed: {fng}\n\n"
-        " Filters:\n"
+        "🎯 Filters:\n"
         "• Z-Score: 0.0-3.0\n"
         "• Volume Mult: 0.0-15.0x\n"
         "• Change: -30% to +500%\n"
@@ -660,7 +669,7 @@ def main():
     except:
         pass
 
-    logger.info(" Crypto-Agent v15 Production started")
+    logger.info("🚀 Crypto-Agent v15 Production started")
 
     bot = Application.builder().token(TELEGRAM_TOKEN).build()
     bot.add_handler(CommandHandler("start", cmd_start))
