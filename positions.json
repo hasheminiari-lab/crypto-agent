@@ -1,0 +1,15 @@
+{
+  "active_signals": [
+    {
+      "coin": "ENSO",
+      "entry_price": 0.8712333333333334,
+      "stop_loss": 0.7405483333333334,
+      "take_profit_1": 1.04548,
+      "take_profit_2": 1.2197266666666666,
+      "take_profit_3": 1.3939733333333335,
+      "z_score": 27.639756724685235,
+      "score": 105,
+      "entry_time": "2026-08-30 21:56"
+    }
+  ]
+}

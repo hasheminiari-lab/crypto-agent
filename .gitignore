@@ -1,6 +1,33 @@
+cat > .gitignore << 'EOF'
+# Secrets
 .env
+
+# Database (too large for GitHub)
+bot.db
+*.db
+
+# Logs
+*.log
+
+# Cache
 __pycache__/
 *.pyc
-bot.db
-positions.json
+.pytest_cache/
+
+# Backup files
+*.backup
+
+# Large model files
+pump_model.pkl
+
+# IDE
 .vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Results
+backtest_results.json
+EOF
