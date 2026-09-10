@@ -54,6 +54,13 @@ STABLES = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'FDUSD', 'USDD', 'USD1']
 
 HTTP_SEM = asyncio.Semaphore(20)
 
+# ✅ Watchlist: کوین‌های مهم که همیشه باید چک شوند
+WATCHLIST = [
+    'VTHO', 'DEBIT', 'ACA', 'NOVA', 'REVS', 'NES',
+    'BTC', 'ETH', 'SOL', 'BNB', 'XRP', 'ADA', 'DOGE',
+    'DOT', 'MATIC', 'AVAX', 'LINK', 'UNI', 'ATOM'
+]
+
 # ✅ قوانین Production
 PROD_RULES = {
     'max_z_score': 3.0,
@@ -64,6 +71,7 @@ PROD_RULES = {
     'min_change': -30.0,
     'max_change': 500.0,
     'dex_boost': 15,
+    'max_cex_coins': 200,  # ✅ افزایش از 50 به 200
 }
 
 # ==========================================
@@ -126,10 +134,9 @@ async def http_get(client, url, params=None):
             return None
 
 # ==========================================
-# 📊 Z-Score (CEX) - با 1h و 4h
+# 📊 Z-Score (CEX)
 # ==========================================
 async def calc_z_scores_cex(symbol, client):
-    """محاسبه Z-Score برای کوین‌های CEX با 1h و 4h"""
     results = {}
     
     for iv, lim in [('1h', 60), ('4h', 42)]:
@@ -177,36 +184,26 @@ async def calc_z_scores_cex(symbol, client):
     return results
 
 # ==========================================
-#  انتخاب بهترین Timeframe (رفع باگ)
+# 🎯 انتخاب بهترین Timeframe
 # ==========================================
 def select_best_timeframe(zs: Dict) -> tuple:
-    """
-    انتخاب بهترین timeframe بر اساس بیشترین Volume Multiplier
-    این رفع باگ اصلی است!
-    """
     z1h, m1h = zs.get('1h', (0.0, 0.0))
     z4h, m4h = zs.get('4h', (0.0, 0.0))
     
-    # اگر هر دو صفر هستند
     if m1h == 0.0 and m4h == 0.0:
         return (0.0, 0.0)
-    
-    # اگر فقط یکی صفر است
     if m1h == 0.0:
         return (z4h, m4h)
     if m4h == 0.0:
         return (z1h, m1h)
     
-    # ✅ انتخاب timeframe با بیشترین Volume Multiplier
     if m1h >= m4h:
-        logger.debug(f"Using 1h: Z={z1h:.2f}, Vol={m1h:.2f}x (vs 4h: {m4h:.2f}x)")
         return (z1h, m1h)
     else:
-        logger.debug(f"Using 4h: Z={z4h:.2f}, Vol={m4h:.2f}x (vs 1h: {m1h:.2f}x)")
         return (z4h, m4h)
 
 # ==========================================
-#  Z-Score (DEX)
+# 📊 Z-Score (DEX)
 # ==========================================
 async def calc_z_scores_dex(coin_data: Dict) -> tuple:
     try:
@@ -319,7 +316,7 @@ async def get_dex_coins():
     return coins
 
 # ==========================================
-#  CEX Collector
+#  CEX Collector (با Watchlist)
 # ==========================================
 async def get_cex_tickers():
     tickers = {}
@@ -371,7 +368,7 @@ async def get_cex_tickers():
     return tickers
 
 # ==========================================
-# 🎯 Rule-Based Scoring
+#  Rule-Based Scoring
 # ==========================================
 def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     score = 0
@@ -438,24 +435,25 @@ def calc_prod_score(z4, m4, pattern, change=0, rsi=50, social_score=50, is_dex=F
     return round(score, 1), True
 
 # ==========================================
-# 🔍 Production Scan
+# 🔍 Production Scan (با Watchlist)
 # ==========================================
 async def scan_production():
     start = time.time()
-    logger.info("🔍 Starting production scan...")
+    logger.info(" Starting production scan...")
 
     fng_value = await get_fear_greed_index()
     social_score = fear_greed_to_score(fng_value)
     logger.info(f"🌍 Fear & Greed: {fng_value} → Social Score: {social_score}")
 
     dex_coins = await get_dex_coins()
-    logger.info(f" {len(dex_coins)} DEX coins")
+    logger.info(f"🦄 {len(dex_coins)} DEX coins")
 
     cex_tickers = await get_cex_tickers()
     logger.info(f"🏦 {len(cex_tickers)} CEX tickers")
 
     all_coins = {}
     
+    # پردازش DEX
     for c in dex_coins:
         sym = c['symbol']
         if not is_valid_symbol(sym):
@@ -466,18 +464,38 @@ async def scan_production():
             c['m4'] = m4
             all_coins[sym] = c
 
-    # ✅ پردازش CEX با انتخاب بهترین Timeframe
+    # ✅ پردازش CEX با Watchlist + Top 200
     async with httpx.AsyncClient(timeout=300) as client:
-        for sym, data in list(cex_tickers.items())[:50]:
+        # اول Watchlist را پردازش کن
+        for sym in WATCHLIST:
+            if sym in cex_tickers:
+                data = cex_tickers[sym]
+                try:
+                    zs = await calc_z_scores_cex(sym, client)
+                    z4, m4 = select_best_timeframe(zs)
+                    
+                    all_coins[sym] = {
+                        'symbol': sym,
+                        'chain': 'CEX',
+                        'volume': data['volume'],
+                        'liquidity': data['volume'] * 0.1,
+                        'change': data['change'],
+                        'dex': 'Binance/MEXC',
+                        'z4': z4,
+                        'm4': m4,
+                    }
+                except Exception as e:
+                    logger.debug(f"Watchlist error {sym}: {e}")
+        
+        # سپس Top 200 را پردازش کن (اگر در Watchlist نیستند)
+        for sym, data in list(cex_tickers.items())[:PROD_RULES['max_cex_coins']]:
             if not is_valid_symbol(sym):
                 continue
-            if sym in all_coins:
+            if sym in all_coins:  # ✅ اگر در Watchlist بود، رد کن
                 continue
             
             try:
                 zs = await calc_z_scores_cex(sym, client)
-                
-                # ✅ رفع باگ: انتخاب بهترین timeframe
                 z4, m4 = select_best_timeframe(zs)
                 
                 all_coins[sym] = {
@@ -572,7 +590,7 @@ async def scan_production():
         
         for j, c in enumerate(batch, i+1):
             vol_k = int(c['volume'] / 1000)
-            msg += f"#{j}  {c['symbol']} ({c['chain']})\n"
+            msg += f"#{j} 🔥 {c['symbol']} ({c['chain']})\n"
             msg += f"   Score: {c['score']} | Z: {c['z4']} | Vol: {c['m4']}x\n"
             msg += f"   Change: {c['change']:+.1f}% | Vol: ${vol_k}K\n"
             msg += f"   Social: {c['social']}\n\n"
@@ -597,7 +615,7 @@ async def cmd_start(u, c):
 async def cmd_scan(u, c):
     if u.effective_user.id not in ALLOWED_USERS:
         return
-    await u.message.reply_text(" اسکن... (1-2 دقیقه)")
+    await u.message.reply_text("⏳ اسکن... (1-2 دقیقه)")
     try:
         messages = await scan_production()
         for msg in messages:
@@ -615,21 +633,22 @@ async def cmd_stats(u, c):
     fng = await get_fear_greed_index()
     
     await u.message.reply_text(
-        " v15 Production Stats\n\n"
+        "📊 v15 Production Stats\n\n"
         "✅ Win Rate: 75%\n"
         "✅ Profit Factor: 3.24\n"
         "✅ Sharpe: 6.88\n\n"
         f"🌍 Fear & Greed: {fng}\n\n"
-        "🎯 Filters:\n"
+        " Filters:\n"
         "• Z-Score: 0.0-3.0\n"
         "• Volume Mult: 0.0-15.0x\n"
         "• Change: -30% to +500%\n"
         "• Score >= 40\n"
         "• Min Volume: $500\n"
-        "• DEX Boost: +15")
+        "• DEX Boost: +15\n"
+        f"• Watchlist: {len(WATCHLIST)} coins")
 
 # ==========================================
-#  Main
+# 🚀 Main
 # ==========================================
 def main():
     try:
@@ -641,7 +660,7 @@ def main():
     except:
         pass
 
-    logger.info("🚀 Crypto-Agent v15 Production started")
+    logger.info(" Crypto-Agent v15 Production started")
 
     bot = Application.builder().token(TELEGRAM_TOKEN).build()
     bot.add_handler(CommandHandler("start", cmd_start))
