@@ -54,16 +54,16 @@ STABLES = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'FDUSD', 'USDD', 'USD1']
 
 HTTP_SEM = asyncio.Semaphore(20)
 
-# ✅ قوانین Production (بهبودیافته برای شناسایی پمپ‌ها)
+# ✅ قوانین Production (نهایی - رفع مشکل Volume Multiplier)
 PROD_RULES = {
-    'max_z_score': 3.0,        # ✅ افزایش از 2.0 به 3.0 (برای پمپ‌های قوی)
-    'max_vol_mult': 5.0,       # ✅ افزایش از 3.0 به 5.0
-    'min_score': 40,           # ✅ کاهش از 45 به 40
-    'max_signals': 10,
-    'min_volume_usd': 500,     # ✅ کاهش از 1000 به 500
-    'min_change': -30.0,       # ✅ کاهش از -20 به -30
-    'max_change': 500.0,       # ✅ افزایش از 200 به 500 (برای پمپ‌های بزرگ)
-    'dex_boost': 15,
+    'max_z_score': 3.0,        # Z-Score حداکثر 3.0
+    'max_vol_mult': 15.0,      # ✅ افزایش از 5.0 به 15.0 (برای پمپ‌های قوی)
+    'min_score': 40,           # حداقل امتیاز 40
+    'max_signals': 10,         # حداکثر 10 سیگنال
+    'min_volume_usd': 500,     # حداقل حجم $500
+    'min_change': -30.0,       # حداقل تغییر -30%
+    'max_change': 500.0,       # حداکثر تغییر +500%
+    'dex_boost': 15,           # امتیاز اضافی DEX
 }
 
 # ==========================================
@@ -109,7 +109,7 @@ def fear_greed_to_score(fng_value: int) -> int:
         return 10
 
 # ==========================================
-#  HTTP Helper
+# 📡 HTTP Helper
 # ==========================================
 async def http_get(client, url, params=None):
     async with HTTP_SEM:
@@ -126,13 +126,12 @@ async def http_get(client, url, params=None):
             return None
 
 # ==========================================
-# 📊 Z-Score (CEX) - بهبودیافته با 1h
+#  Z-Score (CEX) - با 1h و 4h
 # ==========================================
 async def calc_z_scores_cex(symbol, client):
     """محاسبه Z-Score برای کوین‌های CEX با 1h و 4h"""
     results = {}
     
-    # ✅ اضافه کردن 1h برای شناسایی پمپ‌های سریع
     for iv, lim in [('1h', 60), ('4h', 42)]:
         try:
             data = await http_get(client, f"{BINANCE}/klines",
@@ -178,29 +177,24 @@ async def calc_z_scores_cex(symbol, client):
     return results
 
 # ==========================================
-# 📊 Z-Score (DEX) - بهبودیافته
+# 📊 Z-Score (DEX)
 # ==========================================
 async def calc_z_scores_dex(coin_data: Dict) -> tuple:
-    """محاسبه Z-Score برای کوین‌های DEX (بهبودیافته)"""
+    """محاسبه Z-Score برای کوین‌های DEX"""
     try:
         volume_24h = coin_data.get('volume', 0)
         liquidity = coin_data.get('liquidity', 0)
         change_24h = coin_data.get('change', 0)
         
-        # ✅ محاسبه Volume Multiplier بهتر (افزایش max به 5.0)
         if liquidity > 0:
             vol_mult = volume_24h / liquidity
-            vol_mult = min(5.0, max(0.0, vol_mult))  # ✅ افزایش از 3.0 به 5.0
+            vol_mult = min(15.0, max(0.0, vol_mult))  # ✅ افزایش max به 15.0
         else:
             vol_mult = 0.0
         
-        # ✅ محاسبه Z-Score بهتر (تقسیم بر 20 به جای 10)
-        # تغییرات مثبت = Z مثبت
-        # نرمال‌سازی: change 20% = Z 1.0
-        z_score = change_24h / 20.0  # ✅ تغییر از 10 به 20
-        z_score = min(3.0, max(-2.0, z_score))  # ✅ افزایش max از 2.0 به 3.0
+        z_score = change_24h / 20.0
+        z_score = min(3.0, max(-2.0, z_score))
         
-        # اگر volume خیلی کم است، Z را کاهش بده
         if volume_24h < 5000:
             z_score *= 0.5
         
@@ -211,7 +205,7 @@ async def calc_z_scores_dex(coin_data: Dict) -> tuple:
         return (0.0, 0.0)
 
 # ==========================================
-# 🦄 DEX Collector
+#  DEX Collector
 # ==========================================
 async def get_dex_coins():
     coins = []
@@ -272,7 +266,6 @@ async def get_dex_coins():
                     else:
                         chg = float(chg_data or 0)
                     
-                    # ✅ کاهش فیلترها برای شناسایی پمپ‌های کوچک‌تر
                     if vol < PROD_RULES['min_volume_usd']:
                         continue
                     if liq < 100:
@@ -350,7 +343,7 @@ async def get_cex_tickers():
     return tickers
 
 # ==========================================
-# 🎯 Rule-Based Scoring (Production)
+# 🎯 Rule-Based Scoring
 # ==========================================
 def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     score = 0
@@ -360,20 +353,22 @@ def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     elif 0.5 <= z4 < 1.0: score += 18
     elif 1.0 <= z4 < 1.5: score += 15
     elif 1.5 <= z4 < 2.0: score += 12
-    elif 2.0 <= z4 < 3.0: score += 8  # ✅ اضافه شده برای پمپ‌های قوی
+    elif 2.0 <= z4 < 3.0: score += 8
     
-    # Volume Mult (20%)
+    # Volume Mult (20%) - بهبودیافته برای پمپ‌های قوی
     if 0.5 <= m4 < 1.5: score += 20
     elif 1.5 <= m4 < 2.0: score += 18
     elif 2.0 <= m4 < 3.0: score += 15
-    elif 3.0 <= m4 < 5.0: score += 10  # ✅ اضافه شده
+    elif 3.0 <= m4 < 5.0: score += 12
+    elif 5.0 <= m4 < 10.0: score += 10  # ✅ اضافه شده برای پمپ‌های قوی
+    elif 10.0 <= m4 < 15.0: score += 8   # ✅ اضافه شده
     elif 0.0 <= m4 < 0.5: score += 8
     
-    # Change (25%) - بهبودیافته برای پمپ‌های بزرگ
+    # Change (25%)
     if 20 <= change <= 50: score += 25
     elif 50 < change <= 100: score += 23
     elif 100 < change <= 200: score += 20
-    elif 200 < change <= 500: score += 18  # ✅ اضافه شده برای پمپ‌های بزرگ
+    elif 200 < change <= 500: score += 18
     elif 10 <= change < 20: score += 22
     elif 5 <= change < 10: score += 18
     elif 0 < change < 5: score += 15
@@ -433,7 +428,6 @@ async def scan_production():
 
     all_coins = {}
     
-    # ✅ پردازش DEX coins با Z-Score بهبودیافته
     for c in dex_coins:
         sym = c['symbol']
         if not is_valid_symbol(sym):
@@ -444,7 +438,6 @@ async def scan_production():
             c['m4'] = m4
             all_coins[sym] = c
 
-    # ✅ پردازش CEX coins با Z-Score 1h + 4h
     async with httpx.AsyncClient(timeout=300) as client:
         for sym, data in list(cex_tickers.items())[:50]:
             if not is_valid_symbol(sym):
@@ -454,11 +447,9 @@ async def scan_production():
             
             try:
                 zs = await calc_z_scores_cex(sym, client)
-                # ✅ استفاده از 1h برای پمپ‌های سریع، وگرنه 4h
                 z4 = zs.get('1h', (0, 0))[0]
                 m4 = zs.get('1h', (0, 0))[1]
                 
-                # اگر 1h صفر بود، از 4h استفاده کن
                 if z4 == 0.0 and m4 == 0.0:
                     z4 = zs.get('4h', (0, 0))[0]
                     m4 = zs.get('4h', (0, 0))[1]
@@ -477,7 +468,7 @@ async def scan_production():
                 logger.debug(f"CEX error {sym}: {e}")
                 continue
 
-    logger.info(f"📊 {len(all_coins)} total coins")
+    logger.info(f" {len(all_coins)} total coins")
 
     final = []
     dex_count = 0
@@ -535,8 +526,8 @@ async def scan_production():
     messages = []
     ti = datetime.now().strftime("%Y-%m-%d %H:%M")
     
-    msg1 = f" Crypto-Agent v15 | {ti}\n"
-    msg1 += f"📊 {len(all_coins)} coins | {len(final)} signals\n"
+    msg1 = f"⚡ Crypto-Agent v15 | {ti}\n"
+    msg1 += f" {len(all_coins)} coins | {len(final)} signals\n"
     msg1 += f"🌍 F&G: {fng_value} | DEX: {dex_count}\n\n"
     
     for i, c in enumerate(final[:2], 1):
@@ -546,7 +537,7 @@ async def scan_production():
         msg1 += f"   Change: {c['change']:+.1f}% | Vol: ${vol_k}K\n"
         msg1 += f"   Social: {c['social']}\n\n"
     
-    msg1 += "Filters: Z<3.0 | Vol<5.0x | Change>-30%"
+    msg1 += "Filters: Z<3.0 | Vol<15.0x | Change>-30%"
     messages.append(msg1)
     
     for i in range(2, len(final), 2):
@@ -565,7 +556,7 @@ async def scan_production():
     return messages
 
 # ==========================================
-#  Telegram Handlers
+# 🤖 Telegram Handlers
 # ==========================================
 async def cmd_start(u, c):
     await u.message.reply_text(
@@ -589,7 +580,7 @@ async def cmd_scan(u, c):
             await u.message.reply_text(msg)
     except Exception as e:
         logger.error(f"Scan error: {e}", exc_info=True)
-        await u.message.reply_text(f" Error: {str(e)[:100]}")
+        await u.message.reply_text(f"❌ Error: {str(e)[:100]}")
 
 async def cmd_stats(u, c):
     if u.effective_user.id not in ALLOWED_USERS:
@@ -605,7 +596,7 @@ async def cmd_stats(u, c):
         f"🌍 Fear & Greed: {fng}\n\n"
         "🎯 Filters:\n"
         "• Z-Score: 0.0-3.0\n"
-        "• Volume Mult: 0.0-5.0x\n"
+        "• Volume Mult: 0.0-15.0x\n"
         "• Change: -30% to +500%\n"
         "• Score >= 40\n"
         "• Min Volume: $500\n"
