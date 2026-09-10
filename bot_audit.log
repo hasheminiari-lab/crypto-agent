@@ -906,3 +906,7 @@ telegram.error.BadRequest: Can't parse entities: can't find end tag correspondin
 2026-09-10 13:02:01,669 - INFO - 🏦 1850 CEX tickers
 2026-09-10 13:02:28,734 - INFO - 📊 62 total coins
 2026-09-10 13:02:28,734 - INFO - ✅ Scan done in 30.2s, 10 signals, DEX: 6
+2026-09-10 13:31:14,130 - INFO - 🚀 Crypto-Agent v15 Production started
+2026-09-10 13:31:14,184 - INFO - ✅ Production Ready
+2026-09-10 13:31:21,790 - INFO - 🚀 Crypto-Agent v15 Production started
+2026-09-10 13:31:21,855 - INFO - ✅ Production Ready
