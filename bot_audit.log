@@ -158,3 +158,751 @@
 2026-09-03 20:29:32,529 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=LRCUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
 2026-09-03 20:31:38,504 - INFO - 📊 400/1000
 2026-09-03 20:33:55,456 - INFO - 📊 500/1000
+2026-09-04 02:51:27,271 - INFO - ✅ Health OK
+2026-09-04 02:51:27,271 - INFO - 🔥 v10.3 شروع...
+2026-09-04 02:51:27,273 - INFO - ⏰ اسکن: 15 دقیقه | چک: 30 دقیقه
+2026-09-04 02:51:27,563 - INFO - ✅ آماده
+2026-09-04 02:51:29,857 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-04 02:51:29,910 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-04 02:51:37,571 - INFO - ⚡ اسکن خودکار...
+2026-09-04 02:51:38,235 - INFO - 🦄 11 کوین DEX یافت شد
+2026-09-04 02:51:38,826 - INFO - 📊 1000 کوین (BN:643 MX:1500 DEX:11)
+2026-09-04 02:51:57,565 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-04 02:53:54,017 - INFO - 📊 100/1000
+2026-09-04 02:56:17,187 - INFO - 📊 200/1000
+2026-09-04 02:58:41,536 - INFO - 📊 300/1000
+2026-09-04 03:01:01,629 - INFO - 📊 400/1000
+2026-09-04 03:03:21,062 - INFO - 📊 500/1000
+2026-09-04 03:05:47,957 - INFO - 📊 600/1000
+2026-09-04 03:08:17,690 - INFO - 📊 700/1000
+2026-09-04 03:11:04,874 - INFO - 📊 800/1000
+2026-09-04 03:14:02,399 - INFO - 📊 900/1000
+2026-09-04 03:16:37,593 - INFO - 📊 1000/1000
+2026-09-05 20:33:55,110 - INFO - 🧠 Learning DB initialized
+2026-09-05 20:33:55,118 - INFO - ✅ Health OK
+2026-09-05 20:33:55,119 - INFO - 🔥 v11.0 شروع... (با سیستم یادگیری)
+2026-09-05 20:33:55,119 - INFO - ⏰ اسکن: 10 دقیقه | چک: 30 دقیقه
+2026-09-05 20:33:55,399 - INFO - ✅ آماده
+2026-09-05 20:33:59,736 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:05,404 - INFO - ⚡ اسکن خودکار...
+2026-09-05 20:34:05,430 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:05,974 - INFO -  10 کوین DEX یافت شد
+2026-09-05 20:34:06,747 - INFO - 📊 1000 کوین (BN:623 MX:1485 DEX:10)
+2026-09-05 20:34:12,354 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:18,152 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:25,401 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-05 20:34:27,087 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:40,253 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:34:59,747 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:35:21,350 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:35:51,483 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:36:26,004 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:37:51,617 - INFO - 🧠 Learning DB initialized
+2026-09-05 20:37:51,619 - INFO - ✅ Health OK
+2026-09-05 20:37:51,621 - INFO - 🔥 v11.0 شروع... (با سیستم یادگیری)
+2026-09-05 20:37:51,621 - INFO - ⏰ اسکن: 10 دقیقه | چک: 30 دقیقه
+2026-09-05 20:37:51,716 - INFO - ✅ آماده
+2026-09-05 20:37:55,932 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:38:01,606 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:38:01,717 - INFO - ⚡ اسکن خودکار...
+2026-09-05 20:38:02,265 - INFO -  10 کوین DEX یافت شد
+2026-09-05 20:38:03,650 - INFO - 📊 1000 کوین (BN:623 MX:1485 DEX:10)
+2026-09-05 20:38:08,529 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:38:14,333 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:38:21,717 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-05 20:44:41,099 - INFO - 🧠 Learning DB initialized
+2026-09-05 20:44:41,101 - INFO - ✅ Health OK
+2026-09-05 20:44:41,101 - INFO - 🔥 v11.0 شروع... (با سیستم یادگیری)
+2026-09-05 20:44:41,103 - INFO - ⏰ اسکن: 10 دقیقه | چک: 30 دقیقه
+2026-09-05 20:44:41,205 - INFO - ✅ آماده
+2026-09-05 20:44:45,445 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:44:51,121 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:44:51,206 - INFO - ⚡ اسکن خودکار...
+2026-09-05 20:44:51,746 - INFO -  10 کوین DEX یافت شد
+2026-09-05 20:44:52,598 - INFO - 📊 1000 کوین (BN:623 MX:1485 DEX:10)
+2026-09-05 20:44:58,049 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:45:03,851 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:45:11,206 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-05 20:45:12,805 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:45:25,982 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:45:45,471 - ERROR - Bot error: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-05 20:53:12,075 - INFO - 🧠 Learning DB initialized
+2026-09-05 20:53:12,078 - INFO - ✅ Health OK
+2026-09-05 20:53:12,079 - INFO - 🔥 v11.0 شروع... (با سیستم یادگیری)
+2026-09-05 20:53:12,079 - INFO - ⏰ اسکن: 10 دقیقه | چک: 30 دقیقه
+2026-09-05 20:53:12,172 - INFO - ✅ آماده
+2026-09-05 20:53:12,898 - INFO -  9 کوین DEX یافت شد
+2026-09-05 20:53:14,082 - INFO - 📊 1000 کوین (BN:623 MX:1484 DEX:9)
+2026-09-05 20:53:22,174 - INFO - ⚡ اسکن خودکار...
+2026-09-05 20:53:22,627 - INFO -  9 کوین DEX یافت شد
+2026-09-05 20:53:23,448 - INFO - 📊 1000 کوین (BN:623 MX:1484 DEX:9)
+2026-09-05 20:53:42,174 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-05 20:56:04,847 - INFO - 📊 100/1000
+2026-09-05 20:56:16,705 - INFO - 📊 100/1000
+2026-09-05 20:58:58,389 - INFO - 📊 200/1000
+2026-09-05 20:59:26,792 - INFO - 📊 200/1000
+2026-09-05 21:02:01,369 - INFO - 📊 300/1000
+2026-09-05 21:02:27,821 - INFO - 📊 300/1000
+2026-09-05 21:04:49,003 - INFO - 📊 400/1000
+2026-09-05 21:05:18,288 - INFO - 📊 400/1000
+2026-09-05 21:07:47,521 - INFO - 📊 500/1000
+2026-09-05 21:08:14,328 - INFO - 📊 500/1000
+2026-09-05 21:10:45,330 - INFO - 📊 600/1000
+2026-09-05 21:11:13,609 - INFO - 📊 600/1000
+2026-09-05 21:14:14,394 - INFO - 📊 700/1000
+2026-09-05 21:14:37,539 - INFO - 📊 700/1000
+2026-09-05 21:18:06,835 - INFO - 📊 800/1000
+2026-09-05 21:18:25,624 - INFO - 📊 800/1000
+2026-09-05 21:21:58,009 - INFO - 📊 900/1000
+2026-09-05 21:22:19,230 - INFO - 📊 900/1000
+2026-09-05 21:23:42,175 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-05 21:25:20,701 - INFO - 📊 1000/1000
+2026-09-05 21:25:42,107 - INFO - 📊 1000/1000
+2026-09-05 22:23:22,511 - INFO - ✅ Health OK
+2026-09-05 22:23:22,513 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-05 22:23:22,513 - INFO -  اسکن: هر 30 دقیقه
+2026-09-05 22:23:22,514 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-05 22:23:22,514 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-05 22:23:22,515 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-05 22:23:22,660 - INFO - ✅ آماده
+2026-09-05 22:23:52,669 - INFO -  اسکن خودکار...
+2026-09-05 22:23:53,280 - INFO -  3 کوین DEX یافت شد
+2026-09-05 22:23:54,632 - INFO - 📊 1000 کوین (BN:620 MX:1485 DEX:3)
+2026-09-05 22:24:05,907 - WARNING - ️ خطا در DOGE: 29 values for 28 columns
+2026-09-05 22:24:14,018 - WARNING - ️ خطا در ZKC: 29 values for 28 columns
+2026-09-05 22:24:22,661 - INFO -  چک پوزیشن‌ها...
+2026-09-05 22:24:23,762 - WARNING - ️ خطا در ARB: 29 values for 28 columns
+2026-09-05 22:24:30,329 - WARNING - ️ خطا در ENA: 29 values for 28 columns
+2026-09-05 22:24:50,963 - WARNING - ️ خطا در NOM: 29 values for 28 columns
+2026-09-05 22:25:05,020 - WARNING - ️ خطا در BCH: 29 values for 28 columns
+2026-09-05 22:25:10,963 - WARNING - ️ خطا در SUSHI: 29 values for 28 columns
+2026-09-05 22:25:14,064 - WARNING - ️ خطا در GRAM: 29 values for 28 columns
+2026-09-05 22:25:20,563 - WARNING - ️ خطا در OP: 29 values for 28 columns
+2026-09-05 22:25:25,618 - WARNING - ️ خطا در 1000CAT: 29 values for 28 columns
+2026-09-05 22:25:35,870 - WARNING - ️ خطا در STRK: 29 values for 28 columns
+2026-09-05 22:25:50,539 - WARNING - ️ خطا در DCR: 29 values for 28 columns
+2026-09-05 22:26:06,274 - WARNING - ️ خطا در CATI: 29 values for 28 columns
+2026-09-05 22:26:29,414 - WARNING - ️ خطا در NMR: 29 values for 28 columns
+2026-09-05 22:26:42,557 - WARNING - ️ خطا در LDO: 29 values for 28 columns
+2026-09-05 22:26:42,558 - INFO -  100/1000
+2026-09-05 22:27:01,262 - WARNING - ️ خطا در AERO: 29 values for 28 columns
+2026-09-05 22:27:04,927 - WARNING - ️ خطا در SOPH: 29 values for 28 columns
+2026-09-05 22:27:12,968 - WARNING - ️ خطا در VANRY: 29 values for 28 columns
+2026-09-05 22:27:32,728 - WARNING - ️ خطا در EIGEN: 29 values for 28 columns
+2026-09-05 22:27:34,978 - WARNING - ️ خطا در ENJ: 29 values for 28 columns
+2026-09-05 22:28:18,497 - WARNING - ️ خطا در COCOS: 29 values for 28 columns
+2026-09-05 22:28:24,608 - WARNING - ️ خطا در SCRT: 29 values for 28 columns
+2026-09-05 22:28:27,993 - WARNING - ️ خطا در POLY: 29 values for 28 columns
+2026-09-05 22:28:32,058 - WARNING - ️ خطا در SOLV: 29 values for 28 columns
+2026-09-05 22:28:42,494 - WARNING - ️ خطا در RAY: 29 values for 28 columns
+2026-09-05 23:01:07,492 - INFO - ✅ Health OK
+2026-09-05 23:01:07,494 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-05 23:01:07,494 - INFO -  اسکن: هر 30 دقیقه
+2026-09-05 23:01:07,494 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-05 23:01:07,494 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-05 23:01:07,494 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-05 23:01:07,641 - INFO - ✅ آماده
+2026-09-05 23:01:37,651 - INFO -  اسکن خودکار...
+2026-09-05 23:01:38,263 - INFO -  3 کوین DEX یافت شد
+2026-09-05 23:01:39,002 - INFO - 📊 1000 کوین (BN:620 MX:1486 DEX:3)
+2026-09-05 23:02:07,642 - INFO -  چک پوزیشن‌ها...
+2026-09-05 23:04:32,764 - INFO -  100/1000
+2026-09-05 23:07:25,644 - INFO -  200/1000
+2026-09-06 17:21:39,226 - INFO - ✅ Health OK
+2026-09-06 17:21:39,229 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-06 17:21:39,229 - INFO -  اسکن: هر 30 دقیقه
+2026-09-06 17:21:39,229 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 17:21:39,230 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 17:21:39,230 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-06 17:21:39,654 - INFO - ✅ آماده
+2026-09-06 17:22:09,624 - INFO -  اسکن خودکار...
+2026-09-06 17:22:10,233 - INFO -  3 کوین DEX یافت شد
+2026-09-06 17:22:10,938 - INFO - 📊 1000 کوین (BN:617 MX:1488 DEX:3)
+2026-09-06 17:22:39,825 - INFO -  چک پوزیشن‌ها...
+2026-09-06 17:24:50,041 - INFO -  100/1000
+2026-09-06 17:25:18,629 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 17:25:18,680 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 17:27:36,687 - INFO -  200/1000
+2026-09-06 17:27:38,062 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=ZKPUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 17:27:38,112 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=ZKPUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 17:28:31,553 - INFO -  3 کوین DEX یافت شد
+2026-09-06 17:28:32,356 - INFO - 📊 1000 کوین (BN:617 MX:1488 DEX:3)
+2026-09-06 17:30:44,874 - INFO -  300/1000
+2026-09-06 17:31:15,315 - INFO -  100/1000
+2026-09-06 17:33:29,983 - INFO -  400/1000
+2026-09-06 17:33:59,922 - INFO -  200/1000
+2026-09-06 17:36:20,746 - INFO -  500/1000
+2026-09-06 17:37:02,123 - INFO -  300/1000
+2026-09-06 17:37:39,654 - INFO -  چک پوزیشن‌ها...
+2026-09-06 17:39:28,569 - INFO -  600/1000
+2026-09-06 17:39:48,436 - INFO -  400/1000
+2026-09-06 17:42:40,583 - INFO -  500/1000
+2026-09-06 17:42:52,478 - INFO -  700/1000
+2026-09-06 17:45:45,701 - INFO -  600/1000
+2026-09-06 17:46:41,503 - INFO -  800/1000
+2026-09-06 17:49:15,138 - INFO -  700/1000
+2026-09-06 17:50:26,623 - INFO -  900/1000
+2026-09-06 17:52:39,655 - INFO -  چک پوزیشن‌ها...
+2026-09-06 17:53:16,728 - INFO -  800/1000
+2026-09-06 17:54:05,261 - INFO -  1000/1000
+2026-09-06 17:57:02,454 - INFO -  900/1000
+2026-09-06 18:00:34,249 - INFO -  1000/1000
+2026-09-06 18:07:39,658 - INFO -  چک پوزیشن‌ها...
+2026-09-06 18:21:39,658 - INFO - ️ برچسب‌گذاری سیگنال‌ها...
+2026-09-06 18:21:39,714 - INFO - ✅ 0 سیگنال برچسب‌گذاری شد
+2026-09-06 18:22:09,622 - INFO -  اسکن خودکار...
+2026-09-06 18:22:10,291 - INFO -  3 کوین DEX یافت شد
+2026-09-06 18:22:11,078 - INFO - 📊 1000 کوین (BN:617 MX:1485 DEX:3)
+2026-09-06 18:22:39,655 - INFO -  چک پوزیشن‌ها...
+2026-09-06 18:25:00,753 - INFO -  100/1000
+2026-09-06 18:25:43,092 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=RAYUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 18:25:43,142 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=RAYUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 18:27:54,096 - INFO -  200/1000
+2026-09-06 18:30:54,023 - INFO -  300/1000
+2026-09-06 18:33:43,004 - INFO -  400/1000
+2026-09-06 18:35:24,462 - INFO - ✅ Health OK
+2026-09-06 18:35:24,464 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-06 18:35:24,464 - INFO -  اسکن: هر 30 دقیقه
+2026-09-06 18:35:24,464 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 18:35:24,464 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 18:35:24,465 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-06 18:35:24,669 - INFO - ✅ آماده
+2026-09-06 18:35:54,677 - INFO -  اسکن خودکار...
+2026-09-06 18:35:55,243 - INFO -  3 کوین DEX یافت شد
+2026-09-06 18:35:56,274 - INFO - 📊 1000 کوین (BN:617 MX:1485 DEX:3)
+2026-09-06 18:36:24,671 - INFO -  چک پوزیشن‌ها...
+2026-09-06 18:38:53,855 - INFO -  100/1000
+2026-09-06 18:46:07,482 - INFO - ✅ Health OK
+2026-09-06 18:46:07,484 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-06 18:46:07,485 - INFO -  اسکن: هر 30 دقیقه
+2026-09-06 18:46:07,485 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 18:46:07,485 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 18:46:07,485 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-06 18:46:07,633 - INFO - ✅ آماده
+2026-09-06 18:46:37,636 - INFO -  اسکن خودکار...
+2026-09-06 18:46:38,240 - INFO -  3 کوین DEX یافت شد
+2026-09-06 18:46:38,941 - INFO - 📊 1000 کوین (BN:616 MX:1485 DEX:3)
+2026-09-06 18:47:07,634 - INFO -  چک پوزیشن‌ها...
+2026-09-06 18:49:33,336 - INFO -  100/1000
+2026-09-06 18:50:13,605 - ERROR - Scan error: unknown async library, or not in async context
+2026-09-06 19:19:16,631 - INFO - ✅ Health OK
+2026-09-06 19:19:16,634 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-06 19:19:16,634 - INFO -  اسکن: هر 30 دقیقه
+2026-09-06 19:19:16,634 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 19:19:16,635 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 19:19:16,635 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-06 19:19:16,772 - INFO - ✅ آماده
+2026-09-06 19:19:18,169 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:19:18,220 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:19:46,777 - INFO -  اسکن خودکار...
+2026-09-06 19:19:47,386 - INFO -  3 کوین DEX یافت شد
+2026-09-06 19:19:48,117 - INFO - 📊 1000 کوین (BN:615 MX:1482 DEX:3)
+2026-09-06 19:20:16,774 - INFO -  چک پوزیشن‌ها...
+2026-09-06 19:33:11,537 - INFO - ✅ Health OK
+2026-09-06 19:33:11,538 - INFO -  v12.0 شروع... (ML + زمان‌های بهینه)
+2026-09-06 19:33:11,539 - INFO -  اسکن: هر 30 دقیقه
+2026-09-06 19:33:11,539 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 19:33:11,539 - INFO - 🏷️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 19:33:11,541 - INFO - 🧠 یادگیری: هر 24 ساعت
+2026-09-06 19:33:11,653 - INFO - ✅ آماده
+2026-09-06 19:33:41,663 - INFO -  اسکن خودکار...
+2026-09-06 19:33:42,513 - INFO -  3 کوین DEX یافت شد
+2026-09-06 19:33:43,153 - INFO - 📊 1000 کوین (BN:615 MX:1483 DEX:3)
+2026-09-06 19:34:11,654 - INFO -  چک پوزیشن‌ها...
+2026-09-06 19:36:37,958 - INFO -  100/1000
+2026-09-06 19:39:38,732 - INFO -  200/1000
+2026-09-06 19:42:39,868 - INFO -  300/1000
+2026-09-06 19:45:32,506 - INFO -  400/1000
+2026-09-06 19:48:28,031 - INFO -  500/1000
+2026-09-06 19:49:11,653 - INFO -  چک پوزیشن‌ها...
+2026-09-06 19:51:37,592 - INFO -  600/1000
+2026-09-06 19:52:28,343 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=LRCUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:52:28,396 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=LRCUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:53:01,264 - ERROR - ❌ HTTP error https://api.binance.com/api/v3/klines?symbol=FTTUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:53:01,315 - ERROR - ❌ HTTP error https://api.mexc.com/api/v3/klines?symbol=FTTUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 19:55:08,132 - INFO -  700/1000
+2026-09-06 19:58:54,438 - INFO -  800/1000
+2026-09-06 20:02:43,978 - INFO -  900/1000
+2026-09-06 20:04:11,655 - INFO -  چک پوزیشن‌ها...
+2026-09-06 20:04:45,591 - ERROR - Scan error: unknown async library, or not in async context
+2026-09-06 20:04:58,340 - INFO - ✅ Health OK
+2026-09-06 20:04:58,342 - INFO - 🔥 v12.1 شروع... (ML + Batch Processing)
+2026-09-06 20:04:58,342 - INFO - ⏰ اسکن: هر 30 دقیقه
+2026-09-06 20:04:58,343 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-06 20:04:58,343 - INFO - ️ برچسب‌گذاری: هر 6 ساعت
+2026-09-06 20:04:58,537 - INFO - ✅ آماده
+2026-09-06 20:05:28,547 - INFO -  اسکن خودکار...
+2026-09-06 20:05:29,284 - INFO -  3 کوین DEX یافت شد
+2026-09-06 20:05:29,978 - INFO - 📊 1000 کوین (BN:615 MX:1483 DEX:3)
+2026-09-06 20:05:58,538 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-06 20:06:53,929 - ERROR -  HTTP error https://api.binance.com/api/v3/klines?symbol=RAYUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 20:06:53,980 - ERROR -  HTTP error https://api.mexc.com/api/v3/klines?symbol=RAYUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 20:07:50,382 - ERROR -  HTTP error https://api.binance.com/api/v3/klines?symbol=ZECUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 20:07:50,433 - ERROR -  HTTP error https://api.mexc.com/api/v3/klines?symbol=ZECUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-06 20:07:58,676 - INFO - 📊 100/1000
+2026-09-06 20:10:41,502 - INFO - 📊 200/1000
+2026-09-06 20:13:37,612 - INFO - 📊 300/1000
+2026-09-06 20:16:27,302 - INFO - 📊 400/1000
+2026-09-06 20:19:13,834 - INFO - 📊 500/1000
+2026-09-06 20:20:35,159 - INFO -  3 کوین DEX یافت شد
+2026-09-06 20:20:35,810 - INFO - 📊 1000 کوین (BN:616 MX:1483 DEX:3)
+2026-09-06 20:20:58,538 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-06 20:22:10,081 - INFO - 📊 600/1000
+2026-09-06 20:23:10,249 - INFO - 📊 100/1000
+2026-09-06 20:25:35,684 - INFO - 📊 700/1000
+2026-09-06 20:25:54,426 - INFO - 📊 200/1000
+2026-09-06 20:28:50,005 - INFO - 📊 300/1000
+2026-09-06 20:29:23,634 - INFO - 📊 800/1000
+2026-09-06 20:31:34,032 - INFO - 📊 400/1000
+2026-09-06 20:33:14,266 - INFO - 📊 900/1000
+2026-09-06 20:34:21,919 - INFO - 📊 500/1000
+2026-09-06 20:35:58,538 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-06 20:36:35,288 - INFO - 📊 1000/1000
+2026-09-06 20:37:23,649 - INFO - 📊 600/1000
+2026-09-06 20:40:48,186 - INFO - 📊 700/1000
+2026-09-06 20:44:36,898 - INFO - 📊 800/1000
+2026-09-06 20:48:25,633 - INFO - 📊 900/1000
+2026-09-06 20:50:58,538 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-06 20:51:49,516 - INFO - 📊 1000/1000
+2026-09-10 05:10:57,302 - INFO - ✅ Health OK
+2026-09-10 05:10:57,302 - INFO - 🔥 v12.1 شروع... (ML + Batch Processing)
+2026-09-10 05:10:57,304 - INFO - ⏰ اسکن: هر 30 دقیقه
+2026-09-10 05:10:57,304 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-10 05:10:57,304 - INFO - ️ برچسب‌گذاری: هر 6 ساعت
+2026-09-10 05:10:57,449 - INFO - ✅ آماده
+2026-09-10 05:11:27,460 - INFO -  اسکن خودکار...
+2026-09-10 05:11:27,969 - INFO -  12 کوین DEX یافت شد
+2026-09-10 05:11:28,707 - INFO - 📊 1000 کوین (BN:646 MX:1486 DEX:12)
+2026-09-10 05:11:35,473 - ERROR -  HTTP error https://api.binance.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-10 05:11:35,524 - ERROR -  HTTP error https://api.mexc.com/api/v3/klines?symbol=BTRUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-10 05:11:57,450 - INFO - 🔄 چک پوزیشن‌ها...
+2026-09-10 05:14:01,660 - INFO - 📊 100/1000
+2026-09-10 05:16:36,272 - INFO - 📊 200/1000
+2026-09-10 05:19:11,070 - INFO - 📊 300/1000
+2026-09-10 05:21:59,449 - INFO - 📊 400/1000
+2026-09-10 05:24:36,371 - INFO - 📊 500/1000
+2026-09-10 05:40:33,954 - INFO - ✅ Health OK
+2026-09-10 05:40:33,956 - INFO - 🔥 v12.1 شروع... (ML + Batch Processing)
+2026-09-10 05:40:33,957 - INFO - ⏰ اسکن: هر 30 دقیقه
+2026-09-10 05:40:33,957 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-10 05:40:33,957 - INFO - ️ برچسب‌گذاری: هر 6 ساعت
+2026-09-10 05:40:34,004 - INFO - ✅ آماده
+2026-09-10 05:40:35,452 - ERROR -  HTTP error https://api.binance.com/api/v3/klines?symbol=OXTUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-10 05:40:35,505 - ERROR -  HTTP error https://api.mexc.com/api/v3/klines?symbol=OXTUSDT&interval=1h&limit=50: Cannot send a request, as the client has been closed.
+2026-09-10 05:41:04,014 - INFO -  اسکن خودکار...
+2026-09-10 05:41:04,724 - INFO -  12 کوین DEX یافت شد
+2026-09-10 05:41:05,614 - INFO - 📊 1000 کوین (BN:646 MX:1486 DEX:12)
+2026-09-10 05:41:31,112 - ERROR - Scan error: unknown async library, or not in async context
+2026-09-10 07:14:35,810 - WARNING - ⚠️ collector.py not found, using fallback
+2026-09-10 07:14:35,843 - INFO - ✅ Health OK
+2026-09-10 07:14:35,844 - INFO - 🚀 Crypto-Agent v15 شروع...
+2026-09-10 07:14:35,844 - INFO - ⏰ اسکن: هر 30 دقیقه
+2026-09-10 07:14:35,845 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-10 07:14:35,953 - INFO - ✅ آماده
+2026-09-10 07:17:18,666 - WARNING - ⚠️ collector.py not found, using fallback
+2026-09-10 07:17:18,670 - INFO - ✅ Health OK
+2026-09-10 07:17:18,670 - INFO - 🚀 Crypto-Agent v15 شروع...
+2026-09-10 07:17:18,670 - INFO - ⏰ اسکن: هر 30 دقیقه
+2026-09-10 07:17:18,672 - INFO - 🔄 چک پوزیشن: هر 15 دقیقه
+2026-09-10 07:17:18,718 - INFO - ✅ آماده
+2026-09-10 07:21:34,658 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:21:34,756 - INFO - ✅ Ready
+2026-09-10 07:22:04,192 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:22:05,837 - INFO - 🦄 9 DEX coins
+2026-09-10 07:22:06,472 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:22:06,473 - INFO - 📊 220 total coins
+2026-09-10 07:22:17,033 - INFO -   20/100 checked...
+2026-09-10 07:22:29,444 - INFO -   40/100 checked...
+2026-09-10 07:22:40,418 - INFO -   60/100 checked...
+2026-09-10 07:22:51,359 - INFO -   80/100 checked...
+2026-09-10 07:23:02,295 - INFO -   100/100 checked...
+2026-09-10 07:23:02,296 - INFO - ✅ Scan done in 58.1s, 88 signals
+2026-09-10 07:30:41,073 - INFO - ✅ Health OK
+2026-09-10 07:30:41,076 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:30:41,076 - INFO - ⏰ Scan interval: 30 min
+2026-09-10 07:30:41,076 - INFO - 🔄 Check interval: 15 min
+2026-09-10 07:30:41,189 - INFO - ✅ Ready
+2026-09-10 07:31:42,115 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:31:43,950 - INFO - 🦄 9 DEX coins
+2026-09-10 07:31:44,981 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:31:44,982 - INFO - 📊 220 total coins
+2026-09-10 07:31:55,528 - INFO -   20/100 checked...
+2026-09-10 07:32:06,448 - INFO -   40/100 checked...
+2026-09-10 07:32:18,438 - INFO -   60/100 checked...
+2026-09-10 07:32:29,366 - INFO -   80/100 checked...
+2026-09-10 07:32:40,286 - INFO -   100/100 checked...
+2026-09-10 07:32:40,288 - INFO - ✅ Scan done in 58.2s, 88 signals
+2026-09-10 07:32:40,324 - ERROR - Scan error: Message is too long
+Traceback (most recent call last):
+  File "/workspaces/crypto-agent/scanner_v15.py", line 361, in cmd_scan
+    await u.message.reply_text(msg, parse_mode='HTML')
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/_message.py", line 1705, in reply_text
+    return await self.get_bot().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 2893, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/_bot.py", line 1024, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 608, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/_bot.py", line 740, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codespace/.python/current/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 381, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Message is too long
+2026-09-10 07:35:43,615 - INFO - ✅ Health OK
+2026-09-10 07:35:43,615 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:35:43,615 - INFO - ⏰ Scan interval: 30 min
+2026-09-10 07:35:43,615 - INFO - 🔄 Check interval: 15 min
+2026-09-10 07:35:43,712 - INFO - ✅ Ready
+2026-09-10 07:38:34,591 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:38:34,638 - INFO - ✅ Ready
+2026-09-10 07:45:15,065 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:45:16,738 - INFO - 🦄 9 DEX coins
+2026-09-10 07:45:17,577 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:45:17,578 - INFO - 📊 220 total coins
+2026-09-10 07:45:28,113 - INFO -   20/100 checked...
+2026-09-10 07:45:39,053 - INFO -   40/100 checked...
+2026-09-10 07:45:52,287 - INFO -   60/100 checked...
+2026-09-10 07:46:03,586 - INFO -   80/100 checked...
+2026-09-10 07:46:15,126 - INFO -   100/100 checked...
+2026-09-10 07:46:15,127 - INFO - ✅ Scan done in 60.1s, 10 signals
+2026-09-10 07:46:15,163 - ERROR - Scan error: Can't parse entities: can't find end tag corresponding to start tag "b"
+Traceback (most recent call last):
+  File "/workspaces/crypto-agent/scanner_v15.py", line 350, in cmd_scan
+    await u.message.reply_text(msg, parse_mode='HTML')
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_message.py", line 1705, in reply_text
+    return await self.get_bot().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 2893, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 1024, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 608, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 740, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 381, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Can't parse entities: can't find end tag corresponding to start tag "b"
+2026-09-10 07:53:00,421 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:53:00,494 - INFO - ✅ Ready
+2026-09-10 07:53:16,136 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:53:17,926 - INFO - 🦄 9 DEX coins
+2026-09-10 07:53:18,826 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:53:18,827 - INFO - 📊 220 total coins
+2026-09-10 07:53:29,457 - INFO -   20/100 checked...
+2026-09-10 07:53:40,398 - INFO -   40/100 checked...
+2026-09-10 07:53:53,042 - INFO -   60/100 checked...
+2026-09-10 07:54:04,638 - INFO -   80/100 checked...
+2026-09-10 07:54:15,996 - INFO -   100/100 checked...
+2026-09-10 07:54:15,996 - INFO - ✅ Scan done in 59.9s, 10 signals
+2026-09-10 07:54:16,039 - ERROR - Scan error: Can't parse entities: can't find end tag corresponding to start tag "b"
+Traceback (most recent call last):
+  File "/workspaces/crypto-agent/scanner_v15.py", line 357, in cmd_scan
+    await u.message.reply_text(msg, parse_mode='HTML')
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_message.py", line 1705, in reply_text
+    return await self.get_bot().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 2893, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 1024, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 608, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 740, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 381, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Can't parse entities: can't find end tag corresponding to start tag "b"
+2026-09-10 07:56:33,570 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 07:56:33,617 - INFO - ✅ Ready
+2026-09-10 07:56:39,903 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:56:41,546 - INFO - 🦄 9 DEX coins
+2026-09-10 07:56:42,145 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:56:42,146 - INFO - 📊 219 total coins
+2026-09-10 07:56:52,708 - INFO -   20/100 checked...
+2026-09-10 07:57:03,665 - INFO -   40/100 checked...
+2026-09-10 07:57:15,879 - INFO -   60/100 checked...
+2026-09-10 07:57:27,656 - INFO -   80/100 checked...
+2026-09-10 07:57:38,700 - INFO -   100/100 checked...
+2026-09-10 07:57:38,701 - INFO - ✅ Scan done in 58.8s, 10 signals
+2026-09-10 07:58:53,709 - INFO - 🔍 Starting v15 scan...
+2026-09-10 07:58:55,349 - INFO - 🦄 9 DEX coins
+2026-09-10 07:58:56,053 - INFO - 🏦 1925 CEX tickers
+2026-09-10 07:58:56,054 - INFO - 📊 219 total coins
+2026-09-10 07:59:06,600 - INFO -   20/100 checked...
+2026-09-10 07:59:17,527 - INFO -   40/100 checked...
+2026-09-10 07:59:31,056 - INFO -   60/100 checked...
+2026-09-10 07:59:43,252 - INFO -   80/100 checked...
+2026-09-10 07:59:54,586 - INFO -   100/100 checked...
+2026-09-10 07:59:54,586 - INFO - ✅ Scan done in 60.9s, 10 signals
+2026-09-10 08:03:50,703 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:03:50,781 - INFO - ✅ Ready
+2026-09-10 08:04:02,192 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:04:02,303 - INFO - ✅ Ready
+2026-09-10 08:04:10,920 - INFO - 🔍 Starting v15 scan...
+2026-09-10 08:04:12,541 - INFO - 🦄 3 DEX coins
+2026-09-10 08:04:13,419 - INFO - 🏦 1848 CEX tickers
+2026-09-10 08:04:13,423 - INFO - 📊 201 total coins after validation
+2026-09-10 08:04:24,510 - INFO -   20/100 checked...
+2026-09-10 08:04:35,494 - INFO -   40/100 checked...
+2026-09-10 08:04:46,393 - INFO -   60/100 checked...
+2026-09-10 08:04:57,725 - INFO -   80/100 checked...
+2026-09-10 08:05:10,208 - INFO -   100/100 checked...
+2026-09-10 08:05:10,208 - INFO - ✅ Scan done in 59.3s, 10 signals
+2026-09-10 08:08:39,327 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:08:39,385 - INFO - ✅ Ready
+2026-09-10 08:08:51,431 - INFO - 🔍 Starting v15 scan...
+2026-09-10 08:08:53,163 - INFO - 🦄 3 DEX coins
+2026-09-10 08:08:54,417 - INFO - 🏦 1848 CEX tickers
+2026-09-10 08:08:54,421 - INFO - 📊 201 total coins after validation
+2026-09-10 08:09:05,394 - INFO -   20/100 checked...
+2026-09-10 08:09:16,312 - INFO -   40/100 checked...
+2026-09-10 08:09:27,335 - INFO -   60/100 checked...
+2026-09-10 08:09:38,327 - INFO -   80/100 checked...
+2026-09-10 08:09:49,356 - INFO -   100/100 checked...
+2026-09-10 08:09:49,356 - INFO - ✅ Scan done in 57.9s, 10 signals
+2026-09-10 08:15:10,994 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:15:11,105 - INFO - ✅ Ready
+2026-09-10 08:15:15,128 - INFO - 🔍 Starting v15 scan...
+2026-09-10 08:15:18,759 - INFO - 🦄 Collected 11 DEX coins
+2026-09-10 08:15:18,760 - INFO - 🦄 11 DEX coins
+2026-09-10 08:15:19,782 - INFO - 🏦 1848 CEX tickers
+2026-09-10 08:15:19,785 - INFO - 📊 206 total coins after validation
+2026-09-10 08:15:30,691 - INFO -   20/100 checked...
+2026-09-10 08:15:41,628 - INFO -   40/100 checked...
+2026-09-10 08:15:52,579 - INFO -   60/100 checked...
+2026-09-10 08:16:03,925 - INFO -   80/100 checked...
+2026-09-10 08:16:14,884 - INFO -   100/100 checked...
+2026-09-10 08:16:14,884 - INFO - ✅ Scan done in 59.8s, 10 signals
+2026-09-10 08:20:35,505 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:20:35,555 - INFO - ✅ Ready
+2026-09-10 08:20:46,695 - INFO - 🔍 Starting v15 scan...
+2026-09-10 08:20:50,355 - INFO - 🦄 Collected 11 DEX coins
+2026-09-10 08:20:50,356 - INFO - 🦄 11 DEX coins
+2026-09-10 08:20:51,273 - INFO - 🏦 1848 CEX tickers
+2026-09-10 08:20:51,276 - INFO - 📊 207 total coins after validation
+2026-09-10 08:21:02,204 - INFO -   20/100 checked...
+2026-09-10 08:21:13,100 - INFO -   40/100 checked...
+2026-09-10 08:21:24,029 - INFO -   60/100 checked...
+2026-09-10 08:21:34,959 - INFO -   80/100 checked...
+2026-09-10 08:21:46,309 - INFO -   100/100 checked...
+2026-09-10 08:21:46,310 - INFO - ✅ Scan done in 59.6s, 10 signals
+2026-09-10 08:55:00,214 - INFO - ✅ ML model loaded successfully
+2026-09-10 08:55:00,226 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:55:00,227 - INFO - ✅ ML model loaded
+2026-09-10 08:55:00,276 - INFO - ✅ Ready
+2026-09-10 08:55:41,731 - INFO - ✅ ML model loaded successfully
+2026-09-10 08:55:41,738 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 08:55:41,738 - INFO - ✅ ML model loaded
+2026-09-10 08:55:41,817 - INFO - ✅ Ready
+2026-09-10 08:56:07,669 - INFO - 🔍 Starting v15 scan...
+2026-09-10 08:56:11,793 - INFO - 🦄 Collected 30 DEX coins
+2026-09-10 08:56:11,793 - INFO - 🦄 30 DEX coins
+2026-09-10 08:56:12,925 - INFO - 🏦 1848 CEX tickers
+2026-09-10 08:56:12,928 - INFO - 📊 222 total coins after validation
+2026-09-10 08:56:25,123 - INFO -   20/100 checked...
+2026-09-10 08:56:36,405 - INFO -   40/100 checked...
+2026-09-10 08:56:47,304 - INFO -   60/100 checked...
+2026-09-10 08:56:58,602 - INFO -   80/100 checked...
+2026-09-10 08:57:09,476 - INFO -   100/100 checked...
+2026-09-10 08:57:09,476 - INFO - ✅ Scan done in 61.8s, 10 signals, ML used: 100
+2026-09-10 09:13:56,438 - INFO - ✅ ML model loaded
+2026-09-10 09:13:56,443 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 09:13:56,443 - INFO - ✅ ML model loaded
+2026-09-10 09:13:56,490 - INFO - ✅ Ready
+2026-09-10 09:14:20,489 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:14:20,866 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:14:23,424 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 09:14:23,425 - INFO - 🦄 13 DEX coins
+2026-09-10 09:14:24,191 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:14:24,194 - INFO - 📊 208 total coins
+2026-09-10 09:14:35,287 - INFO -   20/100 checked...
+2026-09-10 09:14:46,234 - INFO -   40/100 checked...
+2026-09-10 09:14:57,194 - INFO -   60/100 checked...
+2026-09-10 09:15:10,280 - INFO -   80/100 checked...
+2026-09-10 09:15:23,833 - INFO -   100/100 checked...
+2026-09-10 09:15:23,833 - INFO - ✅ Scan done in 63.3s, 10 signals, DEX: 1
+2026-09-10 09:16:53,421 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:16:53,687 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:16:55,977 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 09:16:55,978 - INFO - 🦄 13 DEX coins
+2026-09-10 09:16:57,064 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:16:57,067 - INFO - 📊 209 total coins
+2026-09-10 09:17:07,998 - INFO -   20/100 checked...
+2026-09-10 09:17:18,931 - INFO -   40/100 checked...
+2026-09-10 09:17:30,299 - INFO -   60/100 checked...
+2026-09-10 09:17:41,210 - INFO -   80/100 checked...
+2026-09-10 09:17:52,594 - INFO -   100/100 checked...
+2026-09-10 09:17:52,594 - INFO - ✅ Scan done in 59.2s, 10 signals, DEX: 1
+2026-09-10 09:23:58,762 - INFO - ✅ ML model loaded
+2026-09-10 09:23:58,766 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 09:23:58,766 - INFO - ✅ ML model loaded
+2026-09-10 09:23:58,811 - INFO - ✅ Ready
+2026-09-10 09:25:27,681 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:25:27,953 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:25:30,335 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 09:25:30,336 - INFO - 🦄 13 DEX coins
+2026-09-10 09:25:31,066 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:25:31,069 - INFO - 📊 209 total coins
+2026-09-10 09:25:42,001 - INFO -   20/100 checked...
+2026-09-10 09:25:52,955 - INFO -   40/100 checked...
+2026-09-10 09:26:03,921 - INFO -   60/100 checked...
+2026-09-10 09:26:14,861 - INFO -   80/100 checked...
+2026-09-10 09:26:25,825 - INFO -   100/100 checked...
+2026-09-10 09:26:25,825 - INFO - ✅ Scan done in 58.1s, 10 signals, DEX: 1
+2026-09-10 09:36:03,434 - INFO - ✅ ML model loaded
+2026-09-10 09:36:03,438 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 09:36:03,438 - INFO - ✅ ML model loaded
+2026-09-10 09:36:03,492 - INFO - ✅ Ready
+2026-09-10 09:42:33,555 - INFO - ✅ ML model loaded
+2026-09-10 09:43:23,228 - INFO - ✅ ML model loaded
+2026-09-10 09:43:23,231 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 09:43:23,233 - INFO - ✅ ML model loaded
+2026-09-10 09:43:23,335 - INFO - ✅ Ready
+2026-09-10 09:43:23,794 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:43:24,059 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:43:26,448 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 09:43:26,449 - INFO - 🦄 13 DEX coins
+2026-09-10 09:43:27,394 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:43:27,397 - INFO - 📊 207 total coins
+2026-09-10 09:43:38,343 - INFO -   20/100 checked...
+2026-09-10 09:43:49,267 - INFO -   40/100 checked...
+2026-09-10 09:44:00,191 - INFO -   60/100 checked...
+2026-09-10 09:44:11,998 - INFO -   80/100 checked...
+2026-09-10 09:44:22,938 - INFO -   100/100 checked...
+2026-09-10 09:44:22,939 - INFO - ✅ Scan done in 59.1s, 10 signals, DEX: 1
+2026-09-10 09:44:23,580 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:44:23,844 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:44:26,116 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 09:44:26,116 - INFO - 🦄 13 DEX coins
+2026-09-10 09:44:26,945 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:44:26,948 - INFO - 📊 207 total coins
+2026-09-10 09:44:37,902 - INFO -   20/100 checked...
+2026-09-10 09:44:48,835 - INFO -   40/100 checked...
+2026-09-10 09:44:59,773 - INFO -   60/100 checked...
+2026-09-10 09:45:12,469 - INFO -   80/100 checked...
+2026-09-10 09:45:25,629 - INFO -   100/100 checked...
+2026-09-10 09:45:25,629 - INFO - ✅ Scan done in 62.0s, 10 signals, DEX: 1
+2026-09-10 09:48:15,365 - INFO - 🔍 Starting v15 scan...
+2026-09-10 09:48:15,636 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 09:48:17,904 - INFO - 🦄 Collected 12 DEX coins
+2026-09-10 09:48:17,904 - INFO - 🦄 12 DEX coins
+2026-09-10 09:48:18,554 - INFO - 🏦 1848 CEX tickers
+2026-09-10 09:48:18,557 - INFO - 📊 207 total coins
+2026-09-10 09:48:29,593 - INFO -   20/100 checked...
+2026-09-10 09:48:40,537 - INFO -   40/100 checked...
+2026-09-10 09:48:51,489 - INFO -   60/100 checked...
+2026-09-10 09:49:02,447 - INFO -   80/100 checked...
+2026-09-10 09:49:13,465 - INFO -   100/100 checked...
+2026-09-10 09:49:13,466 - INFO - ✅ Scan done in 58.1s, 10 signals, DEX: 0
+2026-09-10 10:15:58,423 - INFO - ✅ ML model loaded
+2026-09-10 10:16:00,606 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 10:16:00,610 - INFO - ✅ ML model loaded
+2026-09-10 10:47:10,502 - INFO - ✅ ML model loaded
+2026-09-10 10:47:12,825 - INFO - 🦄 Collected 11 DEX coins
+2026-09-10 10:47:12,833 - INFO - ✅ ML model loaded
+2026-09-10 10:48:27,296 - INFO - ✅ ML model loaded
+2026-09-10 10:48:27,301 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 10:48:27,301 - INFO - ✅ ML model loaded
+2026-09-10 10:48:27,354 - INFO - ✅ Ready
+2026-09-10 10:48:27,484 - INFO - 🔍 Starting v15 scan...
+2026-09-10 10:48:27,754 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 10:48:29,977 - INFO - 🦄 Collected 11 DEX coins
+2026-09-10 10:48:29,977 - INFO - 🦄 11 DEX coins
+2026-09-10 10:48:30,843 - INFO - 🏦 1849 CEX tickers
+2026-09-10 10:48:30,847 - INFO - 📊 202 total coins
+2026-09-10 10:48:43,947 - INFO -   20/100 checked...
+2026-09-10 10:48:55,712 - INFO -   40/100 checked...
+2026-09-10 10:49:07,041 - INFO -   60/100 checked...
+2026-09-10 10:49:17,910 - INFO -   80/100 checked...
+2026-09-10 10:49:28,771 - INFO -   100/100 checked...
+2026-09-10 10:49:28,771 - INFO - ✅ Scan done in 61.3s, 10 signals, DEX: 3
+2026-09-10 12:24:54,227 - INFO - ✅ ML model loaded
+2026-09-10 12:24:56,580 - INFO - 🦄 Collected 12 DEX coins
+2026-09-10 12:24:56,583 - INFO - ✅ ML model loaded
+2026-09-10 12:26:18,230 - INFO - ✅ ML model loaded
+2026-09-10 12:26:18,234 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 12:26:18,235 - INFO - ✅ ML model loaded
+2026-09-10 12:26:18,284 - INFO - ✅ Ready
+2026-09-10 12:27:39,982 - INFO - 🔍 Starting v15 scan...
+2026-09-10 12:27:40,259 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 12:27:42,488 - INFO - 🦄 Collected 12 DEX coins
+2026-09-10 12:27:42,489 - INFO - 🦄 12 DEX coins
+2026-09-10 12:27:43,974 - INFO - 🏦 1850 CEX tickers
+2026-09-10 12:27:43,977 - INFO - 📊 203 total coins
+2026-09-10 12:27:54,931 - INFO -   20/100 checked...
+2026-09-10 12:28:05,928 - INFO -   40/100 checked...
+2026-09-10 12:28:17,422 - INFO -   60/100 checked...
+2026-09-10 12:28:28,809 - INFO -   80/100 checked...
+2026-09-10 12:28:39,778 - INFO -   100/100 checked...
+2026-09-10 12:28:39,778 - INFO - ✅ Scan done in 59.8s, 10 signals, DEX: 0
+2026-09-10 12:34:12,189 - INFO - 🚀 Crypto-Agent v15 started
+2026-09-10 12:34:12,282 - INFO - ✅ Ready
+2026-09-10 12:34:40,722 - INFO - 🔍 Starting v15 scan...
+2026-09-10 12:34:40,993 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 12:34:43,200 - INFO - 🦄 Collected 12 DEX coins
+2026-09-10 12:34:43,200 - INFO - 🦄 12 DEX coins
+2026-09-10 12:34:43,838 - INFO - 🏦 1850 CEX tickers
+2026-09-10 12:35:15,280 - INFO - 📊 61 total coins
+2026-09-10 12:35:15,280 - INFO - ✅ Scan done in 34.6s, 10 signals, DEX: 8
+2026-09-10 13:00:39,078 - INFO - 🚀 Crypto-Agent v15 Production started
+2026-09-10 13:00:39,168 - INFO - ✅ Production Ready
+2026-09-10 13:01:43,788 - INFO - 🚀 Crypto-Agent v15 Production started
+2026-09-10 13:01:43,837 - INFO - ✅ Production Ready
+2026-09-10 13:01:58,550 - INFO - 🔍 Starting production scan...
+2026-09-10 13:01:58,824 - INFO - 🌍 Fear & Greed: 69 → Social Score: 30
+2026-09-10 13:02:01,111 - INFO - 🦄 Collected 13 DEX coins
+2026-09-10 13:02:01,112 - INFO - 🦄 13 DEX coins
+2026-09-10 13:02:01,669 - INFO - 🏦 1850 CEX tickers
+2026-09-10 13:02:28,734 - INFO - 📊 62 total coins
+2026-09-10 13:02:28,734 - INFO - ✅ Scan done in 30.2s, 10 signals, DEX: 6
