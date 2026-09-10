@@ -91,7 +91,7 @@ def is_valid_symbol(sym: str) -> bool:
     return True
 
 # ==========================================
-#  Social Score
+# 🌍 Social Score
 # ==========================================
 async def get_fear_greed_index() -> int:
     try:
@@ -116,6 +116,19 @@ def fear_greed_to_score(fng_value: int) -> int:
     else:
         return 10
 
+def get_fng_description(value: int) -> str:
+    """توضیح فارسی Fear & Greed"""
+    if value <= 25:
+        return "ترس شدید (فرصت خرید)"
+    elif value <= 40:
+        return "ترس (احتیاط)"
+    elif value <= 60:
+        return "خنثی"
+    elif value <= 75:
+        return "طمع (احتیاط)"
+    else:
+        return "طمع شدید (خطر)"
+
 # ==========================================
 # 📡 HTTP Helper
 # ==========================================
@@ -134,11 +147,10 @@ async def http_get(client, url, params=None):
             return None
 
 # ==========================================
-#  Z-Score (CEX)
+# 📊 Z-Score (CEX)
 # ==========================================
 async def calc_z_scores_cex(symbol, client):
     results = {}
-    
     for iv, lim in [('1h', 60), ('4h', 42)]:
         try:
             data = await http_get(client, f"{BINANCE}/klines",
@@ -203,7 +215,7 @@ def select_best_timeframe(zs: Dict) -> tuple:
         return (z4h, m4h)
 
 # ==========================================
-#  Z-Score (DEX)
+# 📊 Z-Score (DEX)
 # ==========================================
 async def calc_z_scores_dex(coin_data: Dict) -> tuple:
     try:
@@ -312,11 +324,11 @@ async def get_dex_coins():
             
             await asyncio.sleep(0.1)
     
-    logger.info(f" Collected {len(coins)} DEX coins")
+    logger.info(f"🦄 Collected {len(coins)} DEX coins")
     return coins
 
 # ==========================================
-#  CEX Collector (رفع باگ Overwrite)
+# 🏦 CEX Collector (رفع باگ Overwrite)
 # ==========================================
 async def get_cex_tickers():
     tickers = {}
@@ -353,7 +365,6 @@ async def get_cex_tickers():
                         if price <= 0 or volume <= 0:
                             continue
                         
-                        # ✅ رفع باگ: اگر کوین قبلاً وجود داشت، فقط اگر حجم این صرافی بیشتر بود جایگزین کن
                         if coin in tickers:
                             if volume > tickers[coin]['volume']:
                                 tickers[coin] = {
@@ -377,19 +388,32 @@ async def get_cex_tickers():
     return tickers
 
 # ==========================================
+# 🗄️ Database Helper (جدید)
+# ==========================================
+def get_db_features(symbol: str) -> Optional[Dict]:
+    """دریافت features از دیتابیس pipeline"""
+    try:
+        from database_manager import DatabaseManager
+        db = DatabaseManager()
+        features = db.get_features_for_training(symbol, limit=1)
+        if features:
+            return features[0]
+    except Exception as e:
+        logger.debug(f"DB error for {symbol}: {e}")
+    return None
+
+# ==========================================
 # 🎯 Rule-Based Scoring
 # ==========================================
 def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     score = 0
     
-    # Z-Score (20%)
     if 0.0 <= z4 < 0.5: score += 20
     elif 0.5 <= z4 < 1.0: score += 18
     elif 1.0 <= z4 < 1.5: score += 15
     elif 1.5 <= z4 < 2.0: score += 12
     elif 2.0 <= z4 < 3.0: score += 8
     
-    # Volume Mult (20%)
     if 0.5 <= m4 < 1.5: score += 20
     elif 1.5 <= m4 < 2.0: score += 18
     elif 2.0 <= m4 < 3.0: score += 15
@@ -398,7 +422,6 @@ def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     elif 10.0 <= m4 < 15.0: score += 8
     elif 0.0 <= m4 < 0.5: score += 8
     
-    # Change (25%)
     if 20 <= change <= 50: score += 25
     elif 50 < change <= 100: score += 23
     elif 100 < change <= 200: score += 20
@@ -411,19 +434,17 @@ def rule_based_score(z4, m4, change, rsi=50, is_dex=False):
     elif -20 <= change < -10: score += 3
     elif -30 <= change < -20: score += 1
     
-    # RSI (15%)
     if 40 <= rsi <= 60: score += 15
     elif 30 <= rsi < 40: score += 12
     elif 60 < rsi <= 70: score += 10
     else: score += 5
     
-    # DEX Boost (10%)
     if is_dex: score += 10
     
     return min(100, score)
 
 # ==========================================
-# 🎯 Production Scoring
+#  Production Scoring
 # ==========================================
 def calc_prod_score(z4, m4, pattern, change=0, rsi=50, social_score=50, is_dex=False, volume=0):
     if z4 >= PROD_RULES['max_z_score']:
@@ -444,18 +465,13 @@ def calc_prod_score(z4, m4, pattern, change=0, rsi=50, social_score=50, is_dex=F
     return round(score, 1), True
 
 # ==========================================
-#  پیش‌بینی احتمال پمپ (جدید!)
+# 🎯 پیش‌بینی احتمال پمپ
 # ==========================================
 def predict_pump_probability(z4, m4, change, volume, is_dex=False):
-    """
-    پیش‌بینی احتمال پمپ در بازه‌های زمانی مختلف
-    بر اساس الگوهای مشاهده شده در backtest
-    """
     prob_1h = 0.0
     prob_4h = 0.0
     prob_24h = 0.0
     
-    # Z-Score optimal range: 0.5-1.5 (100% win rate در backtest)
     if 0.5 <= z4 <= 1.5:
         prob_4h += 0.35
         prob_24h += 0.45
@@ -466,7 +482,6 @@ def predict_pump_probability(z4, m4, change, volume, is_dex=False):
         prob_4h += 0.20
         prob_24h += 0.30
     
-    # Volume Multiplier optimal: 1.5-2.0 (100% win rate)
     if 1.5 <= m4 <= 2.0:
         prob_1h += 0.20
         prob_4h += 0.30
@@ -484,7 +499,6 @@ def predict_pump_probability(z4, m4, change, volume, is_dex=False):
         prob_4h += 0.15
         prob_24h += 0.20
     
-    # Change optimal: 5-20%
     if 5 <= change <= 20:
         prob_1h += 0.25
         prob_4h += 0.20
@@ -498,17 +512,14 @@ def predict_pump_probability(z4, m4, change, volume, is_dex=False):
         prob_4h += 0.15
         prob_24h += 0.20
     
-    # Volume بالا = سیگنال قوی‌تر
-    if volume > 1000000:  # $1M+
+    if volume > 1000000:
         prob_4h += 0.10
         prob_24h += 0.10
     
-    # DEX coins معمولاً زودتر پمپ می‌کنند
     if is_dex:
         prob_1h += 0.05
         prob_4h += 0.05
     
-    # محدود کردن به 95%
     prob_1h = min(prob_1h, 0.95)
     prob_4h = min(prob_4h, 0.95)
     prob_24h = min(prob_24h, 0.95)
@@ -520,29 +531,95 @@ def predict_pump_probability(z4, m4, change, volume, is_dex=False):
     }
 
 def get_probability_emoji(prob):
-    """تبدیل احتمال به ایموجی"""
     if prob >= 0.7:
-        return "🔥🔥"
+        return "🔥"
     elif prob >= 0.5:
         return "🔥"
     elif prob >= 0.3:
-        return "⚠️"
+        return "️"
     else:
         return "⚪"
 
 def get_pump_window(prob_1h, prob_4h, prob_24h):
-    """تعیین بازه زمانی پمپ"""
     if prob_1h >= 0.5:
-        return "0-1 hours"
+        return "۰-۱ ساعت"
     elif prob_4h >= 0.5:
-        return "1-4 hours"
+        return "۱-۴ ساعت"
     elif prob_24h >= 0.5:
-        return "4-24 hours"
+        return "۴-۲۴ ساعت"
     else:
-        return "24+ hours"
+        return "بیش از ۲ ساعت"
+
+def get_z_score_description(z: float) -> str:
+    """توضیح فارسی Z-Score"""
+    if z < -1.0:
+        return "حجم بسیار پایین (کاهش شدید)"
+    elif z < -0.5:
+        return "حجم پایین"
+    elif z < 0.5:
+        return "حجم نرمال"
+    elif z < 1.0:
+        return "حجم کمی بالا"
+    elif z < 1.5:
+        return "حجم بالا (سیگنال خوب)"
+    elif z < 2.0:
+        return "حجم خیلی بالا"
+    else:
+        return "حجم غیرعادی (احتیاط)"
+
+def get_volume_mult_description(m: float) -> str:
+    """توضیح فارسی Volume Multiplier"""
+    if m < 0.5:
+        return "حجم بسیار کم"
+    elif m < 1.0:
+        return "حجم کمتر از میانگین"
+    elif m < 1.5:
+        return "حجم نزدیک به میانگین"
+    elif m < 2.0:
+        return "حجم ۱.۵ برابر (خوب)"
+    elif m < 3.0:
+        return "حجم ۲ برابر (قوی)"
+    elif m < 5.0:
+        return "حجم ۳-۵ برابر (خیلی قوی)"
+    else:
+        return "حجم غیرعادی بالا"
+
+def get_rsi_description(rsi: float) -> str:
+    """توضیح فارسی RSI"""
+    if rsi < 30:
+        return "اشباع فروش (فرصت خرید)"
+    elif rsi < 40:
+        return "نزدیک اشباع فروش"
+    elif rsi < 60:
+        return "منطقه متعادل"
+    elif rsi < 70:
+        return "نزدیک اشباع خرید"
+    else:
+        return "اشباع خرید (احتیاط)"
+
+def get_change_description(change: float) -> str:
+    """توضیح فارسی تغییرات قیمت"""
+    if change > 50:
+        return "پامپ بسیار قوی"
+    elif change > 20:
+        return "پامپ قوی"
+    elif change > 10:
+        return "رشد خوب"
+    elif change > 5:
+        return "رشد ملایم"
+    elif change > 0:
+        return "رشد جزئی"
+    elif change > -5:
+        return "کاهش جزئی"
+    elif change > -10:
+        return "کاهش ملایم"
+    elif change > -20:
+        return "کاهش قابل توجه"
+    else:
+        return "سقوط شدید"
 
 # ==========================================
-#  Production Scan
+# 🔍 Production Scan
 # ==========================================
 async def scan_production():
     start = time.time()
@@ -550,6 +627,7 @@ async def scan_production():
 
     fng_value = await get_fear_greed_index()
     social_score = fear_greed_to_score(fng_value)
+    fng_desc = get_fng_description(fng_value)
     logger.info(f"🌍 Fear & Greed: {fng_value} → Social Score: {social_score}")
 
     dex_coins = await get_dex_coins()
@@ -560,7 +638,6 @@ async def scan_production():
 
     all_coins = {}
     
-    # پردازش DEX
     for c in dex_coins:
         sym = c['symbol']
         if not is_valid_symbol(sym):
@@ -571,9 +648,7 @@ async def scan_production():
             c['m4'] = m4
             all_coins[sym] = c
 
-    # ✅ پردازش CEX با Watchlist + Top 200
     async with httpx.AsyncClient(timeout=300) as client:
-        # اول Watchlist را پردازش کن
         for sym in WATCHLIST:
             if sym in cex_tickers:
                 data = cex_tickers[sym]
@@ -594,7 +669,6 @@ async def scan_production():
                 except Exception as e:
                     logger.debug(f"Watchlist error {sym}: {e}")
         
-        # سپس Top 200 را پردازش کن
         for sym, data in list(cex_tickers.items())[:PROD_RULES['max_cex_coins']]:
             if not is_valid_symbol(sym):
                 continue
@@ -619,7 +693,7 @@ async def scan_production():
                 logger.debug(f"CEX error {sym}: {e}")
                 continue
 
-    logger.info(f" {len(all_coins)} total coins")
+    logger.info(f"📊 {len(all_coins)} total coins")
 
     final = []
     dex_count = 0
@@ -632,6 +706,12 @@ async def scan_production():
             volume = coin.get('volume', 0)
             is_dex = coin.get('chain') != 'CEX'
             
+            # ✅ دریافت RSI از دیتابیس (اگر موجود باشد)
+            rsi = 50
+            db_features = get_db_features(sym)
+            if db_features:
+                rsi = db_features.get('rsi_14', 50) or 50
+            
             if z4 < 1.0 and m4 < 1.5:
                 pattern = 'Monitor'
             elif z4 >= 1.0 and m4 >= 1.5:
@@ -642,6 +722,7 @@ async def scan_production():
             score, passes = calc_prod_score(
                 z4, m4, pattern,
                 change=change,
+                rsi=rsi,
                 social_score=social_score,
                 is_dex=is_dex,
                 volume=volume
@@ -651,7 +732,6 @@ async def scan_production():
                 if is_dex:
                     dex_count += 1
                 
-                # ✅ محاسبه پیش‌بینی پمپ
                 pump_prob = predict_pump_probability(z4, m4, change, volume, is_dex)
                 pump_window = get_pump_window(pump_prob['1h'], pump_prob['4h'], pump_prob['24h'])
                 
@@ -665,6 +745,7 @@ async def scan_production():
                     'volume': volume,
                     'chain': coin.get('chain', 'unknown'),
                     'social': social_score,
+                    'rsi': round(rsi, 1),
                     'pump_1h': pump_prob['1h'],
                     'pump_4h': pump_prob['4h'],
                     'pump_24h': pump_prob['24h'],
@@ -681,107 +762,132 @@ async def scan_production():
     logger.info(f"✅ Scan done in {elapsed:.1f}s, {len(final)} signals, DEX: {dex_count}")
 
     if not final:
-        return ["✅ No signals passed production filters"]
+        return ["✅ هیچ سیگنال قوی یافت نشد"]
 
     messages = []
     ti = datetime.now().strftime("%Y-%m-%d %H:%M")
     
-    # ✅ پیام اول: خلاصه + 1 کوین با پیش‌بینی کامل
-    msg1 = f"⚡ Crypto-Agent v15 | {ti}\n"
-    msg1 += f"📊 {len(all_coins)} coins | {len(final)} signals\n"
-    msg1 += f"🌍 F&G: {fng_value} | DEX: {dex_count}\n\n"
+    # ✅ پیام اول: خلاصه + کوین اول با جزئیات کامل
+    msg1 = f"⚡ کریپتو ایجنت v15 | {ti}\n"
+    msg1 += f"📊 {len(all_coins)} کوین بررسی شد | {len(final)} سیگنال\n"
+    msg1 += f"🌍 شاخص ترس و طمع: {fng_value} ({fng_desc})\n"
+    msg1 += f"🦄 کوین‌های DEX: {dex_count}\n\n"
     
     if final:
         c = final[0]
         vol_k = int(c['volume'] / 1000)
-        msg1 += f"#{1} 🔥 {c['symbol']} ({c['chain']})\n"
-        msg1 += f"   Score: {c['score']} | Z: {c['z4']} | Vol: {c['m4']}x\n"
-        msg1 += f"   Change: {c['change']:+.1f}% | Vol: ${vol_k}K\n"
-        msg1 += f"   Social: {c['social']}\n\n"
+        vol_m = c['volume'] / 1000000
         
-        # ✅ پیش‌بینی پمپ
-        msg1 += f"🎯 Pump Probability:\n"
-        msg1 += f"   1h:  {c['pump_1h']*100:.0f}% {get_probability_emoji(c['pump_1h'])}\n"
-        msg1 += f"   4h:  {c['pump_4h']*100:.0f}% {get_probability_emoji(c['pump_4h'])}\n"
-        msg1 += f"   24h: {c['pump_24h']*100:.0f}% {get_probability_emoji(c['pump_24h'])}\n\n"
-        msg1 += f"⏰ Est. Pump Window: {c['pump_window']}\n"
+        if vol_m >= 1:
+            vol_str = f"${vol_m:.1f}M"
+        else:
+            vol_str = f"${vol_k}K"
+        
+        msg1 += f"🥇 #{1} {c['symbol']} ({c['chain']})\n"
+        msg1 += f"   💯 امتیاز: {c['score']}/100\n"
+        msg1 += f"   📈 Z-Score: {c['z4']} ({get_z_score_description(c['z4'])})\n"
+        msg1 += f"   📊 حجم: {c['m4']}x ({get_volume_mult_description(c['m4'])})\n"
+        msg1 += f"    تغییر 24h: {c['change']:+.1f}% ({get_change_description(c['change'])})\n"
+        msg1 += f"   💵 حجم معاملات: {vol_str}\n"
+        msg1 += f"    RSI: {c['rsi']} ({get_rsi_description(c['rsi'])})\n"
+        msg1 += f"   🌍 امتیاز اجتماعی: {c['social']}/100\n\n"
+        
+        msg1 += f"🎯 پیش‌بینی پامپ:\n"
+        msg1 += f"   ⏱️ ۱ ساعت: {c['pump_1h']*100:.0f}% {get_probability_emoji(c['pump_1h'])}\n"
+        msg1 += f"   ⏱️  ساعت: {c['pump_4h']*100:.0f}% {get_probability_emoji(c['pump_4h'])}\n"
+        msg1 += f"   ⏱️ ۲۴ ساعت: {c['pump_24h']*100:.0f}% {get_probability_emoji(c['pump_24h'])}\n\n"
+        msg1 += f"⏰ بازه زمانی پامپ: {c['pump_window']}\n"
     
-    msg1 += "\nFilters: Z<3.0 | Vol<15.0x | Change>-30%"
+    msg1 += f"\n🔍 فیلترها: Z<3.0 | Vol<15.0x | Change>-30%"
     messages.append(msg1)
     
-    # ✅ پیام‌های بعدی: کوین‌های دیگر با پیش‌بینی مختصر
+    # ✅ پیام‌های بعدی: کوین‌های دیگر با جزئیات کامل
     for i in range(1, len(final), 2):
         batch = final[i:i+2]
-        msg = f"📋 More ({i+1}-{i+len(batch)}):\n\n"
+        msg = f" سیگنال‌های بیشتر ({i+1}-{i+len(batch)}):\n\n"
         
         for j, c in enumerate(batch, i+1):
             vol_k = int(c['volume'] / 1000)
-            msg += f"#{j} 🔥 {c['symbol']} ({c['chain']})\n"
-            msg += f"   Score: {c['score']} | Z: {c['z4']} | Vol: {c['m4']}x\n"
-            msg += f"   Change: {c['change']:+.1f}% | Vol: ${vol_k}K\n"
+            vol_m = c['volume'] / 1000000
             
-            # پیش‌بینی مختصر
+            if vol_m >= 1:
+                vol_str = f"${vol_m:.1f}M"
+            else:
+                vol_str = f"${vol_k}K"
+            
+            msg += f"#{j} {c['symbol']} ({c['chain']})\n"
+            msg += f"   💯 امتیاز: {c['score']}/100\n"
+            msg += f"   📈 Z-Score: {c['z4']} ({get_z_score_description(c['z4'])})\n"
+            msg += f"   📊 حجم: {c['m4']}x ({get_volume_mult_description(c['m4'])})\n"
+            msg += f"    تغییر: {c['change']:+.1f}% ({get_change_description(c['change'])})\n"
+            msg += f"   💵 حجم: {vol_str} | RSI: {c['rsi']}\n"
+            
             best_prob = max(c['pump_1h'], c['pump_4h'], c['pump_24h'])
-            msg += f"   🎯 Pump: {c['pump_1h']*100:.0f}%/{c['pump_4h']*100:.0f}%/{c['pump_24h']*100:.0f}% {get_probability_emoji(best_prob)}\n"
-            msg += f"    Window: {c['pump_window']}\n\n"
+            msg += f"   🎯 پامپ: {c['pump_1h']*100:.0f}%/{c['pump_4h']*100:.0f}%/{c['pump_24h']*100:.0f}% {get_probability_emoji(best_prob)}\n"
+            msg += f"   ⏰ بازه: {c['pump_window']}\n\n"
         
         messages.append(msg)
     
     return messages
 
 # ==========================================
-#  Telegram Handlers
+# 🤖 Telegram Handlers
 # ==========================================
 async def cmd_start(u, c):
     await u.message.reply_text(
-        "🔥 Crypto-Agent v15 Production\n\n"
-        "/scan - اسکن با پیش‌بینی پمپ\n"
-        "/stats - آمار\n\n"
-        "✅ Win Rate: 75%\n"
-        "✅ Profit Factor: 3.24\n"
-        "✅ Sharpe: 6.88\n"
-        "✅ Pump Probability Prediction")
+        " کریپتو ایجنت v15 - دستیار هوشمند ترید\n\n"
+        "📋 دستورات:\n"
+        "/scan - اسکن بازار و شناسایی سیگنال‌ها\n"
+        "/stats - آمار و عملکرد سیستم\n\n"
+        "✨ ویژگی‌ها:\n"
+        "✅ شناسایی پامپ‌ها با دقت 75%\n"
+        "✅ پیش‌بینی زمان پامپ (1h/4h/24h)\n"
+        "✅ پوشش CEX و DEX\n"
+        "✅ تحلیل حجم و RSI\n"
+        "✅ شاخص ترس و طمع بازار")
 
 async def cmd_scan(u, c):
     if u.effective_user.id not in ALLOWED_USERS:
         return
-    await u.message.reply_text("⏳ اسکن... (1-2 دقیقه)")
+    await u.message.reply_text("⏳ در حال اسکن بازار... (1-2 دقیقه)")
     try:
         messages = await scan_production()
         for msg in messages:
             if len(msg) > 4000:
-                msg = msg[:3900] + "\n\n... (truncated)"
+                msg = msg[:3900] + "\n\n... (ادامه دارد)"
             await u.message.reply_text(msg)
     except Exception as e:
         logger.error(f"Scan error: {e}", exc_info=True)
-        await u.message.reply_text(f"❌ Error: {str(e)[:100]}")
+        await u.message.reply_text(f"❌ خطا: {str(e)[:100]}")
 
 async def cmd_stats(u, c):
     if u.effective_user.id not in ALLOWED_USERS:
         return
     
     fng = await get_fear_greed_index()
+    fng_desc = get_fng_description(fng)
     
     await u.message.reply_text(
-        " v15 Production Stats\n\n"
-        "✅ Win Rate: 75%\n"
-        "✅ Profit Factor: 3.24\n"
-        "✅ Sharpe: 6.88\n\n"
-        f"🌍 Fear & Greed: {fng}\n\n"
-        "🎯 Filters:\n"
-        "• Z-Score: 0.0-3.0\n"
-        "• Volume Mult: 0.0-15.0x\n"
-        "• Change: -30% to +500%\n"
-        "• Score >= 40\n"
-        "• Min Volume: $500\n"
-        "• DEX Boost: +15\n"
-        f"• Watchlist: {len(WATCHLIST)} coins\n\n"
-        "🔮 Pump Prediction:\n"
-        "• 1h / 4h / 24h probability\n"
-        "• Estimated pump window")
+        "📊 آمار کریپتو ایجنت v15\n\n"
+        " عملکرد سیستم:\n"
+        "✅ نرخ برد: 75%\n"
+        "✅ ضریب سود: 3.24\n"
+        "✅ نسبت شارپ: 6.88\n\n"
+        f"🌍 شاخص ترس و طمع: {fng} ({fng_desc})\n\n"
+        "🔍 فیلترهای اسکن:\n"
+        "• Z-Score: 0.0 تا 3.0\n"
+        "• ضریب حجم: 0.0 تا 15.0x\n"
+        "• تغییرات: -30% تا +500%\n"
+        "• حداقل امتیاز: 40\n"
+        "• حداقل حجم: $500\n"
+        "• امتیاز DEX: +15\n\n"
+        "🔮 پیش‌بینی پامپ:\n"
+        "• بازه 1 ساعته\n"
+        "• بازه 4 ساعته\n"
+        "• بازه 24 ساعته")
 
 # ==========================================
-#  Main
+# 🚀 Main
 # ==========================================
 def main():
     try:
